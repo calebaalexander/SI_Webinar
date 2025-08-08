@@ -5,10 +5,10 @@
 
 ### Executive Summary
 
-This comprehensive gameplan outlines the complete implementation strategy for a 60-minute Snowflake Intelligence webinar showcasing PawCore Systems pet wellness technology company. The webinar will demonstrate how Snowflake Intelligence transforms business intelligence through AI-powered analysis of structured and unstructured data across multiple business domains.
+This comprehensive gameplan outlines the complete implementation strategy for a 90-minute Snowflake Intelligence webinar showcasing PawCore Systems pet wellness technology company. The webinar will demonstrate how Snowflake Intelligence transforms business intelligence through AI-powered analysis of structured and unstructured data across multiple business domains.
 
 Webinar Title: "Transform Your Business Intelligence with Snowflake Intelligence: A PawCore Systems Case Study"  
-Duration: 60 minutes  
+Duration: 90 minutes  
 Target Audience: Data professionals, business analysts, IT leaders, and executives interested in AI-powered business intelligence  
 Implementation Timeline: 4 weeks  
 Success Metrics: Technical performance, audience engagement, and business impact
@@ -435,7 +435,7 @@ Our webinar begins with a compelling introduction that sets the stage for the Sn
 Welcome and Introductions
 - Presenter Introduction: Establish credibility and expertise in Snowflake Intelligence
 - Webinar Objectives: Clear articulation of learning outcomes and value proposition
-- Agenda Overview: Structured presentation of the 60-minute session flow
+- Agenda Overview: Structured presentation of the 90-minute session flow
 - PawCore Systems Company Overview: Introduction to the pet wellness technology company and business context
 
 Business Challenge Presentation
@@ -444,7 +444,7 @@ Business Challenge Presentation
 - Business Impact: Quantified impact of current limitations on decision-making and performance
 - Solution Promise: Introduction to Snowflake Intelligence as the comprehensive solution
 
-Demo Section 1: Data Foundation (10 minutes)
+Demo Section 1: Data Foundation (15 minutes)
 This foundational section establishes the data landscape and technical architecture:
 
 PawCore Systems Data Landscape Overview
@@ -459,7 +459,7 @@ Semantic View Architecture Walkthrough
 - Data Relationship Visualization: Clear presentation of how different data sources connect and relate
 - Data Governance and Security: Comprehensive overview of security measures and access controls
 
-#### Demo Section 2: Natural Language Queries (15 minutes)
+#### Demo Section 2: Natural Language Queries (25 minutes)
 This core demonstration section showcases the power of natural language querying and AI-powered analysis:
 
 Sales Performance Analysis Demonstration
@@ -496,7 +496,7 @@ Advanced AI capabilities are showcased through:
 - Data-Driven Recommendations: Intelligent generation of actionable business recommendations
 - Predictive Analytics: Demonstration of trend analysis and forecasting capabilities
 
-#### Demo Section 3: Advanced Capabilities (15 minutes)
+#### Demo Section 3: Advanced Capabilities (20 minutes)
 This advanced demonstration showcases the cutting-edge capabilities of Snowflake Intelligence:
 
 Multi-Modal Analysis Capabilities
@@ -535,7 +535,7 @@ Operational Efficiency Metrics
 - Cross-Functional Collaboration: Enhanced collaboration and knowledge sharing across departments
 - Process Optimization: Identification and implementation of process improvements
 
-#### Demo Section 4: Q&A and Next Steps (10 minutes)
+#### Demo Section 4: Q&A and Next Steps (15 minutes)
 This interactive section engages the audience and provides clear next steps:
 
 Interactive Q&A Session
@@ -712,7 +712,7 @@ Automated Email Reporting
 Comprehensive measurement of audience engagement and interaction quality:
 
 Audience Engagement Metrics
-- Attendance and Retention: Attendee count and retention rate throughout the 60-minute session
+- Attendance and Retention: Attendee count and retention rate throughout the 90-minute session
 - Interactive Participation: Q&A participation quality and depth of audience engagement
 - Feedback Quality: Post-webinar survey responses and satisfaction scores
 - Follow-up Interest: Follow-up meeting requests and continued engagement indicators

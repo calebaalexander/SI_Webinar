@@ -32,7 +32,7 @@ This document defines the key performance indicators (KPIs) and success criteria
 
 ### **Audience Engagement**
 - **Attendance Rate:** 80%+ of registered attendees present
-- **Retention Rate:** 85%+ audience retention throughout 60-minute session
+- **Retention Rate:** 85%+ audience retention throughout 90-minute session
 - **Q&A Participation:** 10+ questions from audience during Q&A session
 - **Interactive Participation:** 5+ live demo interactions with audience
 
@@ -43,7 +43,7 @@ This document defines the key performance indicators (KPIs) and success criteria
 - **Call-to-Action Response:** 20%+ follow-up requests for additional information
 
 ### **Presentation Quality**
-- **Timing Accuracy:** Demo completed within 60-minute timeframe
+- **Timing Accuracy:** Demo completed within 90-minute timeframe
 - **Technical Smoothness:** No technical issues during live demonstration
 - **Content Flow:** Logical progression from basic to advanced capabilities
 - **Audience Feedback:** Positive feedback scores of 4.5+ out of 5

@@ -120,7 +120,7 @@
 
 #### **Days 22-24: Demo Preparation**
 - [ ] **Day 22:** Demo script finalization
-  - Complete 60-minute presentation script
+  - Complete 90-minute presentation script
   - Prepare backup scenarios
   - Create Q&A preparation document
 - [ ] **Day 23:** Demo rehearsal
