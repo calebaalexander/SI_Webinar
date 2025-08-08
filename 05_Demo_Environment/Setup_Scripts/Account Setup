@@ -1,0 +1,114 @@
+-- ========================================================================
+-- Snowflake Intelligence Webinar - Account Setup Script
+-- PawCore Systems Pet Wellness Demo Environment
+-- This script creates the necessary roles, warehouses, and permissions
+-- ========================================================================
+
+-- Switch to accountadmin role to create warehouse and roles
+USE ROLE accountadmin;
+
+-- Create dedicated role for PawCore Systems webinar
+CREATE OR REPLACE ROLE PAWCORE_WEBINAR_ROLE;
+
+-- Set current user for role assignment
+SET current_user_name = CURRENT_USER();
+
+-- Grant the role to current user
+GRANT ROLE PAWCORE_WEBINAR_ROLE TO USER IDENTIFIER($current_user_name);
+GRANT CREATE DATABASE ON ACCOUNT TO ROLE PAWCORE_WEBINAR_ROLE;
+
+-- Create dedicated warehouse for the webinar with auto-suspend/resume
+CREATE OR REPLACE WAREHOUSE PAWCORE_INTELLIGENCE_WH 
+    WITH WAREHOUSE_SIZE = 'XSMALL'
+    AUTO_SUSPEND = 300
+    AUTO_RESUME = TRUE
+    COMMENT = 'Warehouse for PawCore Systems Snowflake Intelligence webinar demo';
+
+-- Grant usage on warehouse to webinar role
+GRANT USAGE ON WAREHOUSE PAWCORE_INTELLIGENCE_WH TO ROLE PAWCORE_WEBINAR_ROLE;
+
+-- Alter current user's default role and warehouse
+ALTER USER IDENTIFIER($current_user_name) SET DEFAULT_ROLE = PAWCORE_WEBINAR_ROLE;
+ALTER USER IDENTIFIER($current_user_name) SET DEFAULT_WAREHOUSE = PAWCORE_INTELLIGENCE_WH;
+
+-- Switch to webinar role for remaining operations
+USE ROLE PAWCORE_WEBINAR_ROLE;
+
+-- Create database and schema structure
+CREATE OR REPLACE DATABASE PAWCORE_INTELLIGENCE_DEMO;
+USE DATABASE PAWCORE_INTELLIGENCE_DEMO;
+
+-- Create schemas for different data types
+CREATE SCHEMA IF NOT EXISTS BUSINESS_DATA;
+CREATE SCHEMA IF NOT EXISTS AGENTS;
+CREATE SCHEMA IF NOT EXISTS DOCUMENTS;
+
+-- Grant usage on database and schemas
+GRANT USAGE ON DATABASE PAWCORE_INTELLIGENCE_DEMO TO ROLE PUBLIC;
+GRANT USAGE ON SCHEMA PAWCORE_INTELLIGENCE_DEMO.BUSINESS_DATA TO ROLE PUBLIC;
+GRANT USAGE ON SCHEMA PAWCORE_INTELLIGENCE_DEMO.AGENTS TO ROLE PUBLIC;
+GRANT USAGE ON SCHEMA PAWCORE_INTELLIGENCE_DEMO.DOCUMENTS TO ROLE PUBLIC;
+
+-- Create file format for CSV files
+CREATE OR REPLACE FILE FORMAT CSV_FORMAT
+    TYPE = 'CSV'
+    FIELD_DELIMITER = ','
+    RECORD_DELIMITER = '\n'
+    SKIP_HEADER = 1
+    FIELD_OPTIONALLY_ENCLOSED_BY = '"'
+    TRIM_SPACE = TRUE
+    ERROR_ON_COLUMN_COUNT_MISMATCH = FALSE
+    ESCAPE = 'NONE'
+    ESCAPE_UNENCLOSED_FIELD = '\134'
+    DATE_FORMAT = 'YYYY-MM-DD'
+    TIMESTAMP_FORMAT = 'YYYY-MM-DD HH24:MI:SS'
+    NULL_IF = ('NULL', 'null', '', 'N/A', 'n/a');
+
+-- Create internal stage for data files
+CREATE OR REPLACE STAGE INTERNAL_DATA_STAGE
+    FILE_FORMAT = CSV_FORMAT
+    COMMENT = 'Internal stage for PawCore Systems webinar data files'
+    DIRECTORY = ( ENABLE = TRUE)
+    ENCRYPTION = ( TYPE = 'SNOWFLAKE_SSE');
+
+-- Create stage for unstructured documents
+CREATE OR REPLACE STAGE DOCUMENT_STAGE
+    COMMENT = 'Stage for unstructured documents and PDFs'
+    DIRECTORY = ( ENABLE = TRUE)
+    ENCRYPTION = ( TYPE = 'SNOWFLAKE_SSE');
+
+-- Grant permissions for Snowflake Intelligence
+GRANT USAGE ON DATABASE snowflake_intelligence TO ROLE PAWCORE_WEBINAR_ROLE;
+GRANT USAGE ON SCHEMA snowflake_intelligence.agents TO ROLE PAWCORE_WEBINAR_ROLE;
+GRANT CREATE AGENT ON SCHEMA snowflake_intelligence.agents TO ROLE PAWCORE_WEBINAR_ROLE;
+
+-- Create network rule for external access (web scraping)
+CREATE OR REPLACE NETWORK RULE PAWCORE_WebAccessRule
+    MODE = EGRESS
+    TYPE = HOST_PORT
+    VALUE_LIST = ('0.0.0.0:80', '0.0.0.0:443');
+
+-- Create external access integration
+CREATE OR REPLACE EXTERNAL ACCESS INTEGRATION PAWCORE_ExternalAccess_Integration
+    ALLOWED_NETWORK_RULES = (PAWCORE_WebAccessRule)
+    ENABLED = true;
+
+-- Create notification integration for email capabilities
+CREATE OR REPLACE NOTIFICATION INTEGRATION PAWCORE_email_int
+    TYPE = EMAIL
+    ENABLED = TRUE;
+
+-- Grant usage on integrations
+GRANT USAGE ON INTEGRATION PAWCORE_ExternalAccess_Integration TO ROLE PAWCORE_WEBINAR_ROLE;
+GRANT USAGE ON INTEGRATION PAWCORE_email_int TO ROLE PAWCORE_WEBINAR_ROLE;
+
+-- Verification queries
+SELECT 'Account Setup Complete' as status;
+SELECT CURRENT_ROLE() as current_role;
+SELECT CURRENT_WAREHOUSE() as current_warehouse;
+SELECT CURRENT_DATABASE() as current_database();
+
+-- Show created objects
+SHOW WAREHOUSES LIKE 'PAWCORE_INTELLIGENCE_WH';
+SHOW DATABASES LIKE 'PAWCORE_INTELLIGENCE_DEMO';
+SHOW SCHEMAS IN DATABASE PAWCORE_INTELLIGENCE_DEMO; 
