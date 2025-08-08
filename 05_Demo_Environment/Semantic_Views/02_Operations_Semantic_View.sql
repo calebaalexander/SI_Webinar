@@ -1,8 +1,8 @@
--- Zoomi Operations Semantic View
+-- PawCore Systems Operations Semantic View
 -- This semantic view enables natural language querying of operations and team collaboration data
 
 USE ROLE SNOWFLAKE_INTELLIGENCE_ADMIN_RL;
-USE DATABASE ZOOMI_INTELLIGENCE_DEMO;
+USE DATABASE PAWCORE_INTELLIGENCE_DEMO;
 USE SCHEMA BUSINESS_DATA;
 
 -- Create dimension tables for operations
@@ -54,7 +54,7 @@ INSERT INTO TEAM_MEMBER_DIM (MEMBER_NAME, ROLE, DEPARTMENT_KEY, JOIN_DATE) VALUE
 ('Tom Anderson', 'Support Lead', 5, '2022-11-12');
 
 -- Create the Operations Semantic View
-CREATE OR REPLACE SEMANTIC VIEW ZOOMI_OPERATIONS_SEMANTIC_VIEW
+CREATE OR REPLACE SEMANTIC VIEW PAWCORE_OPERATIONS_SEMANTIC_VIEW
 tables (
     COMMUNICATIONS as TEAM_COMMUNICATIONS primary key (MESSAGE_ID) 
         with synonyms=('team messages','slack communications','collaboration','team discussions') 
@@ -105,15 +105,15 @@ metrics (
     DEPARTMENTS.TOTAL_DEPARTMENTS as COUNT(departments.dept_key) comment='Total number of departments',
     TEAM_MEMBERS.TOTAL_MEMBERS as COUNT(team_members.member_key) comment='Total number of team members'
 )
-comment='Semantic view for Zoomi operations analysis including team collaboration, project tracking, and organizational insights';
+comment='Semantic view for PawCore Systems operations analysis including team collaboration, project tracking, and organizational insights';
 
 -- Grant permissions for the semantic view
-GRANT SELECT ON SEMANTIC VIEW ZOOMI_OPERATIONS_SEMANTIC_VIEW TO ROLE ZOOMI_WEBINAR_ROLE;
+GRANT SELECT ON SEMANTIC VIEW PAWCORE_OPERATIONS_SEMANTIC_VIEW TO ROLE PAWCORE_WEBINAR_ROLE;
 
 -- Verification query
 SELECT 
     'Operations Semantic View Created' as status,
     SEMANTIC_VIEW_NAME,
     CREATED
-FROM ZOOMI_INTELLIGENCE_DEMO.INFORMATION_SCHEMA.SEMANTIC_VIEWS 
-WHERE SEMANTIC_VIEW_NAME = 'ZOOMI_OPERATIONS_SEMANTIC_VIEW'; 
+FROM PAWCORE_INTELLIGENCE_DEMO.INFORMATION_SCHEMA.SEMANTIC_VIEWS 
+WHERE SEMANTIC_VIEW_NAME = 'PAWCORE_OPERATIONS_SEMANTIC_VIEW'; 
