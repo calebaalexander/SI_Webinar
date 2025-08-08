@@ -1,0 +1,26 @@
+# PetTracker User Manual
+
+## Product Overview
+
+The PetTracker is a GPS-enabled pet tracking device that provides real-time location monitoring and activity tracking.
+
+## Features
+
+- Real-time GPS tracking
+- Geofencing capabilities
+- Activity monitoring
+- Long battery life (up to 30 days)
+- Water-resistant design
+
+## Installation Guide
+
+1. Charge the device fully
+2. Download the PawCore Systems app
+3. Register your account
+4. Pair the device with your phone
+5. Attach to your pet's collar
+
+---
+
+**Product Version:** v2.1
+**Last Updated:** January 15, 2025
