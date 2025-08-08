@@ -1,0 +1,26 @@
+CAMPAIGN_ID,CAMPAIGN_NAME,DATE_SENT,SUBJECT_LINE,SEGMENT,EMAIL_LIST_SIZE,OPENS,CLICKS,CONVERSIONS,REVENUE,OPEN_RATE,CLICK_RATE,CONVERSION_RATE,ROI,COST_PER_ACQUISITION
+EC001,Holiday_PetTracker_Launch,2024-11-15,"Give Your Pet the Gift of Safety This Holiday Season",Premium,15000,6750,1350,405,81000,45.0,9.0,2.7,450.0,200
+EC002,HealthMonitor_Q4_Promotion,2024-11-20,"Monitor Your Pet's Health Like Never Before",Standard,12000,4800,960,288,57600,40.0,8.0,2.4,320.0,167
+EC003,SmartCollar_Holiday_Special,2024-12-01,"Light Up Your Pet's World This Holiday",All,20000,8000,1200,240,36000,40.0,6.0,1.2,180.0,150
+EC004,New_Year_Wellness_Challenge,2024-12-15,"Start 2025 with Better Pet Health",Premium,18000,8100,1620,486,97200,45.0,9.0,2.7,540.0,200
+EC005,Valentines_Pet_Love,2025-02-01,"Show Your Pet Some Love This Valentine's Day",All,25000,10000,1500,375,56250,40.0,6.0,1.5,225.0,150
+EC006,Spring_Training_Series,2025-02-15,"Spring Training Tips for Your Pet",Standard,15000,6000,900,180,27000,40.0,6.0,1.2,180.0,150
+EC007,PetTracker_Pro_Launch,2025-03-01,"Introducing PetTracker Pro - Advanced GPS Tracking",Premium,12000,5400,1080,324,64800,45.0,9.0,2.7,360.0,200
+EC008,HealthMonitor_Plus_Announcement,2025-03-15,"HealthMonitor Plus: Next-Gen Pet Health Monitoring",Premium,10000,4500,900,270,54000,45.0,9.0,2.7,300.0,200
+EC009,SmartCollar_Premium_Launch,2025-04-01,"SmartCollar Premium: The Ultimate Training Solution",Premium,8000,3600,720,216,43200,45.0,9.0,2.7,240.0,200
+EC010,Summer_Safety_Campaign,2025-04-15,"Keep Your Pet Safe This Summer",All,30000,12000,1800,450,67500,40.0,6.0,1.5,225.0,150
+EC011,Back_to_School_Pet_Care,2025-05-01,"Back to School Pet Care Tips",Standard,20000,8000,1200,240,36000,40.0,6.0,1.2,180.0,150
+EC012,Fall_Health_Checkup,2025-05-15,"Fall Health Checkup for Your Pet",Premium,15000,6750,1350,405,81000,45.0,9.0,2.7,450.0,200
+EC013,Black_Friday_Early_Access,2025-06-01,"Early Access to Black Friday Pet Deals",All,35000,14000,2100,525,78750,40.0,6.0,1.5,225.0,150
+EC014,Cyber_Monday_Special,2025-06-15,"Cyber Monday: 50% Off All PawCore Products",All,40000,16000,2400,600,90000,40.0,6.0,1.5,225.0,150
+EC015,Year_End_Review,2025-07-01,"Your Pet's 2025 Health Review",Premium,18000,8100,1620,486,97200,45.0,9.0,2.7,540.0,200
+EC016,New_Product_Announcement,2025-07-15,"Exciting New PawCore Products Coming Soon",All,25000,10000,1500,375,56250,40.0,6.0,1.5,225.0,150
+EC017,Customer_Appreciation,2025-08-01,"Thank You for Choosing PawCore Systems",All,30000,12000,1800,450,67500,40.0,6.0,1.5,225.0,150
+EC018,Referral_Program_Launch,2025-08-15,"Refer Friends, Earn Rewards",All,20000,8000,1200,240,36000,40.0,6.0,1.2,180.0,150
+EC019,Product_Update_Newsletter,2025-09-01,"Latest Updates to Your PawCore Products",Standard,22000,8800,1320,264,39600,40.0,6.0,1.2,180.0,150
+EC020,Seasonal_Pet_Care_Tips,2025-09-15,"Autumn Pet Care Tips and Tricks",All,28000,11200,1680,420,63000,40.0,6.0,1.5,225.0,150
+EC021,Holiday_Gift_Guide,2025-10-01,"The Ultimate Pet Gift Guide for 2025",All,32000,12800,1920,480,72000,40.0,6.0,1.5,225.0,150
+EC022,Pet_Health_Webinar_Invite,2025-10-15,"Join Our Free Pet Health Webinar",Premium,15000,6750,1350,405,81000,45.0,9.0,2.7,450.0,200
+EC023,Product_Recall_Notice,2025-11-01,"Important Product Safety Update",All,35000,14000,2100,525,78750,40.0,6.0,1.5,225.0,150
+EC024,Thanksgiving_Pet_Safety,2025-11-15,"Keep Your Pet Safe This Thanksgiving",All,30000,12000,1800,450,67500,40.0,6.0,1.5,225.0,150
+EC025,Year_End_Sale_Announcement,2025-12-01,"Year-End Sale: Up to 60% Off",All,38000,15200,2280,570,85500,40.0,6.0,1.5,225.0,150
