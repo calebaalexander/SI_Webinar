@@ -1,0 +1,113 @@
+-- PawCore Systems Sales Semantic View
+-- This semantic view enables natural language querying of sales performance data
+
+USE ROLE SNOWFLAKE_INTELLIGENCE_ADMIN_RL;
+USE DATABASE PAWCORE_INTELLIGENCE_DEMO;
+USE SCHEMA BUSINESS_DATA;
+
+-- Create dimension tables for the semantic view
+CREATE OR REPLACE TABLE PRODUCT_DIM (
+    PRODUCT_KEY NUMBER AUTOINCREMENT PRIMARY KEY,
+    PRODUCT_NAME VARCHAR(50) NOT NULL,
+    PRODUCT_CATEGORY VARCHAR(30) NOT NULL,
+    PRODUCT_DESCRIPTION TEXT,
+    LAUNCH_DATE DATE,
+    PRICE DECIMAL(10,2),
+    COST DECIMAL(10,2)
+);
+
+CREATE OR REPLACE TABLE REGION_DIM (
+    REGION_KEY NUMBER AUTOINCREMENT PRIMARY KEY,
+    REGION_NAME VARCHAR(50) NOT NULL,
+    COUNTRY VARCHAR(50),
+    CONTINENT VARCHAR(30),
+    TIME_ZONE VARCHAR(10)
+);
+
+CREATE OR REPLACE TABLE CUSTOMER_DIM (
+    CUSTOMER_KEY NUMBER AUTOINCREMENT PRIMARY KEY,
+    CUSTOMER_NAME VARCHAR(100) NOT NULL,
+    CUSTOMER_TYPE VARCHAR(30),
+    SEGMENT VARCHAR(30),
+    REGION_KEY NUMBER REFERENCES REGION_DIM(REGION_KEY)
+);
+
+-- Insert sample dimension data
+INSERT INTO PRODUCT_DIM (PRODUCT_NAME, PRODUCT_CATEGORY, PRODUCT_DESCRIPTION, LAUNCH_DATE, PRICE, COST) VALUES
+('PawCore Systems PetTracker', 'GPS Tracking', 'Real-time GPS pet tracking device with geofencing', '2018-01-15', 199.99, 120.00),
+('PawCore Systems HealthMonitor', 'Health Monitoring', 'Advanced pet health monitoring with vital signs tracking', '2019-03-20', 299.99, 180.00),
+('PawCore Systems SmartCollar', 'Training', 'Gentle training collar with behavior modification', '2020-06-10', 149.99, 90.00);
+
+INSERT INTO REGION_DIM (REGION_NAME, COUNTRY, CONTINENT, TIME_ZONE) VALUES
+('North America', 'United States', 'North America', 'EST'),
+('Europe', 'United Kingdom', 'Europe', 'GMT'),
+('Asia Pacific', 'Australia', 'Asia Pacific', 'AEST');
+
+INSERT INTO CUSTOMER_DIM (CUSTOMER_NAME, CUSTOMER_TYPE, SEGMENT, REGION_KEY) VALUES
+('Pet Parents Inc', 'B2B', 'Premium', 1),
+('VetCare Network', 'B2B', 'Professional', 1),
+('PetStore Chain', 'B2B', 'Retail', 2),
+('Individual Pet Owner', 'B2C', 'Standard', 3);
+
+-- Create the Sales Semantic View
+CREATE OR REPLACE SEMANTIC VIEW PAWCORE_SALES_SEMANTIC_VIEW
+tables (
+    SALES as PAWCORE_SALES primary key (SALE_ID) 
+        with synonyms=('sales data','revenue data','transactions','sales performance') 
+        comment='All PawCore Systems sales transactions with performance metrics',
+    PRODUCTS as PRODUCT_DIM primary key (PRODUCT_KEY) 
+        with synonyms=('products','items','pet products','devices') 
+        comment='PawCore Systems product catalog with specifications and pricing',
+    REGIONS as REGION_DIM primary key (REGION_KEY) 
+        with synonyms=('regions','territories','markets','geographic areas') 
+        comment='Geographic regions and market territories',
+    CUSTOMERS as CUSTOMER_DIM primary key (CUSTOMER_KEY) 
+        with synonyms=('customers','clients','pet owners','accounts') 
+        comment='Customer information and segmentation data'
+)
+relationships (
+    SALES_TO_PRODUCTS as SALES(PRODUCT_KEY) references PRODUCTS(PRODUCT_KEY),
+    SALES_TO_REGIONS as SALES(REGION_KEY) references REGIONS(REGION_KEY),
+    SALES_TO_CUSTOMERS as SALES(CUSTOMER_KEY) references CUSTOMERS(CUSTOMER_KEY)
+)
+facts (
+    SALES.ACTUAL_SALES as amount comment='Actual sales amount in dollars',
+    SALES.FORECAST_SALES as forecast_amount comment='Forecasted sales amount',
+    SALES.VARIANCE as variance comment='Difference between forecast and actual sales',
+    SALES.UNITS_SOLD as units comment='Number of units sold',
+    SALES.INVENTORY_UNITS_AVAILABLE as inventory comment='Available inventory units',
+    SALES.MARKETING_ENGAGEMENT_SCORE as engagement comment='Marketing engagement score'
+)
+dimensions (
+    SALES.DATE as date with synonyms=('date','sale date','transaction date','period') comment='Date of the sale or transaction',
+    PRODUCTS.PRODUCT_NAME as product_name with synonyms=('product','item','device','product name') comment='Name of the product sold',
+    PRODUCTS.PRODUCT_CATEGORY as product_category with synonyms=('category','product type','device type') comment='Category of the product',
+    PRODUCTS.PRICE as product_price with synonyms=('price','unit price','retail price') comment='Price of the product',
+    REGIONS.REGION_NAME as region_name with synonyms=('region','territory','market','geographic region') comment='Name of the sales region',
+    REGIONS.CONTINENT as continent with synonyms=('continent','geographic area') comment='Continent where the sale occurred',
+    CUSTOMERS.CUSTOMER_NAME as customer_name with synonyms=('customer','client','account name') comment='Name of the customer',
+    CUSTOMERS.CUSTOMER_TYPE as customer_type with synonyms=('customer type','business type','client type') comment='Type of customer (B2B/B2C)',
+    CUSTOMERS.SEGMENT as customer_segment with synonyms=('segment','customer segment','market segment') comment='Customer segment classification'
+)
+metrics (
+    SALES.TOTAL_REVENUE as SUM(sales.amount) comment='Total sales revenue',
+    SALES.TOTAL_FORECAST as SUM(sales.forecast_amount) comment='Total forecasted sales',
+    SALES.TOTAL_VARIANCE as SUM(sales.variance) comment='Total variance between forecast and actual',
+    SALES.TOTAL_UNITS as SUM(sales.units) comment='Total units sold',
+    SALES.FORECAST_ACCURACY as AVG(sales.variance) comment='Average forecast accuracy',
+    SALES.REVENUE_GROWTH as (SUM(sales.amount) - LAG(SUM(sales.amount)) OVER (ORDER BY sales.date)) / LAG(SUM(sales.amount)) OVER (ORDER BY sales.date) comment='Revenue growth rate',
+    SALES.INVENTORY_TURNOVER as SUM(sales.units) / AVG(sales.inventory) comment='Inventory turnover ratio',
+    SALES.ENGAGEMENT_SCORE as AVG(sales.engagement) comment='Average marketing engagement score'
+)
+comment='Semantic view for PawCore Systems sales analysis and performance tracking across all regions and products';
+
+-- Grant permissions for the semantic view
+GRANT SELECT ON SEMANTIC VIEW PAWCORE_SALES_SEMANTIC_VIEW TO ROLE PAWCORE_WEBINAR_ROLE;
+
+-- Verification query
+SELECT 
+    'Semantic View Created' as status,
+    SEMANTIC_VIEW_NAME,
+    CREATED
+FROM PAWCORE_INTELLIGENCE_DEMO.INFORMATION_SCHEMA.SEMANTIC_VIEWS 
+WHERE SEMANTIC_VIEW_NAME = 'PAWCORE_SALES_SEMANTIC_VIEW'; 
