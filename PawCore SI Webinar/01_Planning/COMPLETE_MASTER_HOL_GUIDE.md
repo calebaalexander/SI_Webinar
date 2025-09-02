@@ -64,6 +64,8 @@ You'll need to upload the following files via Snowflake UI:
 - `02_Data/Internal Data Stage/email_campaigns.csv`
 - `02_Data/Internal Data Stage/enhanced_sales_data.csv`
 - `02_Data/Internal Data Stage/social_media_posts.csv`
+- `02_Data/Internal Data Stage/support_tickets.csv`
+- `02_Data/Internal Data Stage/warranty_costs.csv`
 
 **Document Stage** (`@DOCUMENT_STAGE`):
 - `02_Data/Document Stage/customer_reviews.csv` ⭐ **Critical for mystery**
@@ -106,7 +108,9 @@ SELECT 'PAWCORE_SALES', COUNT(*) FROM PAWCORE_SALES
 UNION ALL SELECT 'RETURNS', COUNT(*) FROM RETURNS  -- Should be ~9 rows
 UNION ALL SELECT 'CUSTOMER_REVIEWS', COUNT(*) FROM CUSTOMER_REVIEWS
 UNION ALL SELECT 'SLACK_MESSAGES', COUNT(*) FROM SLACK_MESSAGES
-UNION ALL SELECT 'HR_RESUMES', COUNT(*) FROM HR_RESUMES;
+UNION ALL SELECT 'HR_RESUMES', COUNT(*) FROM HR_RESUMES  -- Should be 8 rows
+UNION ALL SELECT 'SUPPORT_TICKETS', COUNT(*) FROM SUPPORT_TICKETS
+UNION ALL SELECT 'WARRANTY_COSTS', COUNT(*) FROM WARRANTY_COSTS;
 
 -- Check services
 SHOW CORTEX ANALYST SERVICES;
@@ -119,6 +123,8 @@ SHOW AGENTS;
 - CUSTOMER_REVIEWS: ~26 rows with Q4 2024 SmartCollar complaints
 - SLACK_MESSAGES: ~21 rows with support escalation
 - HR_RESUMES: 8 candidates
+- SUPPORT_TICKETS: ~21 rows (support escalation evidence)
+- WARRANTY_COSTS: ~15 rows (financial impact data)
 - 5 Analyst Services, 5 Search Services, 1 Agent
 
 ---
