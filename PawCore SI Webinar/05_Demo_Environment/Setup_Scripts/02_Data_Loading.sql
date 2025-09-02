@@ -58,6 +58,14 @@ CREATE OR REPLACE TABLE CUSTOMER_DIM (
     CUSTOMER_SEGMENT VARCHAR(50) NOT NULL
 );
 
+-- Create HR Resumes table for hiring bonus demo
+CREATE OR REPLACE TABLE HR_RESUMES (
+    CANDIDATE_NAME VARCHAR(200) NOT NULL,
+    RESUME_TEXT TEXT NOT NULL,
+    APPLICATION_DATE DATE NOT NULL,
+    POSITION_APPLIED VARCHAR(100) NOT NULL
+);
+
 -- ========================================================================
 -- LOAD DIMENSION DATA
 -- ========================================================================
@@ -114,7 +122,9 @@ SELECT 'PRODUCT_DIM' as table_name, COUNT(*) as row_count FROM PRODUCT_DIM
 UNION ALL
 SELECT 'REGION_DIM' as table_name, COUNT(*) as row_count FROM REGION_DIM
 UNION ALL
-SELECT 'CUSTOMER_DIM' as table_name, COUNT(*) as row_count FROM CUSTOMER_DIM;
+SELECT 'CUSTOMER_DIM' as table_name, COUNT(*) as row_count FROM CUSTOMER_DIM
+UNION ALL
+SELECT 'HR_RESUMES' as table_name, COUNT(*) as row_count FROM HR_RESUMES;
 
 -- Sample data verification
 SELECT 'Sales Data Sample' as verification_type, 
@@ -129,6 +139,12 @@ SELECT 'Team Communications Sample' as verification_type,
        COUNT(DISTINCT THREAD_ID) as threads,
        COUNT(*) as total_messages
 FROM TEAM_COMMUNICATIONS;
+
+-- Load HR Resumes data
+COPY INTO HR_RESUMES (CANDIDATE_NAME, RESUME_TEXT, APPLICATION_DATE, POSITION_APPLIED)
+FROM @INTERNAL_DATA_STAGE/hr_resumes.csv
+FILE_FORMAT = CSV_FORMAT
+ON_ERROR = 'CONTINUE';
 
 -- Show all tables
 SHOW TABLES IN SCHEMA BUSINESS_DATA; 
