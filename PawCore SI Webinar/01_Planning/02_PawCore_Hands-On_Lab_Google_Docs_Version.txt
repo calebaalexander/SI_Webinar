@@ -1,0 +1,198 @@
+Title: PawCore Systems Hands-On Lab — From Signals to Decisions with Snowflake Intelligence (90 minutes)
+
+Duration
+Total: 90 minutes (hands-on 75–80 minutes, Q&A 10–15 minutes)
+
+Audience
+Data/AI practitioners, analytics engineers, sales engineers, Snowflake builders
+
+Objectives
+Tell a cohesive PawCore story: solve "The Mystery of the Missing Revenue" by unifying structured and unstructured data to diagnose regional under-performance, uncover product issues, assess campaign ROI, and automate executive updates with a Snowflake Intelligent Agent.
+
+The Mystery of the Missing Revenue - Story Setup
+Q4 revenue beat targets overall by 15%, but EMEA region underperformed by 23% for SmartCollar specifically. Leadership is baffled because:
+- Marketing spent 40% more on "Holiday Fit for Pets" campaign in EMEA
+- Customer satisfaction scores dropped 15% in EMEA during Q4
+- Support tickets increased 200% for battery-related issues
+- No one can connect the dots between these signals
+
+Your mission: Investigate across structured and unstructured data to solve this mystery, find the root cause, and provide an actionable solution to prevent future revenue losses.
+
+Assets You Will Use
+Structured: pawcore_sales.csv, pet_owners.csv, device_sales_by_region.csv, fitbit_inventory.csv, vet_feedback.csv, email_campaigns.csv, enhanced_sales_data.csv, social_media_posts.csv
+Unstructured: Q4_2024_PawCore_Financial_Report.md (quarterly dashboard), Sales_Performance_Q4_2024.md (sales report), PawCore Quarterly Call.mp3 (quarterly call), Quarterly_Sales_Speech_PawCore.md (call transcript), pawcore_slack.csv (Slack), customer_reviews.csv (reviews), SmartCollar Product Photo.jpeg (product image), Customer Journey Infographic.pdf (infographic)
+Snowflake: Role SNOWFLAKE_INTELLIGENCE_ADMIN_RL, Warehouse PAWCORE_INTELLIGENCE_WH, Database PAWCORE_INTELLIGENCE_DEMO with schemas BUSINESS_DATA, DOCUMENTS, AGENTS
+
+Agenda and Timeboxes
+0–5 min: Story and goals
+5–20 min: Environment and data loading
+20–35 min: Semantic Views + Cortex Analyst
+35–50 min: Document AI (PDFs/images) + Slack + Reviews
+50–60 min: Cortex Search Services over unstructured content
+60–70 min: Quarterly call insights and cross-signal sentiment
+70–80 min: Build the Intelligent Agent and email yourself
+80–90 min: Q&A
+
+Section 1 (0–5 min): Introduce the Mystery and Investigation Plan
+Frame the investigation:
+- What caused the 23% SmartCollar revenue shortfall in EMEA?
+- Are battery issues mentioned in customer feedback and support data?
+- Did the "Holiday Fit for Pets" campaign contribute to or mask the problem?
+- Can we automate this type of investigation for future issues?
+Outcome: Solve the mystery and create an automated detective agent for revenue investigations.
+[SCREENSHOT: Opening slide with "The Mystery of the Missing Revenue" title and investigation objectives]
+
+Section 2 (5–20 min): Environment Setup and Data Loading
+1) Use role, warehouse, and create database/schemas
+USE ROLE SNOWFLAKE_INTELLIGENCE_ADMIN_RL;
+CREATE OR REPLACE WAREHOUSE PAWCORE_INTELLIGENCE_WH WAREHOUSE_SIZE = 'XSMALL' AUTO_SUSPEND = 60 AUTO_RESUME = TRUE;
+CREATE OR REPLACE DATABASE PAWCORE_INTELLIGENCE_DEMO;
+CREATE OR REPLACE SCHEMA PAWCORE_INTELLIGENCE_DEMO.BUSINESS_DATA;
+CREATE OR REPLACE SCHEMA PAWCORE_INTELLIGENCE_DEMO.DOCUMENTS;
+CREATE OR REPLACE SCHEMA PAWCORE_INTELLIGENCE_DEMO.AGENTS;
+USE DATABASE PAWCORE_INTELLIGENCE_DEMO;
+USE SCHEMA BUSINESS_DATA;
+USE WAREHOUSE PAWCORE_INTELLIGENCE_WH;
+
+2) Create file formats and stages
+CREATE OR REPLACE FILE FORMAT CSV_FORMAT TYPE = CSV FIELD_OPTIONALLY_ENCLOSED_BY='"' SKIP_HEADER = 1;
+CREATE OR REPLACE FILE FORMAT BINARY_FORMAT TYPE = BINARY;
+CREATE OR REPLACE STAGE INTERNAL_DATA_STAGE FILE_FORMAT = CSV_FORMAT;
+CREATE OR REPLACE STAGE DOCUMENT_STAGE;
+CREATE OR REPLACE STAGE IMAGE_STAGE FILE_FORMAT = BINARY_FORMAT;
+CREATE OR REPLACE STAGE AUDIO_STAGE FILE_FORMAT = BINARY_FORMAT;
+
+3) Upload files to stages (UI: Databases → Stages → Upload)
+Upload device_sales_by_region.csv, email_campaigns.csv, enhanced_sales_data.csv, fitbit_inventory.csv, pawcore_sales.csv, pet_owners.csv, social_media_posts.csv, vet_feedback.csv to INTERNAL_DATA_STAGE.
+Upload Q4_2024_PawCore_Financial_Report.md, Sales_Performance_Q4_2024.md, Quarterly_Sales_Speech_PawCore.md, pawcore_slack.csv, customer_reviews.csv to DOCUMENT_STAGE.
+Upload SmartCollar Product Photo.jpeg, Customer Journey Infographic.pdf to IMAGE_STAGE.
+Upload PawCore Quarterly Call.mp3 to AUDIO_STAGE.
+[SCREENSHOT: Stage browser showing files uploaded]
+
+4) Create core tables and load structured data
+Create tables based on your CSV files:
+PAWCORE_SALES (from pawcore_sales.csv)
+PET_OWNERS (from pet_owners.csv)
+DEVICE_SALES_BY_REGION (from device_sales_by_region.csv)
+FITBIT_INVENTORY (from fitbit_inventory.csv)
+VET_FEEDBACK (from vet_feedback.csv)
+EMAIL_CAMPAIGNS (from email_campaigns.csv)
+ENHANCED_SALES_DATA (from enhanced_sales_data.csv)
+SOCIAL_MEDIA_POSTS (from social_media_posts.csv)
+Load with COPY INTO from @INTERNAL_DATA_STAGE.
+[SCREENSHOT: Worksheet showing successful COPY row counts]
+
+Section 3 (20–35 min): Semantic Views and Cortex Analyst (Structured Analysis)
+1) Create Sales Semantic View (UI or SQL)
+Name: PAWCORE_SALES_SEMANTIC_VIEW
+Tables: SALES = PAWCORE_SALES (primary key), PET_OWNERS, DEVICE_SALES_BY_REGION, FITBIT_INVENTORY, VET_FEEDBACK, EMAIL_CAMPAIGNS, ENHANCED_SALES_DATA, SOCIAL_MEDIA_POSTS
+Add synonyms, descriptions, and relationships as appropriate.
+[SCREENSHOT: Semantic View builder with tables and relationships]
+
+2) Create Cortex Analyst Service
+Name: Analyst_PawCore_Sales_Performance
+Semantic View: PAWCORE_SALES_SEMANTIC_VIEW
+Warehouse: PAWCORE_INTELLIGENCE_WH
+[SCREENSHOT: Analyst service creation confirmation]
+
+3) Ask questions in natural language (Cortex Analyst UI)
+"Show Q4 2024 sales by region and product with forecast vs actual and variance. Include a grouped bar chart."
+"Which regions under-performed forecast for SmartCollar and by how much?"
+"What inventory or engagement factors correlate with the variance?"
+[SCREENSHOT: Analyst result table and chart]
+Investigation checkpoint: Confirm the 23% EMEA SmartCollar variance and look for patterns in inventory or engagement data.
+
+Section 4 (35–50 min): Document AI + Slack + Reviews (Unstructured Clues)
+1) Process PDFs and images with Document AI (UI)
+Project A: "PawCore Analyst Reports" → ingest Q4_2024_PawCore_Financial_Report.md and Sales_Performance_Q4_2024.md; extract text, tables, KPIs.
+Project B: "PawCore Infographics" → ingest SmartCollar Product Photo.jpeg and Customer Journey Infographic.pdf; extract numeric metrics and captions.
+[SCREENSHOT: Document AI extraction previews and fields]
+
+2) Materialize parsed content for search and queries (DOCUMENTS schema)
+Create or use a table DOCUMENTS.PARSED_CONTENT with columns: relative_path, file_url (or presigned URL), title, content (extracted text).
+Load Slack CSV into DOCUMENTS.SLACK_MESSAGES (columns such as channel, timestamp, message_text, author).
+Load customer reviews CSV into DOCUMENTS.CUSTOMER_REVIEWS (rating, product, review_text, date).
+[SCREENSHOT: Sample rows from PARSED_CONTENT, SLACK_MESSAGES, CUSTOMER_REVIEWS]
+
+3) Quick checks
+SELECT COUNT(*) from each table; spot check content for SmartCollar battery mentions and campaign results.
+[SCREENSHOT: Counts and a sample SELECT with highlighted text]
+
+Section 5 (50–60 min): Cortex Search Services (Following the Evidence Trail)
+1) Create focused search services
+Search_PawCore_Finance_Docs on DOCUMENTS.PARSED_CONTENT filtered to finance/review documents.
+Search_PawCore_Product_Docs on DOCUMENTS.PARSED_CONTENT filtered to SmartCollar/product topics.
+Search_PawCore_Operations_Docs union of PARSED_CONTENT + SLACK_MESSAGES + CUSTOMER_REVIEWS for broad ops sentiment.
+[SCREENSHOT: SHOW CORTEX SEARCH SERVICES and a sample search query in UI]
+
+2) Ask targeted questions
+"Summarize key Q4 drivers and risks mentioned in the quarterly review."
+"Find all mentions of battery performance issues for SmartCollar across documents, Slack, and reviews."
+"Are there references to returns/refunds related to SmartCollar?"
+[SCREENSHOT: Search result snippets highlighting relevant passages]
+
+Section 6 (60–70 min): Quarterly Call Insights and Cross-Signal Sentiment (Connecting the Dots)
+1) Load the quarterly call transcript into DOCUMENTS.CALL_TRANSCRIPT(TEXT) from Quarterly_Sales_Speech_PawCore.md.
+2) Create a unified view for sentiment and mention counts
+CUSTOMER_SIGNAL_FEED as union of Slack message_text, review_text, and call transcript text.
+Compute average sentiment by source using SNOWFLAKE.CORTEX.SENTIMENT.
+[SCREENSHOT: Sentiment by source results and a simple bar chart (Worksheet or Streamlit)]
+Investigation checkpoint: Look for correlation between EMEA variance and SmartCollar battery sentiment trend. Note if campaign references appear positive or neutral.
+
+Section 7 (70–80 min): Build the Intelligent Agent and Solve the Mystery
+1) Email integration and procedure (AGENTS schema)
+Create NOTIFICATION INTEGRATION PAWCORE_EMAIL_INT (TYPE = EMAIL, ENABLED = TRUE).
+Create procedure AGENTS.SEND_MAIL(recipient, subject, content) in Python that calls SYSTEM$SEND_EMAIL with HTML content.
+[SCREENSHOT: Procedure successfully created]
+
+2) Create the Agent with tools
+Name: PAWCORE_BI_AGENT
+Instructions: You are a revenue detective. Analyze structured data via Semantic Views; search unstructured content via Cortex Search; synthesize insights; create charts where useful; avoid citation markers; deliver concise executive summaries with recommendations. Focus on solving the EMEA SmartCollar revenue mystery.
+Tools:
+- cortex_analyst_text_to_sql → Analyst_PawCore_Sales_Performance
+- cortex_search → Search_PawCore_Product_Docs, Search_PawCore_Finance_Docs, Search_PawCore_Operations_Docs
+- procedure → AGENTS.SEND_MAIL
+[SCREENSHOT: Agent configuration summary showing tools enabled]
+
+3) Run the end-to-end prompt
+"Solve the mystery of the missing EMEA SmartCollar revenue. Analyze performance by region in Q4 2024, correlate to customer sentiment and documented issues, and recommend top 3 actions. Include a chart comparing forecast vs actual by region. Then email the executive summary to me at caleb.alexander@snowflake.com."
+[SCREENSHOT: Agent response showing chart and a confirmation that email was sent]
+
+4) Verify the email
+Check inbox for subject "PawCore Q4 Findings — SmartCollar Performance and Actions".
+Confirm summary includes EMEA under-performance, battery theme evidence, campaign ROI outcome, and three prioritized actions (e.g., firmware update rollout, targeted EMEA support playbook, campaign optimization).
+[SCREENSHOT: Email in inbox (redacted)]
+
+Section 8 (80–90 min): Q&A and Extensions
+Variations: add financial gross margin analysis; attribute campaign lift; product lifecycle trends; support ticket topics.
+Troubleshooting:
+- Services "INITIALIZING": wait and ensure PAWCORE_INTELLIGENCE_WH is running.
+- No results: verify data loaded and search scopes; check permissions on schemas/stages.
+- Charts missing: explicitly ask "include a bar chart," or visualize in Worksheet/Streamlit.
+
+Appendix: Quick Reference (copy/paste)
+Prompts to try
+Analyst: "Quarter-over-quarter change in SmartCollar revenue and variance by region with a grouped bar chart."
+Search: "Summarize all mentions of battery performance issues in 3 bullet points."
+Agent: "Create a one-page executive briefing combining KPIs and customer voice and email it to me."
+
+Key objects
+Warehouse: PAWCORE_INTELLIGENCE_WH
+Database/Schemas: PAWCORE_INTELLIGENCE_DEMO (BUSINESS_DATA, DOCUMENTS, AGENTS)
+Semantic View: PAWCORE_SALES_SEMANTIC_VIEW
+Analyst Service: Analyst_PawCore_Sales_Performance
+Search Services: Search_PawCore_Finance_Docs, Search_PawCore_Product_Docs, Search_PawCore_Operations_Docs
+Email Integration: PAWCORE_EMAIL_INT
+Procedure: AGENTS.SEND_MAIL
+Agent: PAWCORE_BI_AGENT
+
+File names (replace with your exact paths)
+Structured: pawcore_sales.csv, pet_owners.csv, device_sales_by_region.csv, fitbit_inventory.csv, vet_feedback.csv, email_campaigns.csv, enhanced_sales_data.csv, social_media_posts.csv
+Unstructured: Q4_2024_PawCore_Financial_Report.md, Sales_Performance_Q4_2024.md, PawCore Quarterly Call.mp3, Quarterly_Sales_Speech_PawCore.md, pawcore_slack.csv, customer_reviews.csv, SmartCollar Product Photo.jpeg, Customer Journey Infographic.pdf
+
+Next Steps to Finalize
+Confirm your exact file names/paths if different from the samples above.
+If the call MP3 has no transcript, decide whether to use a pre-transcribed text or skip that portion.
+
+Questions for You
+Confirm final object names (warehouse/database/schemas) or keep the defaults provided?

@@ -1,0 +1,49 @@
+DEMO PRACTICE NOTES - "The Mystery of the Missing Revenue"
+
+OPENING (2 minutes)
+"Welcome to our Snowflake Intelligence Hands-On Lab. Today we're solving a real business mystery: 'The Mystery of the Missing Revenue.' 
+
+Q4 revenue beat targets by 15% overall, BUT EMEA SmartCollar underperformed by 23%. Leadership is baffled because:
+- Marketing spent 40% more on 'Holiday Fit for Pets' campaign in EMEA
+- Customer satisfaction dropped 15% in EMEA during Q4  
+- Support tickets increased 200% for battery-related issues
+- No one can connect these dots!
+
+Our mission: Use Snowflake Intelligence to solve this mystery and create an automated detective agent."
+
+KEY TRANSITIONS TO PRACTICE:
+
+1. "Let's start our investigation by setting up our detective toolkit..."
+2. "Now let's use Semantic Views to confirm the 23% variance..."
+3. "Document AI will help us extract clues from reports and images..."
+4. "Cortex Search will help us follow the evidence trail..."
+5. "Sentiment analysis will help us connect the dots..."
+6. "Finally, our Intelligent Agent will solve the mystery and email us the solution!"
+
+CLOSING (2 minutes)
+"Today we solved 'The Mystery of the Missing Revenue' using:
+- Semantic Views to identify the 23% variance
+- Document AI to extract clues from unstructured data  
+- Cortex Search to follow the evidence trail
+- Sentiment analysis to connect customer signals
+- An Intelligent Agent to synthesize everything and email the solution
+
+The root cause: Battery firmware issue affecting 60% of EMEA shipments during the campaign. Perfect storm of high demand + product issues.
+
+This demonstrates how Snowflake Intelligence can turn data chaos into actionable insights in minutes, not days."
+
+TROUBLESHOOTING QUICK REFERENCE:
+- Service "INITIALIZING": "This is normal, let's wait 30 seconds..."
+- No results: "Let me check our data loading..."
+- Charts missing: "Let me explicitly ask for a visualization..."
+- Email fails: "Let me show you the manual analysis instead..."
+
+TIMING CHECKPOINTS:
+- 0-5 min: Story setup
+- 5-20 min: Environment setup  
+- 20-35 min: Semantic Views
+- 35-50 min: Document AI
+- 50-60 min: Cortex Search
+- 60-70 min: Sentiment analysis
+- 70-80 min: Agent creation
+- 80-90 min: Q&A
