@@ -370,11 +370,11 @@ CREATE OR REPLACE SEMANTIC VIEW PAWCORE_SALES_SEMANTIC_VIEW
         REVIEWS.SENTIMENT as review_sentiment comment='Customer review sentiment'
     )
     METRICS (
-        SALES.TOTAL_REVENUE as SUM(sales.actual_sales) comment='Total sales revenue',
-        SALES.TOTAL_VARIANCE as SUM(sales.variance) comment='Total variance from forecast',
-        RETURNS.TOTAL_RETURNS as SUM(returns.return_quantity) comment='Total units returned',
-        RETURNS.TOTAL_RETURN_COST as SUM(returns.return_cost) comment='Total cost of returns',
-        REVIEWS.AVERAGE_RATING as AVG(reviews.customer_rating) comment='Average customer rating'
+        SALES.TOTAL_REVENUE as SUM(actual_sales) comment='Total sales revenue',
+        SALES.TOTAL_VARIANCE as SUM(variance) comment='Total variance from forecast',
+        RETURNS.TOTAL_RETURNS as SUM(return_quantity) comment='Total units returned',
+        RETURNS.TOTAL_RETURN_COST as SUM(return_cost) comment='Total cost of returns',
+        REVIEWS.AVERAGE_RATING as AVG(customer_rating) comment='Average customer rating'
     )
     COMMENT='Semantic view for PawCore sales and returns analysis';
 
