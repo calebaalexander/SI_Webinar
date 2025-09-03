@@ -384,6 +384,9 @@ CREATE OR REPLACE SEMANTIC VIEW PAWCORE_OPERATIONS_SEMANTIC_VIEW
         COSTS as WARRANTY_COSTS primary key (PERIOD) with synonyms=('warranty costs','expenses') comment='Warranty cost data',
         SLACK as SLACK_MESSAGES primary key (MESSAGE_ID) with synonyms=('slack messages','communications') comment='Internal team communications'
     )
+    RELATIONSHIPS (
+        TICKETS_TO_COSTS as TICKETS(PRODUCT) references COSTS(PRODUCT)
+    )
     FACTS (
         COSTS.COST_USD as warranty_cost comment='Warranty costs in USD'
     )
