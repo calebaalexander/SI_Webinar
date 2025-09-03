@@ -366,7 +366,6 @@ CREATE OR REPLACE SEMANTIC VIEW PAWCORE_SALES_SEMANTIC_VIEW
         SALES.PRODUCT_CATEGORY as product_category comment='Product category',
         SALES.SALES_REP as sales_rep comment='Sales representative',
         RETURNS.LOT_ID as lot_id comment='Manufacturing lot identifier',
-        RETURNS.REASON as return_reason comment='Reason for product return',
         REVIEWS.SENTIMENT as review_sentiment comment='Customer review sentiment'
     )
     METRICS (
