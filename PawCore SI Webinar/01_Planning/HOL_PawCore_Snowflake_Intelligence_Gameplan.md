@@ -72,7 +72,7 @@ Create/load RETURNS if needed (already staged as `returns.csv`).
 ```sql
 CREATE TABLE IF NOT EXISTS RETURNS (
   RETURN_ID STRING, DATE DATE, REGION STRING, PRODUCT STRING, LOT_ID STRING,
-  REASON STRING, QTY NUMBER, UNIT_COST_EUR NUMBER(10,2), TOTAL_COST_EUR NUMBER(10,2)
+  REASON STRING, QTY NUMBER, UNIT_COST_USD NUMBER(10,2), TOTAL_COST_USD NUMBER(10,2)
 );
 
 COPY INTO RETURNS
@@ -156,12 +156,12 @@ SELECT AI_EXTRACT(
 Goal: Size revenue leakage and warranty exposure.
 ```sql
 WITH returns_cost AS (
-  SELECT SUM(TOTAL_COST_EUR) AS cost_eur
+  SELECT SUM(TOTAL_COST_USD) AS cost_usd
   FROM RETURNS
   WHERE PRODUCT='SmartCollar' AND REGION='EMEA' AND DATE BETWEEN '2024-10-01' AND '2024-12-31'
 )
-SELECT cost_eur,
-       AI_COMPLETE('Summarize business impact in 3 bullets given cost ' || cost_eur) AS impact_summary
+SELECT cost_usd,
+       AI_COMPLETE('Summarize business impact in 3 bullets given cost $' || cost_usd) AS impact_summary
 FROM returns_cost;
 ```
 

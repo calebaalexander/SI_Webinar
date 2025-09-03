@@ -27,122 +27,122 @@
 
 ---
 
-## 📋 **Step 1: Environment Setup (15 minutes)**
+## 🚀 **Step 1: Verify Setup Completion (5 minutes)**
 
-### 1.1 Clone the Repository
-```bash
-git clone https://github.com/calebaalexander/SI_Webinar.git
-cd SI_Webinar
-```
+**🎉 Welcome!** If you're here, you've successfully completed the `PawCore Setup.ipynb` notebook. Let's verify everything is ready and then dive into solving the mystery!
 
-### 1.2 Create Snowflake Account Objects
-Run the following scripts in order in your Snowflake worksheet:
+### 1.1 Quick Environment Check
+Run this in a new Snowflake worksheet to confirm your setup:
 
-**Step 1a: Account Setup**
 ```sql
--- Copy/paste contents from: 05_Demo_Environment/Setup_Scripts/01_Account_Setup.sql
--- This creates roles, warehouses, and databases
+USE ROLE ACCOUNTADMIN;
+USE WAREHOUSE PAWCORE_INTELLIGENCE_WH;
+USE DATABASE PAWCORE_INTELLIGENCE_DEMO;
+USE SCHEMA BUSINESS_DATA;
+
+-- Verify mystery data is loaded
+SELECT 
+    table_name,
+    row_count,
+    CASE 
+        WHEN table_name = 'RETURNS' AND row_count >= 9 THEN '🚨 Mystery data ready'
+        WHEN table_name = 'CUSTOMER_REVIEWS' AND row_count >= 20 THEN '📝 Reviews loaded'
+        WHEN table_name = 'SLACK_MESSAGES' AND row_count >= 15 THEN '💬 Slack + sentiment'
+        WHEN table_name = 'HR_RESUMES' AND row_count >= 8 THEN '👥 Hiring candidates'
+        WHEN row_count > 0 THEN '✅ Ready'
+        ELSE '❌ Check data'
+    END AS status
+FROM (
+    SELECT 'PAWCORE_SALES' AS table_name, COUNT(*) AS row_count FROM PAWCORE_SALES
+    UNION ALL SELECT 'RETURNS', COUNT(*) FROM RETURNS
+    UNION ALL SELECT 'CUSTOMER_REVIEWS', COUNT(*) FROM CUSTOMER_REVIEWS
+    UNION ALL SELECT 'SLACK_MESSAGES', COUNT(*) FROM SLACK_MESSAGES
+    UNION ALL SELECT 'HR_RESUMES', COUNT(*) FROM HR_RESUMES
+    UNION ALL SELECT 'SUPPORT_TICKETS', COUNT(*) FROM SUPPORT_TICKETS
+    UNION ALL SELECT 'WARRANTY_COSTS', COUNT(*) FROM WARRANTY_COSTS
+)
+ORDER BY table_name;
 ```
 
-**Step 1b: Data Loading**
+**✅ Expected:** All tables should have row_count > 0 with status indicators showing data is ready.
+
+### 1.2 Preview the Mystery Evidence
+From your setup notebook, you already spotted the **Lot 341 anomaly** in EMEA! Let's confirm:
+
 ```sql
--- Copy/paste contents from: 05_Demo_Environment/Setup_Scripts/02_Data_Loading.sql
--- This loads all demo data (sales, returns, slack messages, customer reviews, etc.)
+-- Quick peek at the smoking gun
+SELECT LOT_ID, REGION, SUM(QTY) as total_returns, SUM(TOTAL_COST_USD) as total_cost_usd
+FROM RETURNS 
+WHERE PRODUCT = 'SmartCollar' 
+GROUP BY LOT_ID, REGION 
+ORDER BY total_returns DESC;
 ```
 
-### 1.3 Upload Files to Snowflake Stages
-You'll need to upload the following files via Snowflake UI:
+You should see **Lot 341 in EMEA** as the top result with significantly higher returns.
 
-**Internal Data Stage** (`@INTERNAL_DATA_STAGE`):
-- `02_Data/Internal Data Stage/pawcore_sales.csv`
-- `02_Data/Internal Data Stage/returns.csv` ⭐ **Critical for mystery**
-- `02_Data/Internal Data Stage/hr_resumes.csv`
-- `02_Data/Internal Data Stage/device_sales_by_region.csv`
-- `02_Data/Internal Data Stage/pet_owners.csv`
-- `02_Data/Internal Data Stage/vet_feedback.csv`
-- `02_Data/Internal Data Stage/fitbit_inventory.csv`
-- `02_Data/Internal Data Stage/email_campaigns.csv`
-- `02_Data/Internal Data Stage/enhanced_sales_data.csv`
-- `02_Data/Internal Data Stage/social_media_posts.csv`
-- `02_Data/Internal Data Stage/support_tickets.csv`
-- `02_Data/Internal Data Stage/warranty_costs.csv`
-
-**Document Stage** (`@DOCUMENT_STAGE`):
-- `02_Data/Document Stage/customer_reviews.csv` ⭐ **Critical for mystery**
-- `02_Data/Document Stage/pawcore_slack.csv` ⭐ **Critical for mystery**
-- `02_Data/Document Stage/Q4_2024_PawCore_Financial_Report.md`
-- `02_Data/Document Stage/Sales_Performance_Q4_2024.md`
-- `02_Data/Document Stage/Quarterly_Sales_Speech_PawCore.md`
-
-**Audio Stage** (`@AUDIO_STAGE`):
-- `02_Data/Audio Stage/PawCore Quarterly Call.mp3`
-
-### 1.4 Create Semantic Views
+### 1.3 Set Up Semantic Views & Advanced Services
+Now let's create the business-friendly views and AI services for our investigation:
 ```sql
 -- Copy/paste contents from: 05_Demo_Environment/Semantic_Views/01_Sales_Semantic_View.sql
 -- Copy/paste contents from: 05_Demo_Environment/Semantic_Views/02_Operations_Semantic_View.sql
 ```
 
-### 1.5 Set Up Cortex Services
+**Set up Cortex Services:**
 ```sql
 -- Copy/paste contents from: 05_Demo_Environment/Cortex_Services/02_Analyst_Services.sql
 -- Copy/paste contents from: 05_Demo_Environment/Cortex_Services/01_Search_Services.sql
 ```
 
-### 1.6 Create Intelligent Agent
+**Create Intelligent Agent:**
 ```sql
 -- Copy/paste contents from: 05_Demo_Environment/Agent_Configuration/01_Main_Agent_Setup.sql
 -- Copy/paste contents from: 05_Demo_Environment/Agent_Configuration/03_Email_Tool_Configuration.sql
 ```
 
-### 1.7 Verification
-Run this to confirm everything is loaded:
+**📸 Screenshot Moment:** Show successful creation of semantic views and services
+
+### 1.4 Final Setup Verification
 ```sql
-USE ROLE PAWCORE_WEBINAR_ROLE;
-USE WAREHOUSE PAWCORE_INTELLIGENCE_WH;
-USE DATABASE PAWCORE_INTELLIGENCE_DEMO;
-USE SCHEMA BUSINESS_DATA;
-
--- Check data counts
-SELECT 'PAWCORE_SALES', COUNT(*) FROM PAWCORE_SALES
-UNION ALL SELECT 'RETURNS', COUNT(*) FROM RETURNS  -- Should be ~9 rows
-UNION ALL SELECT 'CUSTOMER_REVIEWS', COUNT(*) FROM CUSTOMER_REVIEWS
-UNION ALL SELECT 'SLACK_MESSAGES', COUNT(*) FROM SLACK_MESSAGES
-UNION ALL SELECT 'HR_RESUMES', COUNT(*) FROM HR_RESUMES  -- Should be 8 rows
-UNION ALL SELECT 'SUPPORT_TICKETS', COUNT(*) FROM SUPPORT_TICKETS
-UNION ALL SELECT 'WARRANTY_COSTS', COUNT(*) FROM WARRANTY_COSTS;
-
--- Check services
+-- Verify advanced services are ready
 SHOW CORTEX ANALYST SERVICES;
 SHOW CORTEX SEARCH SERVICES;
 SHOW AGENTS;
 ```
 
-**✅ Expected Results:**
-- RETURNS: 9 rows (key mystery data)
-- CUSTOMER_REVIEWS: ~26 rows with Q4 2024 SmartCollar complaints
-- SLACK_MESSAGES: ~21 rows with support escalation
-- HR_RESUMES: 8 candidates
-- SUPPORT_TICKETS: ~21 rows (support escalation evidence)
-- WARRANTY_COSTS: ~15 rows (financial impact data)
-- 5 Analyst Services, 5 Search Services, 1 Agent
+**✅ Expected:** You should see 5 Analyst Services, 5 Search Services, and 1 Agent listed.
+
+**🎯 You're ready!** Your environment now has:
+- ✅ **Data loaded** (returns, reviews, Slack, HR resumes)
+- ✅ **Semantic Views** (business-friendly data access)
+- ✅ **Cortex Services** (AI-powered analysis)
+- ✅ **Intelligent Agent** (automated insights & actions)
+- ✅ **Mystery Evidence** (Lot 341 anomaly discovered)
 
 ---
 
 ## 🕵️ **Step 2: The Mystery Journey (60 minutes)**
 
-### **The Setup: PawCore's Q4 Problem**
-*"PawCore's CFO noticed Q4 revenue came in below forecast, especially in EMEA. The SmartCollar product line appears to be underperforming, but the reasons are unclear. As the lead data analyst, you need to investigate what happened and recommend fixes."*
+### **The Setup: Building on Your Initial Discovery**
+
+**🎯 What we know so far:** In your setup notebook, you discovered a massive anomaly - **Lot 341 SmartCollars in EMEA** showing 4x-8x normal return rates in Q4 2024, costing over $16,000 in returns.
+
+**🕵️ The mystery deepens:** While you've found the "smoking gun," many questions remain:
+- *Why wasn't this escalated by the support team?*
+- *What exactly caused the battery failures?*
+- *How do we prevent this in the future?*
+- *Who should we hire to strengthen our support operations?*
+
+**Your mission:** Use Snowflake Intelligence to investigate the root causes, understand the business impact, and create an automated solution for future monitoring.
 
 ---
 
-### **🔍 Phase 1: Detect the Gap (10 minutes)**
+### **🔍 Phase 1: Analyze Sales Impact (10 minutes)**
 
 **What you're learning:** Semantic Views + Cortex Analyst for business-friendly data analysis
 
 **Set your context:**
 ```sql
-USE ROLE PAWCORE_WEBINAR_ROLE;
+USE ROLE ACCOUNTADMIN;
 USE WAREHOUSE PAWCORE_INTELLIGENCE_WH;
 USE DATABASE PAWCORE_INTELLIGENCE_DEMO;
 USE SCHEMA BUSINESS_DATA;
@@ -152,7 +152,7 @@ USE SCHEMA BUSINESS_DATA;
 
 **Natural Language Query with Cortex Analyst:**
 Navigate to your semantic view and ask:
-> *"Show Q4 2024 variance by region and product; highlight biggest negative gaps"*
+> *"Show SmartCollar sales performance in EMEA for Q4 2024. How did the returns crisis affect revenue?"*
 
 **Alternative SQL approach:**
 ```sql
@@ -162,46 +162,49 @@ SELECT
     SUM(ACTUAL_SALES) as actual_sales,
     SUM(FORECAST_SALES) as forecast_sales,
     SUM(VARIANCE) as variance,
-    AVG(PCT_OF_FORECAST) as pct_of_forecast
+    ROUND(AVG(PCT_OF_FORECAST), 2) as pct_of_forecast
 FROM PAWCORE_SALES_SEMANTIC_VIEW
 WHERE DATE >= '2024-10-01' AND DATE <= '2024-12-31'
+    AND PRODUCT_NAME LIKE '%SmartCollar%'
+    AND REGION_NAME = 'EMEA'
 GROUP BY REGION_NAME, PRODUCT_NAME
 ORDER BY variance ASC;
 ```
 
-**📸 Screenshot Moment:** Results showing SmartCollar EMEA has the worst variance
+**📸 Screenshot Moment:** Results showing how the Lot 341 returns crisis impacted sales performance
 
-**🎯 Discovery:** SmartCollar in EMEA region shows significant negative variance vs forecast
+**🎯 Key Insight:** Link the operational crisis (returns) to business impact (sales variance)**
 
 ---
 
-### **🔍 Phase 2: Focus on the Hotspot (10 minutes)**
+### **🔍 Phase 2: Deep Dive into Returns Pattern (10 minutes)**
 
-**What you're learning:** Drill-down analysis with Cortex Analyst
+**What you're learning:** AI in SQL functions for pattern analysis
 
-**Natural Language Follow-up:**
-> *"Show me SmartCollar performance trend in EMEA across Q4 2024. Break down by month and highlight when the problems started."*
+**Building on your discovery:** We know Lot 341 has massive return spikes. Let's understand the timeline and extract insights about the failure patterns.
 
-**Alternative SQL:**
+**Use AI_EXTRACT to analyze return reasons:**
 ```sql
 SELECT 
-    DATE_TRUNC('MONTH', DATE) as month,
-    REGION_NAME,
-    PRODUCT_NAME,
-    SUM(ACTUAL_SALES) as actual_sales,
-    SUM(FORECAST_SALES) as forecast_sales,
-    SUM(VARIANCE) as variance
-FROM PAWCORE_SALES_SEMANTIC_VIEW
-WHERE PRODUCT_NAME = 'PawCore Systems SmartCollar' 
-    AND REGION_NAME = 'Europe'
-    AND DATE >= '2024-10-01'
-GROUP BY 1,2,3
-ORDER BY month;
+    LOT_ID,
+    REGION,
+    REASON,
+    COUNT(*) as incident_count,
+    SUM(QTY) as total_units_returned,
+    SUM(TOTAL_COST_USD) as total_cost_usd,
+    SNOWFLAKE.CORTEX.AI_EXTRACT(
+        'Extract the main technical failure theme from these return reasons: ' || LISTAGG(REASON, '; '),
+        'failure_theme'
+    ) as failure_analysis
+FROM RETURNS
+WHERE PRODUCT = 'SmartCollar' AND LOT_ID = '341'
+GROUP BY LOT_ID, REGION, REASON
+ORDER BY total_units_returned DESC;
 ```
 
-**📸 Screenshot Moment:** Time series showing progressive deterioration through Q4
+**📸 Screenshot Moment:** AI extraction showing battery-related failure themes
 
-**🎯 Discovery:** Performance declined progressively through Q4, suggesting an operational issue rather than market conditions
+**🎯 Discovery:** AI confirms the core issue is battery failures (dead on arrival, overnight drainage, won't hold charge)**
 
 ---
 
@@ -226,7 +229,7 @@ WITH weekly_returns AS (
         DATE_TRUNC('WEEK', DATE) AS week_start,
         LOT_ID,
         SUM(QTY) AS returned_units,
-        SUM(TOTAL_COST_EUR) AS return_cost
+        SUM(TOTAL_COST_USD) AS return_cost
     FROM RETURNS
     WHERE PRODUCT = 'SmartCollar' AND REGION = 'EMEA'
     GROUP BY 1, 2
@@ -328,7 +331,7 @@ WHERE PRODUCT = 'SmartCollar'
 ```sql
 WITH return_costs AS (
     SELECT 
-        SUM(TOTAL_COST_EUR) as total_return_cost,
+        SUM(TOTAL_COST_USD) as total_return_cost,
         COUNT(*) as return_incidents,
         SUM(QTY) as total_units_returned
     FROM RETURNS
@@ -372,7 +375,7 @@ SELECT
     LOT_ID,
     COUNT(*) as incident_count,
     SUM(QTY) as total_returned,
-    SUM(TOTAL_COST_EUR) as cost_impact,
+    SUM(TOTAL_COST_USD) as cost_impact,
     'HIGH PRIORITY' as alert_level
 FROM RETURNS
 WHERE DATE >= DATEADD(day, -7, CURRENT_DATE())
