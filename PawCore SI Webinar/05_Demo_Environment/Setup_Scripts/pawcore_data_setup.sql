@@ -311,7 +311,7 @@ FILE_FORMAT = CSV_FORMAT
 FORCE = TRUE
 ON_ERROR = 'CONTINUE';
 
--- Enhance customer reviews with additional context
+-- Enhance customer reviews with additional context and sentiment analysis
 UPDATE CUSTOMER_REVIEWS SET 
   PRODUCT_CATEGORY = CASE 
     WHEN PRODUCT LIKE '%SmartCollar%' THEN 'Smart Monitoring'
@@ -321,7 +321,8 @@ UPDATE CUSTOMER_REVIEWS SET
   END,
   CUSTOMER_ID = 'CUST_' || ABS(HASH(CUSTOMER_NAME)),
   PURCHASE_DATE = DATEADD(day, -UNIFORM(30, 365, RANDOM()), DATE),
-  DEVICE_AGE_DAYS = DATEDIFF(day, PURCHASE_DATE, DATE)
+  DEVICE_AGE_DAYS = DATEDIFF(day, PURCHASE_DATE, DATE),
+  SENTIMENT = SNOWFLAKE.CORTEX.SENTIMENT(REVIEW_TEXT)  -- 🤖 AI sentiment analysis
 WHERE PRODUCT_CATEGORY = 'Pet Device';
 
 -- Load supporting customer data
