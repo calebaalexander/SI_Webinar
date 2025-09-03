@@ -386,9 +386,7 @@ CREATE OR REPLACE SEMANTIC VIEW PAWCORE_OPERATIONS_SEMANTIC_VIEW
         SLACK as SLACK_MESSAGES primary key (MESSAGE_ID) with synonyms=('slack messages','communications') comment='Internal team communications'
     )
     FACTS (
-        COSTS.COST_USD as warranty_cost comment='Warranty costs in USD',
-        TICKETS.TICKET_RECORD as 1 comment='Count of support tickets',
-        SLACK.MESSAGE_RECORD as 1 comment='Count of Slack messages'
+        COSTS.COST_USD as warranty_cost comment='Warranty costs in USD'
     )
     DIMENSIONS (
         TICKETS.DATE as ticket_date comment='Date of support ticket',
@@ -401,9 +399,9 @@ CREATE OR REPLACE SEMANTIC VIEW PAWCORE_OPERATIONS_SEMANTIC_VIEW
         SLACK.SENTIMENT as message_sentiment comment='Message sentiment analysis'
     )
     METRICS (
-        TICKETS.TOTAL_TICKETS as COUNT(tickets.ticket_record) comment='Total number of support tickets',
-        COSTS.TOTAL_WARRANTY_COST as SUM(costs.warranty_cost) comment='Total warranty costs',
-        SLACK.TOTAL_MESSAGES as COUNT(slack.message_record) comment='Total Slack messages'
+        TICKETS.TOTAL_TICKETS as COUNT(*) comment='Total number of support tickets',
+        COSTS.TOTAL_WARRANTY_COST as SUM(warranty_cost) comment='Total warranty costs',
+        SLACK.TOTAL_MESSAGES as COUNT(*) comment='Total Slack messages'
     )
     COMMENT='Semantic view for PawCore operations and support analysis';
 
@@ -415,14 +413,14 @@ CREATE OR REPLACE SEMANTIC VIEW PAWCORE_OPERATIONS_SEMANTIC_VIEW
 CREATE OR REPLACE TABLE PARSED_CONTENT AS 
 SELECT 
     relative_path, 
-    BUILD_STAGE_FILE_URL('@PAWCORE_INTELLIGENCE_DEMO.BUSINESS_DATA.DOCUMENT_STAGE', relative_path) as file_url,
-    TO_FILE(BUILD_STAGE_FILE_URL('@PAWCORE_INTELLIGENCE_DEMO.BUSINESS_DATA.DOCUMENT_STAGE', relative_path)) file_object,
+    BUILD_STAGE_FILE_URL('@DOCUMENT_STAGE', relative_path) as file_url,
+    TO_FILE(BUILD_STAGE_FILE_URL('@DOCUMENT_STAGE', relative_path)) file_object,
     SNOWFLAKE.CORTEX.PARSE_DOCUMENT(
-        @PAWCORE_INTELLIGENCE_DEMO.BUSINESS_DATA.DOCUMENT_STAGE,
+        @DOCUMENT_STAGE,
         relative_path,
         {'mode':'LAYOUT'}
     ):content::string as content
-FROM directory(@PAWCORE_INTELLIGENCE_DEMO.BUSINESS_DATA.DOCUMENT_STAGE) 
+FROM directory(@DOCUMENT_STAGE) 
 WHERE relative_path ILIKE '%.md' OR relative_path ILIKE '%.csv';
 
 -- Create search service for customer reviews
