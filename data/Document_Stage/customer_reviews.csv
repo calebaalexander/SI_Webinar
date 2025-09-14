@@ -1,0 +1,31 @@
+REVIEW_ID,PRODUCT,REGION,DATE,REVIEW_TEXT,RATING
+1,SmartCollar,EMEA,2024-10-15,"Battery life is terrible, only lasts a few hours in humid weather. Very disappointed.",2
+2,SmartCollar,EMEA,2024-10-22,"Device stopped working after getting slightly wet during a walk. Not water resistant as advertised.",1
+3,SmartCollar,EMEA,2024-11-05,"Battery drains extremely fast and device becomes unresponsive. Had to return it.",2
+4,SmartCollar,EMEA,2024-11-12,"The collar worked great for a week, then started having issues with moisture. Poor quality control.",2
+5,SmartCollar,EMEA,2024-11-25,"Device from lot 341 had serious battery issues. Support was helpful but couldn't fix the problem.",1
+6,SmartCollar,EMEA,2024-12-03,"Moisture sensor keeps triggering false alarms. Battery dies within hours in damp weather.",2
+7,SmartCollar,EMEA,2024-12-10,"Complete failure in rainy conditions. Battery drained immediately. Not suitable for UK weather.",1
+8,SmartCollar,EMEA,2024-12-18,"Recent firmware update didn't fix the moisture sensitivity issues. Very frustrating.",2
+9,SmartCollar,EMEA,2024-12-22,"Battery life is inconsistent, worse in humid conditions. Not reliable for daily use.",2
+10,SmartCollar,EMEA,2024-12-29,"Device from recent batch (lot 341) has serious quality issues. Returned after a week.",1
+11,SmartCollar,NA,2024-10-05,"Great product, battery lasts as advertised. Perfect for dry climate.",5
+12,SmartCollar,NA,2024-11-15,"Working well in Arizona. No issues with battery life.",5
+13,SmartCollar,APAC,2024-11-20,"Excellent during dry season, some issues in monsoon season.",3
+14,FitBark,EMEA,2024-10-01,"Love the activity tracking features. Very reliable.",5
+15,FitBark,NA,2024-11-01,"Best pet fitness tracker we've used.",5
+16,PawTracker,EMEA,2024-12-01,"Solid performance, great battery life.",5
+17,SmartCollar,EMEA,2023-01-15,"Been using for a year, very reliable in all weather.",5
+18,SmartCollar,EMEA,2023-06-20,"Perfect for summer use, great battery life.",5
+19,SmartCollar,EMEA,2023-12-10,"Worked well until recent replacement with newer model.",4
+20,SmartCollar,NA,2023-08-15,"No issues in humid Florida weather.",5
+21,SmartCollar,APAC,2022-07-10,"Excellent performance during rainy season.",5
+22,SmartCollar,EMEA,2022-03-15,"Reliable in Scottish weather.",5
+23,SmartCollar,NA,2021-12-01,"Two years of solid performance.",5
+24,SmartCollar,EMEA,2021-06-15,"Great in all weather conditions.",5
+25,SmartCollar,APAC,2020-09-10,"Perfect for tropical climate.",5
+26,SmartCollar,EMEA,2020-03-20,"Excellent moisture resistance.",5
+27,SmartCollar,NA,2019-11-15,"Long-lasting battery life.",5
+28,SmartCollar,EMEA,2019-05-10,"Reliable in wet conditions.",5
+29,SmartCollar,APAC,2018-12-05,"No issues with humidity.",5
+30,SmartCollar,EMEA,2018-06-15,"Perfect for UK weather.",5
