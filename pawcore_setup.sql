@@ -69,6 +69,13 @@ CREATE OR REPLACE FILE FORMAT binary_format
     FIELD_DELIMITER = NONE
     SKIP_HEADER = 0;
 
+CREATE OR REPLACE FILE FORMAT TEXT_FORMAT
+    TYPE = 'CSV'
+    FIELD_DELIMITER = NONE
+    RECORD_DELIMITER = NONE
+    SKIP_HEADER = 0
+    FIELD_OPTIONALLY_ENCLOSED_BY = NONE;
+
 -- ========================================================================
 -- GIT INTEGRATION 
 -- ========================================================================
@@ -111,8 +118,8 @@ FROM @pawcore_repo/branches/main/;
 -- Create telemetry table (CORRECTED column order)
 USE SCHEMA DEVICE_DATA;
 CREATE OR REPLACE TABLE TELEMETRY (
-    device_id VARCHAR(50),
-    timestamp TIMESTAMP,           -- Column 2
+    device_id VARCHAR(50),        -- Column 1
+    timestamp TIMESTAMP,          -- Column 2
     battery_level FLOAT,          -- Column 3
     humidity_reading FLOAT,       -- Column 4
     temperature FLOAT,            -- Column 5
@@ -124,13 +131,13 @@ CREATE OR REPLACE TABLE TELEMETRY (
 -- Create manufacturing quality table (CORRECTED column order)
 USE SCHEMA MANUFACTURING;
 CREATE OR REPLACE TABLE QUALITY_LOGS (
-    lot_number VARCHAR(50),
-    timestamp TIMESTAMP,           -- Column 2
-    test_type VARCHAR(100),        -- Column 3
-    measurement_value FLOAT,       -- Column 4
-    pass_fail VARCHAR(10),
-    operator_id VARCHAR(50),
-    station_id VARCHAR(50)
+    lot_number VARCHAR(50),       -- Column 1
+    timestamp TIMESTAMP,          -- Column 2
+    test_type VARCHAR(100),       -- Column 3
+    measurement_value FLOAT,      -- Column 4
+    pass_fail VARCHAR(10),        -- Column 5
+    operator_id VARCHAR(50),      -- Column 6
+    station_id VARCHAR(50)        -- Column 7
 );
 
 -- Create parsed documents table
@@ -145,7 +152,7 @@ CREATE OR REPLACE TABLE PARSED_DOCUMENTS (
 );
 
 -- ========================================================================
--- LOAD DATA (with corrected paths)
+-- LOAD DATA (with corrected paths and formats)
 -- ========================================================================
 
 -- Load telemetry data
@@ -155,14 +162,14 @@ FILE_FORMAT = (FORMAT_NAME = 'PAWCORE_ANALYTICS.SEMANTIC.CSV_FORMAT')
 PATTERN = '.*[.]csv'
 FORCE = TRUE;
 
--- Load manufacturing quality data  
+-- Load manufacturing quality data
 COPY INTO MANUFACTURING.QUALITY_LOGS
 FROM @PAWCORE_ANALYTICS.SEMANTIC.PAWCORE_DATA_STAGE/Manufacturing/
 FILE_FORMAT = (FORMAT_NAME = 'PAWCORE_ANALYTICS.SEMANTIC.CSV_FORMAT')
 PATTERN = '.*[.]csv'
 FORCE = TRUE;
 
--- Load HR PDFs using PARSE_DOCUMENT (CORRECTED path)
+-- Load HR PDFs using PARSE_DOCUMENT (CORRECTED)
 INSERT INTO UNSTRUCTURED.PARSED_DOCUMENTS (file_name, file_type, content_type, content, metadata)
 SELECT 
     REGEXP_SUBSTR(METADATA$FILENAME, '[^/]+$') as file_name,
@@ -186,7 +193,7 @@ FROM @PAWCORE_ANALYTICS.SEMANTIC.PAWCORE_DATA_STAGE
 (FILE_FORMAT => PAWCORE_ANALYTICS.SEMANTIC.binary_format)
 WHERE METADATA$FILENAME ILIKE 'data/HR/%.pdf';
 
--- Load markdown files from Document_Stage
+-- Load markdown files from Document_Stage (CORRECTED - specific file only)
 INSERT INTO UNSTRUCTURED.PARSED_DOCUMENTS (file_name, file_type, content_type, content, metadata)
 SELECT 
     REGEXP_SUBSTR(METADATA$FILENAME, '[^/]+$') as file_name,
@@ -200,15 +207,96 @@ SELECT
         'original_filename', METADATA$FILENAME
     ) as metadata
 FROM @PAWCORE_ANALYTICS.SEMANTIC.PAWCORE_DATA_STAGE
+(FILE_FORMAT => PAWCORE_ANALYTICS.SEMANTIC.TEXT_FORMAT)
+WHERE METADATA$FILENAME = 'data/Document_Stage/Q4_2024_PawCore_Financial_Report.md';
+
+-- Load CSV files from Document_Stage
+INSERT INTO UNSTRUCTURED.PARSED_DOCUMENTS (file_name, file_type, content_type, content, metadata)
+SELECT 
+    REGEXP_SUBSTR(METADATA$FILENAME, '[^/]+$') as file_name,
+    'CSV' as file_type,
+    'text' as content_type,
+    $1 as content,
+    OBJECT_CONSTRUCT(
+        'source', 'github',
+        'timestamp', CURRENT_TIMESTAMP()::string,
+        'file_type', 'csv',
+        'original_filename', METADATA$FILENAME
+    ) as metadata
+FROM @PAWCORE_ANALYTICS.SEMANTIC.PAWCORE_DATA_STAGE
 (FILE_FORMAT => PAWCORE_ANALYTICS.SEMANTIC.CSV_FORMAT)
-WHERE METADATA$FILENAME ILIKE '%Document_Stage%' 
-AND METADATA$FILENAME ILIKE '%.md';
+WHERE METADATA$FILENAME ILIKE 'data/Document_Stage/%.csv';
+
+-- ========================================================================
+-- CREATE SEMANTIC VIEWS FOR CORTEX ANALYST
+-- ========================================================================
+
+-- Manufacturing Quality semantic view
+USE SCHEMA SEMANTIC;
+CREATE OR REPLACE SEMANTIC VIEW MANUFACTURING_QUALITY_VIEW
+    TABLES (
+        QUALITY as MANUFACTURING.QUALITY_LOGS primary key (LOT_NUMBER) 
+            with synonyms=('quality data', 'test data') 
+            comment='Manufacturing quality control data'
+    )
+    FACTS (
+        QUALITY.MEASUREMENT_VALUE as measurement_value comment='Quality test measurement value'
+    )
+    DIMENSIONS (
+        QUALITY.LOT_NUMBER as lot_number with synonyms=('lot', 'batch', 'LOT341', 'LOT340') comment='Manufacturing lot number',
+        QUALITY.TEST_TYPE as test_type with synonyms=('test', 'check', 'MOISTURE_RESISTANCE', 'moisture resistance', 'FINAL_INSPECTION', 'CHARGING_CYCLE', 'BATTERY_CAPACITY', 'ENVIRONMENTAL_STRESS') comment='Type of quality test performed',
+        QUALITY.PASS_FAIL as pass_fail with synonyms=('result', 'outcome', 'PASS', 'FAIL') comment='Pass/fail result'
+    )
+    COMMENT='Semantic view for manufacturing quality analysis';
+
+-- Device Telemetry semantic view
+CREATE OR REPLACE SEMANTIC VIEW DEVICE_TELEMETRY_VIEW
+    TABLES (
+        TELEMETRY as DEVICE_DATA.TELEMETRY primary key (device_id) 
+            with synonyms=('device data', 'sensor data') 
+            comment='Device telemetry data including battery and environmental readings'
+    )
+    FACTS (
+        TELEMETRY.BATTERY_LEVEL as battery_level comment='Current battery level percentage',
+        TELEMETRY.HUMIDITY_READING as humidity_reading comment='Environmental humidity reading',
+        TELEMETRY.TEMPERATURE as temperature comment='Environmental temperature reading'
+    )
+    DIMENSIONS (
+        TELEMETRY.DEVICE_ID as device_id with synonyms=('device', 'unit') comment='Unique device identifier',
+        TELEMETRY.LOT_NUMBER as lot_number with synonyms=('lot', 'batch') comment='Manufacturing lot number',
+        TELEMETRY.REGION as region with synonyms=('market', 'area') comment='Device deployment region'
+    )
+    COMMENT='Semantic view for device performance analysis';
+
+-- ========================================================================
+-- CREATE CORTEX SEARCH SERVICE
+-- ========================================================================
+
+-- Create Cortex Search service for document search
+CREATE OR REPLACE CORTEX SEARCH SERVICE PAWCORE_DOCUMENT_SEARCH
+ON content
+ATTRIBUTES file_name, file_type, metadata
+WAREHOUSE = PAWCORE_DEMO_WH
+TARGET_LAG = '1 minute'
+AS (
+    SELECT 
+        content,
+        file_name,
+        file_type,
+        metadata
+    FROM UNSTRUCTURED.PARSED_DOCUMENTS
+    WHERE content IS NOT NULL 
+    AND LENGTH(content) > 10
+);
+
+-- Grant usage on search service
+GRANT USAGE ON CORTEX SEARCH SERVICE PAWCORE_DOCUMENT_SEARCH TO ROLE PUBLIC;
 
 -- ========================================================================
 -- CREATE CORRELATION VIEW
 -- ========================================================================
 
-USE SCHEMA SEMANTIC;
+-- Create correlation view for lot performance analysis
 CREATE OR REPLACE VIEW LOT_PERFORMANCE_BASE AS
 WITH lot_metrics AS (
     SELECT 
@@ -238,99 +326,29 @@ SELECT
 FROM lot_metrics;
 
 -- ========================================================================
--- CREATE SEMANTIC VIEWS FOR CORTEX ANALYST
--- ========================================================================
-
--- Manufacturing Quality Semantic View
-CREATE OR REPLACE SEMANTIC VIEW MANUFACTURING_QUALITY_VIEW
-    TABLES (
-        QUALITY as MANUFACTURING.QUALITY_LOGS primary key (LOT_NUMBER) 
-            with synonyms=('quality data', 'test data') 
-            comment='Manufacturing quality control data'
-    )
-    FACTS (
-        QUALITY.MEASUREMENT_VALUE as measurement_value comment='Quality test measurement value'
-    )
-    DIMENSIONS (
-        QUALITY.LOT_NUMBER as lot_number with synonyms=('lot', 'batch', 'LOT341', 'LOT340') comment='Manufacturing lot number',
-        QUALITY.TEST_TYPE as test_type with synonyms=('test', 'check', 'MOISTURE_RESISTANCE', 'moisture resistance', 'FINAL_INSPECTION', 'CHARGING_CYCLE', 'BATTERY_CAPACITY', 'ENVIRONMENTAL_STRESS') comment='Type of quality test performed',
-        QUALITY.PASS_FAIL as pass_fail with synonyms=('result', 'outcome', 'PASS', 'FAIL') comment='Pass/fail result'
-    )
-    COMMENT='Semantic view for manufacturing quality analysis';
-
--- Device Telemetry Semantic View
-CREATE OR REPLACE SEMANTIC VIEW DEVICE_TELEMETRY_VIEW
-    TABLES (
-        TELEMETRY as DEVICE_DATA.TELEMETRY primary key (device_id) 
-            with synonyms=('device data', 'sensor data') 
-            comment='Device telemetry data including battery and environmental readings'
-    )
-    FACTS (
-        TELEMETRY.BATTERY_LEVEL as battery_level comment='Current battery level percentage',
-        TELEMETRY.HUMIDITY_READING as humidity_reading comment='Environmental humidity reading',
-        TELEMETRY.TEMPERATURE as temperature comment='Environmental temperature reading'
-    )
-    DIMENSIONS (
-        TELEMETRY.DEVICE_ID as device_id with synonyms=('device', 'unit') comment='Unique device identifier',
-        TELEMETRY.LOT_NUMBER as lot_number with synonyms=('lot', 'batch') comment='Manufacturing lot number',
-        TELEMETRY.REGION as region with synonyms=('market', 'area') comment='Device deployment region'
-    )
-    COMMENT='Semantic view for device performance analysis';
-
--- ========================================================================
--- CREATE CORTEX SEARCH SERVICE
--- ========================================================================
-
--- Create Cortex Search Service for document search
-CREATE OR REPLACE CORTEX SEARCH SERVICE PAWCORE_DOCUMENT_SEARCH
-ON content
-ATTRIBUTES file_name, file_type, created_at
-WAREHOUSE = PAWCORE_DEMO_WH
-TARGET_LAG = '1 minute'
-AS (
-    SELECT 
-        content,
-        file_name,
-        file_type,
-        created_at
-    FROM UNSTRUCTURED.PARSED_DOCUMENTS
-    WHERE content IS NOT NULL 
-    AND LENGTH(content) > 10
-);
-
--- Grant usage on search service
-GRANT USAGE ON CORTEX SEARCH SERVICE PAWCORE_DOCUMENT_SEARCH TO ROLE PUBLIC;
-
--- ========================================================================
 -- VERIFICATION QUERIES
 -- ========================================================================
 
 -- Verify data loading
-SELECT 'Telemetry Records' as data_type, COUNT(*) as record_count FROM DEVICE_DATA.TELEMETRY
+SELECT 'TELEMETRY' as table_name, COUNT(*) as row_count FROM DEVICE_DATA.TELEMETRY
 UNION ALL
-SELECT 'Quality Records' as data_type, COUNT(*) as record_count FROM MANUFACTURING.QUALITY_LOGS
+SELECT 'QUALITY_LOGS' as table_name, COUNT(*) as row_count FROM MANUFACTURING.QUALITY_LOGS
 UNION ALL
-SELECT 'Parsed Documents' as data_type, COUNT(*) as record_count FROM UNSTRUCTURED.PARSED_DOCUMENTS;
+SELECT 'PARSED_DOCUMENTS' as table_name, COUNT(*) as row_count FROM UNSTRUCTURED.PARSED_DOCUMENTS;
 
 -- Test correlation analysis
 SELECT 
     lot_number,
-    measurement_value as moisture_resistance_test,
-    humidity_reading as avg_device_humidity,
-    battery_level as avg_device_battery,
+    measurement_value as moisture_resistance,
+    humidity_reading as avg_humidity,
+    battery_level as avg_battery,
     device_count
 FROM LOT_PERFORMANCE_BASE
 ORDER BY lot_number;
 
--- Test Cortex Search
-SELECT SNOWFLAKE.CORTEX.SEARCH_PREVIEW(
-    'PAWCORE_DOCUMENT_SEARCH',
-    'resume software engineer experience'
-) as search_results;
-
 -- ========================================================================
--- DEMO COMPLETE MESSAGE
+-- SETUP COMPLETE
 -- ========================================================================
 
 SELECT 'PawCore Intelligence Pipeline Setup Complete!' as status,
-       'You can now use Cortex Analyst and Cortex Search for intelligent queries' as next_steps;
+       'Ready for Cortex Analyst and Search queries' as next_steps;
