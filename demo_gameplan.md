@@ -14,7 +14,7 @@
 - How AI transforms unstructured data into business insights
 - Real-time problem diagnosis across multiple data sources
 - From problem identification to executive action plan in 5 comprehensive phases
-- Complete platform demonstration: AI SQL, Cortex Analyst, Cortex Search, Intelligence Agent, and AI_EXTRACT
+- Complete platform demonstration: AI SQL, Cortex Analyst, Cortex Search, and Intelligence Agent
 
 ---
 
