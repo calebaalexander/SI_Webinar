@@ -22,7 +22,7 @@
 
 *"Let's explore our data to understand the scope of the problem"*
 
-### 🛠️ **Tool: AI SQL / Snowflake Copilot** - Natural Language Data Exploration
+### 🛠️ **Tool: AI SQL** - Natural Language Data Exploration
 **What it does:** Converts business questions into SQL queries instantly
 **Like having:** A data analyst who understands your business language
 
