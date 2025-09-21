@@ -1,132 +1,155 @@
-# PawCore Demo Gameplan
+# PawCore Intelligence Demo: Solving the EMEA Revenue Mystery
 
-## Phase 1: Initial Problem Discovery
-**Context:** Q4 2024 Financial Report shows revenue of $28.1M vs forecast $32.5M (-13.5% variance)
+## Business Problem Setup
+**Context:** EMEA revenue dropped significantly in Q4 2024 - need to investigate what quality issues could explain this decline
 
-### Tool 1: AI_EXTRACT
-**Question:** "Extract key financial metrics and anomalies from Q4 2024 Financial Report"
+## Phase 1: Document Intelligence with AI_EXTRACT
+
+### Tool: AI_EXTRACT on QC Standards PDF
+**Question:** "What quality control testing gaps could explain regional failures?"
+**Query Target:** `@PAWCORE_DATA_STAGE/Document_Stage/QC_standards_SEPT24.pdf`
 **Expected Findings:**
-- Overall revenue significantly below target (-13.5% variance)
-- SmartCollar revenue: $3.4M (-48% below forecast)
-- EMEA revenue: $6.5M (-35% below forecast)
-**Key Clue:** Major underperformance specifically in EMEA SmartCollar sales
+- **Temperature Testing:** 2 comprehensive procedures (Thermal Shock, Thermal Cycling)
+- **Water Resistance:** 4 rigorous IPX standards (IPX4, IPX5, IPX6, IPX7)
+- **Humidity Testing:** **NONE** - Complete absence of humidity validation
+- **Environmental Gaps:** **NONE** - No environmental testing beyond temperature/water
 
-### Tool 2: AI_SENTIMENT
-**Question:** "Analyze customer sentiment trends for Q4 2024, focusing on product lines and regions"
+**Key Discovery:** Comprehensive testing for temperature/water but **zero humidity testing** - explains why devices pass QC but fail in EMEA's humid climate!
+
+## Phase 2: Customer Intelligence with AI_SENTIMENT
+
+### Tool: AI_SENTIMENT on Customer Reviews
+**Question:** "What are customers saying about product performance in EMEA?"
+**Query Target:** Q4 2024 EMEA customer reviews
+**Analysis Types:**
+- Multi-category sentiment: `['battery_life', 'moisture_resistance', 'build_quality', 'comfort', 'value']`
+- Issue extraction and classification
+- Timeline correlation analysis
+
 **Expected Findings:**
-- Multiple negative reviews for SmartCollar in EMEA region
-- Reviews REV24Q4_001 through REV24Q4_015 show consistent battery issues
-- Pattern of moisture-related complaints
-**Key Clue:** EMEA SmartCollar customers experiencing battery failures
+- 90% negative sentiment across Q4 2024 EMEA reviews
+- Specific issues: Battery drain in humid conditions, moisture sensor false alarms
+- Timeline: Issues escalated October → December 2024
+- Pattern: Multiple mentions of "LOT341" and humidity-related failures
 
-### Tool 3: AI_SUMMARIZE_AGG
-**Question:** "Summarize Slack communications regarding SmartCollar issues in Q4 2024"
-**Expected Findings:**
-- October: Initial battery issues reported
-- November: Lot 341 identified with moisture sensitivity
-- December: Firmware hotfix deployed
-**Key Clue:** Manufacturing Lot 341 appears to be the source of issues
+**Key Discovery:** Customer sentiment reveals devices from LOT341 failing specifically in humid conditions!
 
-## Phase 2: Deep Dive Analysis with Cortex Analyst
+## Phase 3: Root Cause Analysis with AI_COMPLETE
 
-### Investigation 1: Manufacturing Quality
-**Semantic View:** Manufacturing Quality Analysis
-**Questions:**
-1. "Compare quality test results between Lot 341 and previous lots"
-2. "Analyze moisture resistance test results across lots"
-**Expected Findings:**
-- Lot 341 passed initial tests but with lower margins
-- Moisture resistance tests show borderline results
-**Key Clue:** Quality control process gaps in environmental testing
+### Tool: AI_COMPLETE for Strategic Synthesis
+**Question:** "Connect all findings - what caused the Q4 2024 EMEA revenue drop?"
+**Context Provided:** 
+- LOT341 moisture sensors trigger at 65% humidity (not 85% spec)
+- EMEA climate: 65-75% humidity
+- Quality control gaps identified
 
-### Investigation 2: Device Performance
-**Semantic View:** Device Telemetry Analysis
-**Questions:**
-1. "Show battery performance patterns by region and lot number"
-2. "Correlate humidity readings with battery failures"
-**Expected Findings:**
-- EMEA devices show accelerated battery drain
-- Strong correlation between humidity and battery issues
-**Key Clue:** Environmental conditions in EMEA affecting device performance
+**Expected Analysis:**
+- **Root Cause:** Manufacturing defect in LOT341 moisture sensors
+- **Technical Issue:** Sensors triggering at wrong humidity threshold
+- **Business Impact:** Devices fail in normal EMEA conditions
+- **Revenue Connection:** Direct link to Q4 2024 EMEA revenue decline
 
-## Phase 3: Unstructured Data Search
+**Key Discovery:** AI provides executive summary connecting technical defects to business impact!
 
-### Tool: Cortex Search Service
-**Questions:**
-1. "Find manufacturing quality control procedures for battery assembly"
-2. "Search for moisture protection standards in device assembly"
-**Expected Findings:**
-- Current QC process lacks specific humidity exposure tests
-- Need for enhanced environmental testing procedures
-**Key Clue:** Quality control position needed with specific expertise
+## Demo Flow & Narrative
 
-## Phase 4: Resume Analysis
+### Opening Hook
+*"EMEA revenue dropped significantly in Q4 2024. Let's use Snowflake's AI functions to investigate what happened..."*
 
-### Tool: AI_EXTRACT on Resumes
-**Questions:**
-1. "Find candidates with battery quality control experience"
-2. "Identify expertise in environmental testing and moisture-sensitive electronics"
-**Expected Findings:**
-- Sarah Chen's profile matches requirements:
-  - IEEE Certified Battery Professional
-  - Experience with moisture-sensitive electronics
-  - International quality standards expertise
-**Key Clue:** Qualified candidate identified to improve QC process
+### Act 1: The Mystery (AI_EXTRACT)
+- Show QC standards PDF preview
+- Run AI_EXTRACT query
+- **Reveal:** No humidity testing despite comprehensive other protocols
+- **Cliffhanger:** "But why does this matter for EMEA specifically?"
 
-## Phase 5: Solution Implementation
+### Act 2: The Evidence (AI_SENTIMENT)
+- Analyze customer reviews with AI_SENTIMENT
+- Show negative sentiment patterns
+- **Reveal:** LOT341 devices failing in humid conditions
+- **Building Tension:** "Now we're getting somewhere..."
 
-### Tool: Snowflake Intelligence Agent
-**Purpose:** Combine all findings to:
-1. Confirm root cause of Q4 revenue anomaly
-2. Propose comprehensive solution
-3. Estimate impact and recovery timeline
+### Act 3: The Solution (AI_COMPLETE)
+- Use AI_COMPLETE for root cause analysis
+- **Reveal:** Complete story connecting quality gaps → device failures → revenue loss
+- **Resolution:** Clear business impact and next steps
 
-**Expected Conclusions:**
-1. Root Cause:
-   - Manufacturing quality control gap for moisture sensitivity
-   - EMEA climate conditions exposing the issue
-   - Lot 341 particularly affected
-   - Revenue impact: ~$4.4M shortfall ($3.1M from SmartCollar + broader EMEA impact)
+## Key Demo Messages
 
-2. Solution Components:
-   - Hire dedicated Quality Control Manager (Sarah Chen)
-   - Implement enhanced environmental testing
-   - Update manufacturing procedures
-   - Establish regional-specific quality controls
+### 1. **AI Functions Work Together**
+- Each function reveals part of the story
+- Combined analysis provides complete picture
+- Structured approach to business problem solving
 
-3. Impact Assessment:
-   - Q4 revenue impact quantified: $4.4M
-   - Customer satisfaction recovery plan
-   - Long-term quality improvement roadmap
-   - Expected recovery timeline: 2-3 quarters
+### 2. **Unstructured Data Intelligence**
+- PDF documents → Structured insights (AI_EXTRACT)
+- Customer feedback → Sentiment patterns (AI_SENTIMENT)
+- Complex analysis → Executive summary (AI_COMPLETE)
 
-## Key Demo Points to Emphasize
+### 3. **Business Impact**
+- Technical problems have real revenue consequences
+- AI helps connect dots across departments
+- Minutes vs. weeks for root cause analysis
 
-1. **Data Integration:**
-   - Structured and unstructured data analysis
-   - Multiple data sources providing confirming evidence
-   - Cross-functional investigation capabilities
+## Technical Requirements
 
-2. **Tool Progression:**
-   - AISQL for initial discovery
-   - Cortex Analyst for deep dive
-   - Search Service for unstructured data
-   - Intelligence Agent for solution development
+### Data Setup
+- [x] QC Standards PDF in Document_Stage
+- [x] Customer reviews with Q4 2024 EMEA data
+- [x] Device telemetry with LOT341 data
+- [x] Proper stage permissions and access
 
-3. **Business Impact:**
-   - Significant revenue impact identified ($4.4M)
-   - Quality improvement opportunity
-   - Customer satisfaction recovery
-   - Process enhancement needs
+### Query Preparation
+- [x] AI_EXTRACT query targeting PDF file directly
+- [x] AI_SENTIMENT with multi-category analysis
+- [x] AI_COMPLETE with business context prompt
 
-## Demo Requirements Checklist
+### Demo Assets
+- [x] PDF viewer for QC standards document
+- [x] Sample data queries for context
+- [x] Clear narrative flow between functions
 
-- [ ] Financial data loaded and accessible
-- [ ] Customer reviews indexed for sentiment analysis
-- [ ] Slack messages prepared for analysis
-- [ ] Device telemetry data populated
-- [ ] Manufacturing quality logs loaded
-- [ ] Resumes converted to PDF and indexed
-- [ ] Semantic views configured
-- [ ] Search services established
-- [ ] Agent configured with all tools
+## Success Metrics
+
+### Audience Engagement
+- Clear "aha moments" at each phase
+- Progressive revelation of the mystery
+- Strong business relevance
+
+### Technical Demonstration
+- AI functions working on real data
+- Meaningful, actionable insights
+- Seamless query execution
+
+### Business Value
+- Quantified revenue impact
+- Clear root cause identification
+- Actionable next steps for resolution
+
+## Backup Plans
+
+### If AI_EXTRACT doesn't work:
+- Show expected results and explain the gap analysis
+- Emphasize the business value of document intelligence
+
+### If AI_SENTIMENT has issues:
+- Use sample results to show sentiment patterns
+- Focus on the multi-category analysis capability
+
+### If AI_COMPLETE fails:
+- Manually synthesize the findings
+- Emphasize how AI would normally connect the dots
+
+## Demo Timing (15-20 minutes)
+
+- **Setup & Context:** 2-3 minutes
+- **AI_EXTRACT Demo:** 5-6 minutes
+- **AI_SENTIMENT Demo:** 5-6 minutes  
+- **AI_COMPLETE Demo:** 3-4 minutes
+- **Wrap-up & Q&A:** 2-3 minutes
+
+## Key Takeaways for Audience
+
+1. **Snowflake AI functions transform unstructured data into business insights**
+2. **Complex cross-functional problems can be solved in minutes, not weeks**
+3. **AI enables data-driven decision making across all business functions**
+4. **Technical issues have measurable business impact - AI helps quantify and solve them**
