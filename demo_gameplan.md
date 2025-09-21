@@ -1,4 +1,4 @@
-# Snowflake Intelligence Demo: Solving Real Business Problems with AI
+# Snowflake AI Demo: Solving Real Business Problems with AI
 
 ## 🎯 The Business Challenge
 **PawCore's Revenue Crisis:** EMEA revenue dropped significantly in Q4 2024
