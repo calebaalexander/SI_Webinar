@@ -87,22 +87,6 @@
 
 ---
 
-## 🎯 Phase 5: Talent Intelligence with AI_EXTRACT
-
-*"Who can help us solve this problem?"*
-
-### 🛠️ **Tool: AI_EXTRACT** - Resume and Document Analysis
-**What it does:** Analyzes resumes and documents to find qualified candidates
-**Like having:** An expert recruiter who can instantly assess candidate qualifications
-
-**Live Demo Questions:**
-- "Find candidates with environmental testing and battery technology experience"
-- "Which candidate has the most relevant experience for solving humidity-related battery issues?"
-
-**🔍 Expected Discovery:** Qualified candidates with moisture resistance and battery chemistry expertise
-
----
-
 ## 🌟 Why This Matters for Your Business
 
 ### ⚡ **Speed That Changes Everything**
