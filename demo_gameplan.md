@@ -6,67 +6,100 @@
 - **The Mystery:** Why is EMEA specifically affected while other regions remain stable?
 - **The Stakes:** Need rapid root cause analysis to prevent further losses
 
-**Today's Mission:** Watch how Snowflake AI functions solve this mystery in minutes, not weeks
+**Today's Mission:** Watch how the complete Snowflake Intelligence platform solves this mystery in minutes, not weeks
 
 ---
 
 ## 🚀 What You'll Learn Today
 - How AI transforms unstructured data into business insights
 - Real-time problem diagnosis across multiple data sources
-- From problem identification to executive action plan in 3 phases
-- Why traditional analysis takes weeks vs. AI analysis in minutes
+- From problem identification to executive action plan in 5 comprehensive phases
+- Complete platform demonstration: AI SQL, Cortex Analyst, Cortex Search, Intelligence Agent, and AI_EXTRACT
 
 ---
 
-## 🔍 Phase 1: Document Intelligence with AI_EXTRACT
+## 🔍 Phase 1: Initial Data Discovery with AI SQL
 
-*"What gaps exist in our quality control processes?"*
+*"Let's explore our data to understand the scope of the problem"*
 
-### 🛠️ **Tool: AI_EXTRACT** - Document Analysis
-**What it does:** Transforms technical PDFs into structured business insights
-**Like having:** A team of analysts reading hundreds of pages instantly
+### 🛠️ **Tool: AI SQL / Snowflake Copilot** - Natural Language Data Exploration
+**What it does:** Converts business questions into SQL queries instantly
+**Like having:** A data analyst who understands your business language
 
-**Live Demo:** Analyzing PawCore's QC standards documentation
-```sql
-AI_EXTRACT('@stage/QC_standards_SEPT24.pdf', 
-  ['humidity_testing', 'temperature_tests', 'environmental_gaps'])
-```
+**Live Demo Questions:**
+- "Show me the structure and sample data from our device telemetry table"
+- "What are the average battery levels by manufacturing lot and region?"
+- "Is there a relationship between humidity readings and battery performance?"
 
-**🔍 Expected Discovery:** Comprehensive temperature/water testing but zero humidity validation
-
----
-
-## 📊 Phase 2: Customer Intelligence with AI_SENTIMENT
-
-*"What are customers actually experiencing in EMEA?"*
-
-### 🛠️ **Tool: AI_SENTIMENT** - Customer Voice Analysis
-**What it does:** Analyzes thousands of customer reviews to identify specific problems
-**Like having:** A customer service team reading every review instantly
-
-**Live Demo:** Processing Q4 2024 EMEA customer feedback
-```sql
-AI_SENTIMENT(REVIEW_TEXT, ['battery_life', 'moisture_resistance', 'build_quality'])
-```
-
-**🔍 Expected Discovery:** 90% negative sentiment with consistent humidity-related failures from LOT341
+**🔍 Expected Discovery:** LOT341 in EMEA showing significantly lower battery performance
 
 ---
 
-## 🎯 Phase 3: Strategic Analysis with AI_COMPLETE
+## 📊 Phase 2: Deep Dive Analysis with Cortex Analyst
 
-*"How do all these findings connect to our business impact?"*
+*"Now let's get sophisticated analytics using business terminology"*
 
-### 🛠️ **Tool: AI_COMPLETE** - Executive Synthesis
-**What it does:** Creates comprehensive business analysis from multiple data points
-**Like having:** A senior consultant connecting all the dots
+### 🛠️ **Tool: Cortex Analyst** - Business-Friendly Analytics
+**What it does:** Performs complex analytics using natural language and semantic models
+**Like having:** A senior business analyst with deep domain expertise
 
-**Live Demo:** Root cause analysis and business recommendations
-```sql
-AI_COMPLETE('mistral-large2', 'Connect quality gaps to revenue decline...')
-```
+**Live Demo Questions:**
+- "Show battery performance patterns by region and lot number"
+- "How do manufacturing quality test results relate to field performance?"
+- "What is the customer satisfaction impact of the battery issues?"
+- "How have the battery issues evolved over time since October 2024?"
 
-**🔍 Expected Discovery:** Complete story linking LOT341 defects → EMEA climate → revenue loss
+**🔍 Expected Discovery:** Clear correlation between LOT341, EMEA humidity, and customer dissatisfaction
+
+---
+
+## 🔎 Phase 3: Document Intelligence with Cortex Search
+
+*"What do our own quality standards reveal about testing gaps?"*
+
+### 🛠️ **Tool: Cortex Search Service** - Semantic Document Search
+**What it does:** Finds insights buried in unstructured documents using AI-powered search
+**Like having:** A research team that can instantly find relevant information across all documents
+
+**Live Demo Questions:**
+- "What are the identified testing gaps in the QC standards document?"
+- "What limitations exist in current humidity and moisture testing protocols?"
+- "What concerns are mentioned about EMEA deployment and humidity?"
+
+**🔍 Expected Discovery:** Critical gaps in high-humidity testing protocols (>70% RH) - exactly what EMEA experiences
+
+---
+
+## 🤖 Phase 4: Comprehensive Investigation with Snowflake Intelligence Agent
+
+*"Let's get AI to investigate like a senior consultant"*
+
+### 🛠️ **Tool: Snowflake Intelligence Agent** - AI-Powered Business Investigation
+**What it does:** Combines all data sources to provide comprehensive business analysis and recommendations
+**Like having:** A senior consultant with access to all your data working 24/7
+
+**Live Demo Questions:**
+- "Based on all available data, what is causing the battery performance issues in LOT341 devices deployed in EMEA?"
+- "What is the overall business impact of this quality issue and which customers are most affected?"
+- "What immediate actions should we take to address this quality issue?"
+
+**🔍 Expected Discovery:** Complete root cause analysis with actionable business recommendations
+
+---
+
+## 🎯 Phase 5: Talent Intelligence with AI_EXTRACT
+
+*"Who can help us solve this problem?"*
+
+### 🛠️ **Tool: AI_EXTRACT** - Resume and Document Analysis
+**What it does:** Analyzes resumes and documents to find qualified candidates
+**Like having:** An expert recruiter who can instantly assess candidate qualifications
+
+**Live Demo Questions:**
+- "Find candidates with environmental testing and battery technology experience"
+- "Which candidate has the most relevant experience for solving humidity-related battery issues?"
+
+**🔍 Expected Discovery:** Qualified candidates with moisture resistance and battery chemistry expertise
 
 ---
 
