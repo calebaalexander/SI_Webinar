@@ -7,7 +7,7 @@
 USE ROLE accountadmin;
 
 -- ========================================================================
--- INFRASTRUCTURE SETUP (Idempotent)
+-- INFRASTRUCTURE SETUP 
 -- ========================================================================
 
 -- Create warehouse - starts XSMALL for cost efficiency
@@ -77,7 +77,7 @@ CREATE OR REPLACE FILE FORMAT binary_format
     SKIP_HEADER = 0;
 
 -- ========================================================================
--- GIT INTEGRATION WITH ERROR HANDLING
+-- GIT INTEGRATION 
 -- ========================================================================
 
 -- Clean up existing objects first to ensure clean state
@@ -583,7 +583,7 @@ GRANT SELECT, REFERENCES ON ALL SEMANTIC VIEWS IN SCHEMA PAWCORE_ANALYTICS.SEMAN
 SHOW GRANTS ON CORTEX SEARCH SERVICE PAWCORE_ANALYTICS.SEMANTIC.PAWCORE_DOCUMENT_SEARCH;
 
 -- ========================================================================
--- CREATE SEMANTIC VIEW FROM YAML (FIXED: Properly formatted YAML)
+-- CREATE SEMANTIC VIEW FROM YAML
 -- ========================================================================
 
 -- Switch back to SEMANTIC schema
@@ -1371,7 +1371,7 @@ SELECT 'IMAGE_FILES' as table_name, COUNT(*) as row_count FROM UNSTRUCTURED.IMAG
 SHOW SEMANTIC VIEWS IN SCHEMA PAWCORE_ANALYTICS.SEMANTIC;
 
 -- ========================================================================
--- CORTEX SEARCH SERVICE VERIFICATION (Replace the problematic search test)
+-- CORTEX SEARCH SERVICE VERIFICATION
 -- ========================================================================
 
 -- Verify search service is active and has data
