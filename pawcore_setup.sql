@@ -7,17 +7,25 @@
 USE ROLE accountadmin;
 
 -- ========================================================================
+-- WAREHOUSE SCALING COMMANDS (Use when needed for heavier queries)
+-- ========================================================================
+/*
+-- Scale up for heavier analytical workloads:
+-- ALTER WAREHOUSE PAWCORE_DEMO_WH SET WAREHOUSE_SIZE = 'MEDIUM';   -- 4x compute power
+-- ALTER WAREHOUSE PAWCORE_DEMO_WH SET WAREHOUSE_SIZE = 'LARGE';    -- 8x compute power
+-- ALTER WAREHOUSE PAWCORE_DEMO_WH SET WAREHOUSE_SIZE = 'XLARGE';   -- 16x compute power
+
+-- Scale back down when finished:
+-- ALTER WAREHOUSE PAWCORE_DEMO_WH SET WAREHOUSE_SIZE = 'XSMALL';   -- Return to baseline
+*/
+
+-- ========================================================================
 -- INFRASTRUCTURE SETUP (Idempotent)
 -- ========================================================================
 
--- Create warehouses
+-- Create warehouse
 CREATE OR REPLACE WAREHOUSE PAWCORE_DEMO_WH 
     WITH WAREHOUSE_SIZE = 'XSMALL'
-    AUTO_SUSPEND = 300
-    AUTO_RESUME = TRUE;
-
-CREATE OR REPLACE WAREHOUSE PAWCORE_MEDIUM_WH 
-    WITH WAREHOUSE_SIZE = 'MEDIUM'
     AUTO_SUSPEND = 300
     AUTO_RESUME = TRUE;
 
@@ -68,8 +76,6 @@ CREATE OR REPLACE FILE FORMAT binary_format
     FIELD_DELIMITER = NONE
     SKIP_HEADER = 0;
 
-    USE WAREHOUSE PAWCORE_MEDIUM_WH;
-
 -- ========================================================================
 -- GIT INTEGRATION WITH ERROR HANDLING
 -- ========================================================================
@@ -108,6 +114,8 @@ GRANT READ, WRITE ON STAGE PAWCORE_DATA_STAGE TO ROLE ACCOUNTADMIN;
 -- ========================================================================
 -- COPY DATA FROM GIT TO INTERNAL STAGE
 -- ========================================================================
+
+ALTER WAREHOUSE PAWCORE_DEMO_WH SET WAREHOUSE_SIZE = 'LARGE';
 
 -- Copy Document_Stage files
 COPY FILES
@@ -485,11 +493,9 @@ AS (
 -- ========================================================================
 -- ACCOUNTADMIN ROLE GRANTS (Full access)
 -- ========================================================================
-USE WAREHOUSE PAWCORE_DEMO_WH;
 
 -- Grant all necessary privileges to ACCOUNTADMIN
 GRANT USAGE ON WAREHOUSE PAWCORE_DEMO_WH TO ROLE ACCOUNTADMIN;
-GRANT USAGE ON WAREHOUSE PAWCORE_MEDIUM_WH TO ROLE ACCOUNTADMIN;
 GRANT USAGE ON DATABASE PAWCORE_ANALYTICS TO ROLE ACCOUNTADMIN;
 GRANT USAGE ON ALL SCHEMAS IN DATABASE PAWCORE_ANALYTICS TO ROLE ACCOUNTADMIN;
 GRANT SELECT ON ALL TABLES IN DATABASE PAWCORE_ANALYTICS TO ROLE ACCOUNTADMIN;
@@ -501,7 +507,6 @@ GRANT USAGE ON CORTEX SEARCH SERVICE PAWCORE_ANALYTICS.SEMANTIC.PAWCORE_DOCUMENT
 
 -- Grant basic warehouse and database access
 GRANT USAGE ON WAREHOUSE PAWCORE_DEMO_WH TO ROLE PUBLIC;
-GRANT USAGE ON WAREHOUSE PAWCORE_MEDIUM_WH TO ROLE PUBLIC;
 GRANT USAGE ON DATABASE PAWCORE_ANALYTICS TO ROLE PUBLIC;
 GRANT USAGE ON SCHEMA PAWCORE_ANALYTICS.SEMANTIC TO ROLE PUBLIC;
 GRANT USAGE ON SCHEMA PAWCORE_ANALYTICS.UNSTRUCTURED TO ROLE PUBLIC;
@@ -533,7 +538,6 @@ CREATE ROLE IF NOT EXISTS PAWCORE_SEARCH;
 
 -- Grant comprehensive access to PAWCORE_ANALYST role
 GRANT USAGE ON WAREHOUSE PAWCORE_DEMO_WH TO ROLE PAWCORE_ANALYST;
-GRANT USAGE ON WAREHOUSE PAWCORE_MEDIUM_WH TO ROLE PAWCORE_ANALYST;
 GRANT USAGE ON DATABASE PAWCORE_ANALYTICS TO ROLE PAWCORE_ANALYST;
 GRANT USAGE ON ALL SCHEMAS IN DATABASE PAWCORE_ANALYTICS TO ROLE PAWCORE_ANALYST;
 GRANT SELECT ON ALL TABLES IN DATABASE PAWCORE_ANALYTICS TO ROLE PAWCORE_ANALYST;
@@ -548,7 +552,6 @@ GRANT USAGE ON CORTEX SEARCH SERVICE PAWCORE_ANALYTICS.SEMANTIC.PAWCORE_DOCUMENT
 
 -- Grant search-specific access
 GRANT USAGE ON WAREHOUSE PAWCORE_DEMO_WH TO ROLE PAWCORE_SEARCH;
-GRANT USAGE ON WAREHOUSE PAWCORE_MEDIUM_WH TO ROLE PAWCORE_SEARCH;
 GRANT USAGE ON DATABASE PAWCORE_ANALYTICS TO ROLE PAWCORE_SEARCH;
 GRANT USAGE ON SCHEMA PAWCORE_ANALYTICS.SEMANTIC TO ROLE PAWCORE_SEARCH;
 GRANT USAGE ON SCHEMA PAWCORE_ANALYTICS.UNSTRUCTURED TO ROLE PAWCORE_SEARCH;
@@ -631,11 +634,11 @@ tables:
         synonyms:
           - result
           - outcome
-          - pass_fail_result
+          - test_result
           - success_fail
           - passOrFail
           - test_status
-          - pass_fail_outcome
+          - test_outcome
           - success_status
         description: Test result (PASS/FAIL)
         expr: pass_fail
@@ -676,11 +679,11 @@ tables:
     facts:
       - name: measurement_value
         synonyms:
-          - measurement_result
+          - test_result
           - measured_amount
           - value_recorded
           - recorded_measurement
-          - measurement_outcome
+          - test_outcome
           - measured_value
           - result_value
           - data_point
@@ -1427,6 +1430,7 @@ SELECT PARSE_JSON(
 -- ========================================================================
 -- PHASE 1 COMPATIBILITY VERIFICATION
 -- ========================================================================
+ALTER WAREHOUSE PAWCORE_DEMO_WH SET WAREHOUSE_SIZE = 'XSMALL';
 
 -- Test Phase 1 expected column names
 SELECT 'Phase 1 Column Compatibility Check' as test_type;
