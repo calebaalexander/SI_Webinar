@@ -10,9 +10,14 @@ USE ROLE accountadmin;
 -- INFRASTRUCTURE SETUP (Idempotent)
 -- ========================================================================
 
--- Create warehouse
+-- Create warehouses
 CREATE OR REPLACE WAREHOUSE PAWCORE_DEMO_WH 
     WITH WAREHOUSE_SIZE = 'XSMALL'
+    AUTO_SUSPEND = 300
+    AUTO_RESUME = TRUE;
+
+CREATE OR REPLACE WAREHOUSE PAWCORE_MEDIUM_WH 
+    WITH WAREHOUSE_SIZE = 'MEDIUM'
     AUTO_SUSPEND = 300
     AUTO_RESUME = TRUE;
 
@@ -62,6 +67,8 @@ CREATE OR REPLACE FILE FORMAT binary_format
     RECORD_DELIMITER = NONE
     FIELD_DELIMITER = NONE
     SKIP_HEADER = 0;
+
+    USE WAREHOUSE PAWCORE_MEDIUM_WH;
 
 -- ========================================================================
 -- GIT INTEGRATION WITH ERROR HANDLING
@@ -478,9 +485,11 @@ AS (
 -- ========================================================================
 -- ACCOUNTADMIN ROLE GRANTS (Full access)
 -- ========================================================================
+USE WAREHOUSE PAWCORE_DEMO_WH;
 
 -- Grant all necessary privileges to ACCOUNTADMIN
 GRANT USAGE ON WAREHOUSE PAWCORE_DEMO_WH TO ROLE ACCOUNTADMIN;
+GRANT USAGE ON WAREHOUSE PAWCORE_MEDIUM_WH TO ROLE ACCOUNTADMIN;
 GRANT USAGE ON DATABASE PAWCORE_ANALYTICS TO ROLE ACCOUNTADMIN;
 GRANT USAGE ON ALL SCHEMAS IN DATABASE PAWCORE_ANALYTICS TO ROLE ACCOUNTADMIN;
 GRANT SELECT ON ALL TABLES IN DATABASE PAWCORE_ANALYTICS TO ROLE ACCOUNTADMIN;
@@ -492,6 +501,7 @@ GRANT USAGE ON CORTEX SEARCH SERVICE PAWCORE_ANALYTICS.SEMANTIC.PAWCORE_DOCUMENT
 
 -- Grant basic warehouse and database access
 GRANT USAGE ON WAREHOUSE PAWCORE_DEMO_WH TO ROLE PUBLIC;
+GRANT USAGE ON WAREHOUSE PAWCORE_MEDIUM_WH TO ROLE PUBLIC;
 GRANT USAGE ON DATABASE PAWCORE_ANALYTICS TO ROLE PUBLIC;
 GRANT USAGE ON SCHEMA PAWCORE_ANALYTICS.SEMANTIC TO ROLE PUBLIC;
 GRANT USAGE ON SCHEMA PAWCORE_ANALYTICS.UNSTRUCTURED TO ROLE PUBLIC;
@@ -523,6 +533,7 @@ CREATE ROLE IF NOT EXISTS PAWCORE_SEARCH;
 
 -- Grant comprehensive access to PAWCORE_ANALYST role
 GRANT USAGE ON WAREHOUSE PAWCORE_DEMO_WH TO ROLE PAWCORE_ANALYST;
+GRANT USAGE ON WAREHOUSE PAWCORE_MEDIUM_WH TO ROLE PAWCORE_ANALYST;
 GRANT USAGE ON DATABASE PAWCORE_ANALYTICS TO ROLE PAWCORE_ANALYST;
 GRANT USAGE ON ALL SCHEMAS IN DATABASE PAWCORE_ANALYTICS TO ROLE PAWCORE_ANALYST;
 GRANT SELECT ON ALL TABLES IN DATABASE PAWCORE_ANALYTICS TO ROLE PAWCORE_ANALYST;
@@ -537,6 +548,7 @@ GRANT USAGE ON CORTEX SEARCH SERVICE PAWCORE_ANALYTICS.SEMANTIC.PAWCORE_DOCUMENT
 
 -- Grant search-specific access
 GRANT USAGE ON WAREHOUSE PAWCORE_DEMO_WH TO ROLE PAWCORE_SEARCH;
+GRANT USAGE ON WAREHOUSE PAWCORE_MEDIUM_WH TO ROLE PAWCORE_SEARCH;
 GRANT USAGE ON DATABASE PAWCORE_ANALYTICS TO ROLE PAWCORE_SEARCH;
 GRANT USAGE ON SCHEMA PAWCORE_ANALYTICS.SEMANTIC TO ROLE PAWCORE_SEARCH;
 GRANT USAGE ON SCHEMA PAWCORE_ANALYTICS.UNSTRUCTURED TO ROLE PAWCORE_SEARCH;
@@ -619,11 +631,11 @@ tables:
         synonyms:
           - result
           - outcome
-          - test_result
+          - pass_fail_result
           - success_fail
           - passOrFail
           - test_status
-          - test_outcome
+          - pass_fail_outcome
           - success_status
         description: Test result (PASS/FAIL)
         expr: pass_fail
@@ -664,11 +676,11 @@ tables:
     facts:
       - name: measurement_value
         synonyms:
-          - test_result
+          - measurement_result
           - measured_amount
           - value_recorded
           - recorded_measurement
-          - test_outcome
+          - measurement_outcome
           - measured_value
           - result_value
           - data_point
