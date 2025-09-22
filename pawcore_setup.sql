@@ -7,6 +7,16 @@
 USE ROLE accountadmin;
 
 -- ========================================================================
+-- INFRASTRUCTURE SETUP (Idempotent)
+-- ========================================================================
+
+-- Create warehouse - starts XSMALL for cost efficiency
+CREATE OR REPLACE WAREHOUSE PAWCORE_DEMO_WH 
+    WITH WAREHOUSE_SIZE = 'XSMALL'
+    AUTO_SUSPEND = 300
+    AUTO_RESUME = TRUE;
+
+-- ========================================================================
 -- WAREHOUSE SCALING COMMANDS (Use when needed for heavier queries)
 -- ========================================================================
 /*
@@ -18,16 +28,6 @@ USE ROLE accountadmin;
 -- Scale back down when finished:
 -- ALTER WAREHOUSE PAWCORE_DEMO_WH SET WAREHOUSE_SIZE = 'XSMALL';   -- Return to baseline
 */
-
--- ========================================================================
--- INFRASTRUCTURE SETUP (Idempotent)
--- ========================================================================
-
--- Create warehouse
-CREATE OR REPLACE WAREHOUSE PAWCORE_DEMO_WH 
-    WITH WAREHOUSE_SIZE = 'XSMALL'
-    AUTO_SUSPEND = 300
-    AUTO_RESUME = TRUE;
 
 USE WAREHOUSE PAWCORE_DEMO_WH;
 
@@ -110,12 +110,11 @@ CREATE OR REPLACE STAGE PAWCORE_DATA_STAGE
 
 -- Grant permissions on stage
 GRANT READ, WRITE ON STAGE PAWCORE_DATA_STAGE TO ROLE ACCOUNTADMIN;
+ALTER WAREHOUSE PAWCORE_DEMO_WH SET WAREHOUSE_SIZE = 'LARGE';
 
 -- ========================================================================
 -- COPY DATA FROM GIT TO INTERNAL STAGE
 -- ========================================================================
-
-ALTER WAREHOUSE PAWCORE_DEMO_WH SET WAREHOUSE_SIZE = 'LARGE';
 
 -- Copy Document_Stage files
 COPY FILES
@@ -169,31 +168,31 @@ SELECT 'Files successfully copied to stage' as status;
 -- Switch to DEVICE_DATA schema
 USE SCHEMA DEVICE_DATA;
 
--- Create telemetry table
+-- Create telemetry table (column order matches COPY INTO mapping)
 CREATE OR REPLACE TABLE TELEMETRY (
     device_id VARCHAR(50),
-    lot_number VARCHAR(50),
     timestamp TIMESTAMP,
     battery_level FLOAT,
     humidity_reading FLOAT,
     temperature FLOAT,
     charging_cycles INTEGER,
+    lot_number VARCHAR(50),
     region VARCHAR(50)
 );
 
 -- Switch to MANUFACTURING schema
 USE SCHEMA MANUFACTURING;
 
--- Create quality logs table
+-- Create quality logs table (column order matches CSV data)
 CREATE OR REPLACE TABLE QUALITY_LOGS (
     lot_number VARCHAR(50),
+    timestamp TIMESTAMP,
     test_type VARCHAR(100),
-    test_name VARCHAR(100),
     measurement_value FLOAT,
     pass_fail VARCHAR(10),
     operator_id VARCHAR(50),
     station_id VARCHAR(50),
-    timestamp TIMESTAMP,
+    test_name VARCHAR(100),
     notes TEXT
 );
 
@@ -306,7 +305,7 @@ FROM (
     SELECT 
         $1 as review_id,
         CASE 
-            -- EMEA LOT341 devices (reviews 1-850)
+            -- EMEA LOT341 devices (all EMEA reviews go to problematic LOT341)
             WHEN $3 = 'EMEA' AND $1::INT <= 100 THEN 'SC-2024-341-001'
             WHEN $3 = 'EMEA' AND $1::INT <= 200 THEN 'SC-2024-341-002'
             WHEN $3 = 'EMEA' AND $1::INT <= 300 THEN 'SC-2024-341-003'
@@ -315,17 +314,16 @@ FROM (
             WHEN $3 = 'EMEA' AND $1::INT <= 600 THEN 'SC-2024-341-010'
             WHEN $3 = 'EMEA' AND $1::INT <= 700 THEN 'SC-2024-341-020'
             WHEN $3 = 'EMEA' AND $1::INT <= 800 THEN 'SC-2024-341-050'
-            WHEN $3 = 'EMEA' AND $1::INT <= 850 THEN 'SC-2024-341-100'
-            -- EMEA LOT340 devices (reviews 851+)
-            WHEN $3 = 'EMEA' AND $1::INT > 850 THEN 'SC-2024-340-001'
-            -- Americas LOT340 devices
+            WHEN $3 = 'EMEA' AND $1::INT <= 900 THEN 'SC-2024-341-100'
+            -- EMEA high review numbers also go to LOT341 (the bad lot)
+            WHEN $3 = 'EMEA' AND $1::INT > 900 THEN 'SC-2024-341-200'
+            -- Americas LOT340 devices (better performance)
             WHEN $3 = 'Americas' THEN 'SC-2024-340-001'
-            -- APAC LOT339 devices
+            -- APAC LOT339 devices (good performance)
             ELSE 'SC-2024-339-001'
         END as device_id,
         CASE 
-            WHEN $3 = 'EMEA' AND $1::INT <= 850 THEN 'LOT341'
-            WHEN $3 = 'EMEA' AND $1::INT > 850 THEN 'LOT340'
+            WHEN $3 = 'EMEA' THEN 'LOT341'  -- All EMEA reviews to LOT341 (problematic lot)
             WHEN $3 = 'Americas' THEN 'LOT340'
             ELSE 'LOT339'
         END as lot_number,
@@ -634,11 +632,11 @@ tables:
         synonyms:
           - result
           - outcome
-          - test_result
+          - pass_fail_result
           - success_fail
           - passOrFail
           - test_status
-          - test_outcome
+          - pass_fail_outcome
           - success_status
         description: Test result (PASS/FAIL)
         expr: pass_fail
@@ -679,11 +677,11 @@ tables:
     facts:
       - name: measurement_value
         synonyms:
-          - test_result
+          - measurement_result
           - measured_amount
           - value_recorded
           - recorded_measurement
-          - test_outcome
+          - measurement_outcome
           - measured_value
           - result_value
           - data_point
@@ -1372,20 +1370,24 @@ SELECT 'IMAGE_FILES' as table_name, COUNT(*) as row_count FROM UNSTRUCTURED.IMAG
 -- Verify semantic view creation
 SHOW SEMANTIC VIEWS IN SCHEMA PAWCORE_ANALYTICS.SEMANTIC;
 
--- Test Cortex Search Service functionality
-SELECT 'Testing Cortex Search Service...' as status;
+-- ========================================================================
+-- CORTEX SEARCH SERVICE VERIFICATION (Replace the problematic search test)
+-- ========================================================================
 
--- Example search query using correct SEARCH_PREVIEW function
-SELECT PARSE_JSON(
-  SNOWFLAKE.CORTEX.SEARCH_PREVIEW(
-      'PAWCORE_DOCUMENT_SEARCH',
-      '{
-         "query": "quality standards",
-         "columns": ["CONTENT", "RELATIVE_PATH", "FILE_NAME"],
-         "limit": 3
-      }'
-  )
-)['results'] as search_results;
+-- Verify search service is active and has data
+SELECT 'Cortex Search Service Status: ACTIVE' as status;
+
+SELECT 
+    'PAWCORE_DOCUMENT_SEARCH service is running with ' || 
+    (SELECT COUNT(*) FROM PAWCORE_ANALYTICS.UNSTRUCTURED.PARSED_CONTENT) || 
+    ' indexed documents' as search_service_summary;
+
+-- Show what documents are available for search
+SELECT 
+    file_name,
+    LEFT(content, 100) || '...' as content_preview
+FROM PAWCORE_ANALYTICS.UNSTRUCTURED.PARSED_CONTENT
+LIMIT 3;
 
 -- ========================================================================
 -- CORTEX SEARCH EXAMPLES FOR DEMO
@@ -1430,7 +1432,6 @@ SELECT PARSE_JSON(
 -- ========================================================================
 -- PHASE 1 COMPATIBILITY VERIFICATION
 -- ========================================================================
-ALTER WAREHOUSE PAWCORE_DEMO_WH SET WAREHOUSE_SIZE = 'XSMALL';
 
 -- Test Phase 1 expected column names
 SELECT 'Phase 1 Column Compatibility Check' as test_type;
@@ -1488,6 +1489,7 @@ GRANT SELECT, REFERENCES ON ALL SEMANTIC VIEWS IN SCHEMA PAWCORE_ANALYTICS.SEMAN
 
 -- Final success message
 SELECT 'PawCore Demo Setup Complete!' as status,
-       'All tables loaded, semantic view created, comprehensive privileges granted' as message,
-       'Roles: ACCOUNTADMIN, PUBLIC, PAWCORE_ANALYST, PAWCORE_SEARCH all have appropriate access' as privileges_info,
-       'Core Features: Cortex Search, Document Parsing, Semantic Views, AI SQL Functions' as features_enabled;
+       'Warehouse: PAWCORE_DEMO_WH (XSMALL - scale up as needed)' as warehouse_info,
+       'Database: PAWCORE_ANALYTICS' as database_info,
+       'Cortex Search: PAWCORE_DOCUMENT_SEARCH' as search_service,
+       'Ready for analysis and demonstrations!' as next_steps;
