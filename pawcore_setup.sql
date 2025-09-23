@@ -110,11 +110,12 @@ CREATE OR REPLACE STAGE PAWCORE_DATA_STAGE
 
 -- Grant permissions on stage
 GRANT READ, WRITE ON STAGE PAWCORE_DATA_STAGE TO ROLE ACCOUNTADMIN;
-ALTER WAREHOUSE PAWCORE_DEMO_WH SET WAREHOUSE_SIZE = 'LARGE';
 
 -- ========================================================================
 -- COPY DATA FROM GIT TO INTERNAL STAGE
 -- ========================================================================
+
+ALTER WAREHOUSE PAWCORE_DEMO_WH SET WAREHOUSE_SIZE = 'LARGE';
 
 -- Copy Document_Stage files
 COPY FILES
