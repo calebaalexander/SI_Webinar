@@ -16,19 +16,6 @@ CREATE OR REPLACE WAREHOUSE PAWCORE_DEMO_WH
     AUTO_SUSPEND = 300
     AUTO_RESUME = TRUE;
 
--- ========================================================================
--- WAREHOUSE SCALING COMMANDS (Use when needed for heavier queries)
--- ========================================================================
-/*
--- Scale up for heavier analytical workloads:
--- ALTER WAREHOUSE PAWCORE_DEMO_WH SET WAREHOUSE_SIZE = 'MEDIUM';   -- 4x compute power
--- ALTER WAREHOUSE PAWCORE_DEMO_WH SET WAREHOUSE_SIZE = 'LARGE';    -- 8x compute power
--- ALTER WAREHOUSE PAWCORE_DEMO_WH SET WAREHOUSE_SIZE = 'XLARGE';   -- 16x compute power
-
--- Scale back down when finished:
--- ALTER WAREHOUSE PAWCORE_DEMO_WH SET WAREHOUSE_SIZE = 'XSMALL';   -- Return to baseline
-*/
-
 USE WAREHOUSE PAWCORE_DEMO_WH;
 
 -- Create database and schemas
@@ -44,11 +31,32 @@ CREATE SCHEMA IF NOT EXISTS SEMANTIC;
 
 USE SCHEMA SEMANTIC;
 
+-- Grant agent permissions
+GRANT CREATE AGENT ON SCHEMA PAWCORE_ANALYTICS.SEMANTIC TO ROLE ACCOUNTADMIN;
+
+-- ========================================================================
+-- SNOWFLAKE INTELLIGENCE DATABASE SETUP
+-- ========================================================================
+
+USE DATABASE PAWCORE_ANALYTICS;
+
+CREATE SCHEMA IF NOT EXISTS SNOWFLAKE_INTELLIGENCE;
+
+-- Grant permissions for agent creation
+GRANT USAGE ON SCHEMA PAWCORE_ANALYTICS.SNOWFLAKE_INTELLIGENCE TO ROLE ACCOUNTADMIN;
+GRANT CREATE AGENT ON SCHEMA PAWCORE_ANALYTICS.SNOWFLAKE_INTELLIGENCE TO ROLE ACCOUNTADMIN;
+
+-- ========================================================================
+-- SWITCH BACK TO PAWCORE_ANALYTICS FOR MAIN SETUP
+-- ========================================================================
+
+USE DATABASE PAWCORE_ANALYTICS;
+USE SCHEMA SEMANTIC;
+
 -- ========================================================================
 -- TRIAL ACCOUNT COMPATIBILITY CHECKS
 -- ========================================================================
 
--- Check if Cortex features are available (FIXED: Removed parentheses around variable name)
 SET cortex_available = (
     SELECT COUNT(*) > 0 
     FROM INFORMATION_SCHEMA.FUNCTIONS 
@@ -77,6 +85,66 @@ CREATE OR REPLACE FILE FORMAT binary_format
     SKIP_HEADER = 0;
 
 -- ========================================================================
+-- TABLE CREATION
+-- ========================================================================
+
+-- Switch back to PAWCORE_ANALYTICS database for table creation
+USE DATABASE PAWCORE_ANALYTICS;
+
+-- Device telemetry table
+USE SCHEMA DEVICE_DATA;
+CREATE OR REPLACE TABLE TELEMETRY (
+    device_id VARCHAR(50),
+    timestamp TIMESTAMP,
+    battery_level NUMBER(5,2),
+    humidity_reading NUMBER(5,2),
+    temperature NUMBER(5,2),
+    charging_cycles NUMBER,
+    lot_number VARCHAR(50),
+    region VARCHAR(50)
+);
+
+-- Manufacturing quality logs
+USE SCHEMA MANUFACTURING;
+CREATE OR REPLACE TABLE QUALITY_LOGS (
+    lot_number VARCHAR(50),
+    pass_fail VARCHAR(10),
+    test_type VARCHAR(100),
+    timestamp TIMESTAMP,
+    measurement_value NUMBER(10,4)
+);
+
+-- Customer reviews
+USE SCHEMA SUPPORT;
+CREATE OR REPLACE TABLE CUSTOMER_REVIEWS (
+    review_id NUMBER,
+    device_id VARCHAR(50),
+    lot_number VARCHAR(50),
+    rating NUMBER(1),
+    review_text VARCHAR(5000),
+    date DATE,
+    region VARCHAR(50)
+);
+
+-- Image files and parsed content
+USE SCHEMA UNSTRUCTURED;
+CREATE OR REPLACE TABLE IMAGE_FILES (
+    file_name VARCHAR(500),
+    file_type VARCHAR(50),
+    content_type VARCHAR(50),
+    metadata VARIANT
+);
+
+CREATE OR REPLACE TABLE PARSED_CONTENT (
+    relative_path VARCHAR(500),
+    file_name VARCHAR(500),
+    content STRING
+);
+
+-- Switch back to SEMANTIC for stage creation
+USE SCHEMA SEMANTIC;
+
+-- ========================================================================
 -- GIT INTEGRATION 
 -- ========================================================================
 
@@ -91,7 +159,7 @@ CREATE API INTEGRATION github_api
     ENABLED = TRUE
     COMMENT = 'GitHub API integration for PawCore demo';
 
--- Create Git repository
+-- Create Git repository IN SEMANTIC SCHEMA
 CREATE GIT REPOSITORY pawcore_repo
     API_INTEGRATION = github_api
     ORIGIN = 'https://github.com/calebaalexander/SI_Webinar.git'
@@ -103,7 +171,7 @@ ALTER GIT REPOSITORY pawcore_repo FETCH;
 -- Verify Git setup
 SHOW GIT REPOSITORIES LIKE 'pawcore_repo';
 
--- Create internal stage
+-- Create internal stage IN SEMANTIC SCHEMA
 CREATE OR REPLACE STAGE PAWCORE_DATA_STAGE
     DIRECTORY = (ENABLE = TRUE)
     ENCRYPTION = (TYPE = 'SNOWFLAKE_SSE');
@@ -115,14 +183,16 @@ GRANT READ, WRITE ON STAGE PAWCORE_DATA_STAGE TO ROLE ACCOUNTADMIN;
 -- COPY DATA FROM GIT TO INTERNAL STAGE
 -- ========================================================================
 
-ALTER WAREHOUSE PAWCORE_DEMO_WH SET WAREHOUSE_SIZE = 'LARGE';
+ALTER WAREHOUSE PAWCORE_DEMO_WH SET WAREHOUSE_SIZE = 'XLARGE';
+USE DATABASE PAWCORE_ANALYTICS;
+USE SCHEMA SEMANTIC;
 
--- Copy Document_Stage files
+-- Copy Document_Stage files (simple reference)
 COPY FILES
 INTO @PAWCORE_DATA_STAGE/Document_Stage/
 FROM @pawcore_repo/branches/main/data/Document_Stage/;
 
--- Copy image files individually with proper filename handling
+-- Copy image files
 COPY FILES
 INTO @PAWCORE_DATA_STAGE/images/
 FROM @pawcore_repo/branches/main/data/images/
@@ -146,11 +216,6 @@ FROM @pawcore_repo/branches/main/data/Manufacturing/;
 COPY FILES
 INTO @PAWCORE_DATA_STAGE/Telemetry/
 FROM @pawcore_repo/branches/main/data/Telemetry/;
-
--- Copy semantic model YAML
-COPY FILES
-INTO @PAWCORE_DATA_STAGE/
-FROM @pawcore_repo/branches/main/pawcore_semantic_layer.yaml;
 
 -- ========================================================================
 -- VERIFY FILE COPY SUCCESS
@@ -368,90 +433,19 @@ ON_ERROR = 'CONTINUE'
 FORCE = TRUE;
 
 -- ========================================================================
--- UNSTRUCTURED DATA - PDF PARSING FROM STAGE
+-- UNSTRUCTURED DATA - PDF PARSING FROM STAGE (OPTIMIZED - ALL FILES)
 -- ========================================================================
 
--- Switch to UNSTRUCTURED schema
+-- Create file format in UNSTRUCTURED schema first
 USE SCHEMA UNSTRUCTURED;
 
--- Create parsed content table using direct file references (based on troubleshooting)
-CREATE OR REPLACE TABLE PARSED_CONTENT AS 
-SELECT 
-    'Document_Stage/QC_standards_SEPT24.pdf' as relative_path,
-    'QC_standards_SEPT24.pdf' as file_name,
-    SNOWFLAKE.CORTEX.PARSE_DOCUMENT(
-        @PAWCORE_ANALYTICS.SEMANTIC.PAWCORE_DATA_STAGE,
-        'Document_Stage/QC_standards_SEPT24.pdf',
-        {'mode':'LAYOUT'}
-    ):content::string AS content
+CREATE OR REPLACE FILE FORMAT binary_format
+    TYPE = 'CSV'
+    RECORD_DELIMITER = NONE
+    FIELD_DELIMITER = NONE
+    SKIP_HEADER = 0;
 
-UNION ALL
-
-SELECT 
-    'Manufacturing/quality_control_documentation.md' as relative_path,
-    'quality_control_documentation.md' as file_name,
-    SNOWFLAKE.CORTEX.PARSE_DOCUMENT(
-        @PAWCORE_ANALYTICS.SEMANTIC.PAWCORE_DATA_STAGE,
-        'Manufacturing/quality_control_documentation.md',
-        {'mode':'LAYOUT'}
-    ):content::string AS content
-
-UNION ALL
-
-SELECT 
-    'HR/resume_good_experience.pdf' as relative_path,
-    'resume_good_experience.pdf' as file_name,
-    SNOWFLAKE.CORTEX.PARSE_DOCUMENT(
-        @PAWCORE_ANALYTICS.SEMANTIC.PAWCORE_DATA_STAGE,
-        'HR/resume_good_experience.pdf',
-        {'mode':'LAYOUT'}
-    ):content::string AS content
-
-UNION ALL
-
-SELECT 
-    'HR/resume_perfect_match.pdf' as relative_path,
-    'resume_perfect_match.pdf' as file_name,
-    SNOWFLAKE.CORTEX.PARSE_DOCUMENT(
-        @PAWCORE_ANALYTICS.SEMANTIC.PAWCORE_DATA_STAGE,
-        'HR/resume_perfect_match.pdf',
-        {'mode':'LAYOUT'}
-    ):content::string AS content
-
-UNION ALL
-
-SELECT 
-    'HR/resume_technical_wrong_focus.pdf' as relative_path,
-    'resume_technical_wrong_focus.pdf' as file_name,
-    SNOWFLAKE.CORTEX.PARSE_DOCUMENT(
-        @PAWCORE_ANALYTICS.SEMANTIC.PAWCORE_DATA_STAGE,
-        'HR/resume_technical_wrong_focus.pdf',
-        {'mode':'LAYOUT'}
-    ):content::string AS content
-
-UNION ALL
-
-SELECT 
-    'HR/resume_wrong_experience_level.pdf' as relative_path,
-    'resume_wrong_experience_level.pdf' as file_name,
-    SNOWFLAKE.CORTEX.PARSE_DOCUMENT(
-        @PAWCORE_ANALYTICS.SEMANTIC.PAWCORE_DATA_STAGE,
-        'HR/resume_wrong_experience_level.pdf',
-        {'mode':'LAYOUT'}
-    ):content::string AS content
-
-UNION ALL
-
-SELECT 
-    'HR/resume_wrong_industry.pdf' as relative_path,
-    'resume_wrong_industry.pdf' as file_name,
-    SNOWFLAKE.CORTEX.PARSE_DOCUMENT(
-        @PAWCORE_ANALYTICS.SEMANTIC.PAWCORE_DATA_STAGE,
-        'HR/resume_wrong_industry.pdf',
-        {'mode':'LAYOUT'}
-    ):content::string AS content;
-
--- Load image files metadata
+-- Complete INSERT statement (no placeholders)
 INSERT INTO IMAGE_FILES (file_name, file_type, content_type, metadata)
 SELECT 
     REGEXP_SUBSTR(METADATA$FILENAME, '[^/]+$') as file_name,
@@ -468,7 +462,107 @@ SELECT
         'path', 'images/' || METADATA$FILENAME
     ) as metadata
 FROM @PAWCORE_ANALYTICS.SEMANTIC.PAWCORE_DATA_STAGE/images/ 
-(FILE_FORMAT => PAWCORE_ANALYTICS.SEMANTIC.binary_format, PATTERN => '.*[.](jpg|jpeg|png)$');
+(FILE_FORMAT => binary_format, PATTERN => '.*[.](jpg|jpeg|png)$');
+
+-- ========================================================================
+-- UNSTRUCTURED DATA - PDF PARSING FROM STAGE (CORRECTED)
+-- ========================================================================
+
+-- Switch to UNSTRUCTURED schema
+USE SCHEMA UNSTRUCTURED;
+
+-- Create parsed content table with corrected parsing options
+CREATE OR REPLACE TABLE PARSED_CONTENT AS 
+-- Large PDF: Use default mode (no options for fastest processing)
+SELECT 
+    'Document_Stage/QC_standards_SEPT24.pdf' as relative_path,
+    'QC_standards_SEPT24.pdf' as file_name,
+    SNOWFLAKE.CORTEX.PARSE_DOCUMENT(
+        @PAWCORE_ANALYTICS.SEMANTIC.PAWCORE_DATA_STAGE,
+        'Document_Stage/QC_standards_SEPT24.pdf'
+        -- REMOVED invalid options - use default mode
+    ):content::string AS content
+
+UNION ALL
+
+-- Markdown: Use default mode
+SELECT 
+    'Manufacturing/quality_control_documentation.md' as relative_path,
+    'quality_control_documentation.md' as file_name,
+    SNOWFLAKE.CORTEX.PARSE_DOCUMENT(
+        @PAWCORE_ANALYTICS.SEMANTIC.PAWCORE_DATA_STAGE,
+        'Manufacturing/quality_control_documentation.md'
+    ):content::string AS content
+
+UNION ALL
+
+-- HR resumes: Use default mode
+SELECT 
+    'HR/resume_good_experience.pdf' as relative_path,
+    'resume_good_experience.pdf' as file_name,
+    SNOWFLAKE.CORTEX.PARSE_DOCUMENT(
+        @PAWCORE_ANALYTICS.SEMANTIC.PAWCORE_DATA_STAGE,
+        'HR/resume_good_experience.pdf'
+    ):content::string AS content
+
+UNION ALL
+
+SELECT 
+    'HR/resume_perfect_match.pdf' as relative_path,
+    'resume_perfect_match.pdf' as file_name,
+    SNOWFLAKE.CORTEX.PARSE_DOCUMENT(
+        @PAWCORE_ANALYTICS.SEMANTIC.PAWCORE_DATA_STAGE,
+        'HR/resume_perfect_match.pdf'
+    ):content::string AS content
+
+UNION ALL
+
+SELECT 
+    'HR/resume_technical_wrong_focus.pdf' as relative_path,
+    'resume_technical_wrong_focus.pdf' as file_name,
+    SNOWFLAKE.CORTEX.PARSE_DOCUMENT(
+        @PAWCORE_ANALYTICS.SEMANTIC.PAWCORE_DATA_STAGE,
+        'HR/resume_technical_wrong_focus.pdf'
+    ):content::string AS content
+
+UNION ALL
+
+SELECT 
+    'HR/resume_wrong_experience_level.pdf' as relative_path,
+    'resume_wrong_experience_level.pdf' as file_name,
+    SNOWFLAKE.CORTEX.PARSE_DOCUMENT(
+        @PAWCORE_ANALYTICS.SEMANTIC.PAWCORE_DATA_STAGE,
+        'HR/resume_wrong_experience_level.pdf'
+    ):content::string AS content
+
+UNION ALL
+
+SELECT 
+    'HR/resume_wrong_industry.pdf' as relative_path,
+    'resume_wrong_industry.pdf' as file_name,
+    SNOWFLAKE.CORTEX.PARSE_DOCUMENT(
+        @PAWCORE_ANALYTICS.SEMANTIC.PAWCORE_DATA_STAGE,
+        'HR/resume_wrong_industry.pdf'
+    ):content::string AS content;
+
+-- Load image files metadata 
+INSERT INTO IMAGE_FILES (file_name, file_type, content_type, metadata)
+SELECT 
+    REGEXP_SUBSTR(METADATA$FILENAME, '[^/]+$') as file_name,
+    CASE 
+        WHEN LOWER(METADATA$FILENAME) LIKE '%.jpg' OR LOWER(METADATA$FILENAME) LIKE '%.jpeg' THEN 'JPEG'
+        WHEN LOWER(METADATA$FILENAME) LIKE '%.png' THEN 'PNG'
+        ELSE 'UNKNOWN'
+    END as file_type,
+    'image' as content_type,
+    OBJECT_CONSTRUCT(
+        'source', 'github',
+        'timestamp', CURRENT_TIMESTAMP()::string,
+        'file_type', 'image',
+        'path', 'images/' || METADATA$FILENAME
+    ) as metadata
+FROM @PAWCORE_ANALYTICS.SEMANTIC.PAWCORE_DATA_STAGE/images/ 
+(FILE_FORMAT => binary_format, PATTERN => '.*[.](jpg|jpeg|png)$');
 
 -- ========================================================================
 -- CREATE CORTEX SEARCH SERVICE
@@ -1433,6 +1527,8 @@ SELECT PARSE_JSON(
 -- ========================================================================
 -- PHASE 1 COMPATIBILITY VERIFICATION
 -- ========================================================================
+
+ALTER WAREHOUSE PAWCORE_DEMO_WH SET WAREHOUSE_SIZE = 'Small';
 
 -- Test Phase 1 expected column names
 SELECT 'Phase 1 Column Compatibility Check' as test_type;
