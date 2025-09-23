@@ -89,7 +89,7 @@
 
 ## Why This Matters for Your Business
 
-### ⚡ **Speed That Changes Everything**
+### **Speed That Changes Everything**
 - **Traditional approach:** Weeks of manual analysis across departments
 - **Snowflake Intelligence:** Complete diagnosis in minutes
 - **Result:** Faster decisions, faster solutions, faster recovery
