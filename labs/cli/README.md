@@ -158,8 +158,8 @@ If Git integration isn't available in your environment:
 Ask Cortex Code to validate:
 
 ```
-Run verification queries to confirm the PawCore data loaded correctly.
-Show me row counts for all tables in PAWCORE_ANALYTICS.
+Show me row counts for all tables in PAWCORE_ANALYTICS database.
+Just the counts, no analysis needed.
 ```
 
 **What you should see:**
@@ -169,7 +169,7 @@ Show me row counts for all tables in PAWCORE_ANALYTICS.
 - SLACK_MESSAGES table: ~37 rows
 - PARSED_CONTENT table: 7 documents
 
-> **Note:** If row counts are doubled, the setup was run twice. This won't affect the lab — the data patterns are still valid.
+> **Note:** The data includes historical records from Q4 2024 (including resolved quality issues). Our focus for this lab is on **V2 launch readiness and growth** — not investigating past issues. You'll learn more about the current business context in Exercise 1.
 
 ---
 
