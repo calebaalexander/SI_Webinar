@@ -184,10 +184,14 @@ CREATE TABLE IF NOT EXISTS IMAGE_FILES (
 );
 
 -- ========================================================================
--- LOAD DATA INTO TABLES (Skip if already loaded)
+-- LOAD DATA INTO TABLES (Truncate first to ensure consistent counts)
 -- ========================================================================
--- Without FORCE=TRUE, COPY INTO skips files that have already been loaded.
--- This makes the script safe to re-run without duplicating data.
+-- TRUNCATE ensures re-running the script doesn't duplicate data.
+
+TRUNCATE TABLE IF EXISTS DEVICE_DATA.TELEMETRY;
+TRUNCATE TABLE IF EXISTS MANUFACTURING.QUALITY_LOGS;
+TRUNCATE TABLE IF EXISTS SUPPORT.CUSTOMER_REVIEWS;
+TRUNCATE TABLE IF EXISTS SUPPORT.SLACK_MESSAGES;
 
 COPY INTO DEVICE_DATA.TELEMETRY (device_id, timestamp, battery_level, humidity_reading, temperature, charging_cycles, lot_number, region)
 FROM (
