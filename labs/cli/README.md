@@ -163,11 +163,13 @@ Show me row counts for all tables in PAWCORE_ANALYTICS.
 ```
 
 **What you should see:**
-- TELEMETRY table: ~21,000 rows
+- TELEMETRY table: ~21,000 rows (may be higher if run multiple times)
 - QUALITY_LOGS table: ~800+ rows
 - CUSTOMER_REVIEWS table: ~1,500+ rows
 - SLACK_MESSAGES table: ~37 rows
 - PARSED_CONTENT table: 7 documents
+
+> **Note:** If row counts are doubled, the setup was run twice. This won't affect the lab — the data patterns are still valid.
 
 ---
 
