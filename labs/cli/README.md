@@ -163,9 +163,9 @@ Just the counts, no analysis needed.
 ```
 
 **What you should see:**
-- TELEMETRY table: ~21,000 rows (may be higher if run multiple times)
+- TELEMETRY table: ~21,000 rows
 - QUALITY_LOGS table: ~800+ rows
-- CUSTOMER_REVIEWS table: ~1,500+ rows
+- CUSTOMER_REVIEWS table: ~1,550 rows
 - SLACK_MESSAGES table: ~37 rows
 - PARSED_CONTENT table: 7 documents
 
