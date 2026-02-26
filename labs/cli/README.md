@@ -93,7 +93,7 @@ Verify available skills:
 list skills
 ```
 
-You should see `semantic-view-optimization` and `agent-optimization` in the bundled skills.
+You should see `semantic-view` and `cortex-agent` in the bundled skills (marked [REQUIRED]).
 
 ### Step 5: Load PawCore Data
 
@@ -333,7 +333,7 @@ Before proceeding, verify:
 List all available skills and briefly describe what each does.
 ```
 
-You should see skills like `semantic-view-optimization`, `agent-optimization`, `cost-management`, `data-governance`, and more.
+You should see skills like `semantic-view`, `cortex-agent`, `cost-management`, `data-governance`, and more. Skills marked [REQUIRED] are automatically invoked when tasks match their domain.
 
 #### Step 2: Understand skill structure
 
@@ -356,10 +356,10 @@ Keep it concise — bullet points preferred.
 
 Precedence: Project-local > Global > Bundled
 
-#### Step 3: Review the semantic-view-optimization skill
+#### Step 3: Review the semantic-view skill
 
 ```
-Show me the structure of the semantic-view-optimization skill.
+Show me the structure of the semantic-view skill.
 What are its main workflow steps?
 What sub-skills does it contain?
 ```
@@ -368,10 +368,10 @@ What sub-skills does it contain?
 
 ### Task 2: Understand a Bundled Skill (5 min)
 
-Let's examine the `agent-optimization` skill structure to understand how skills work.
+Let's examine the `cortex-agent` skill structure to understand how skills work.
 
 ```
-Show me the structure of the agent-optimization skill.
+Show me the structure of the cortex-agent skill.
 What workflow steps does it follow?
 What checks does it perform on a Cortex Agent?
 ```
@@ -381,7 +381,7 @@ What checks does it perform on a Cortex Agent?
 - Workflow: gather agent config → audit against best practices → identify gaps → apply fixes
 - Checks for guardrails, tool descriptions, error handling, edge cases
 
-> **Key Insight:** Skills encode repeatable workflows so you get consistent, thorough results every time. The agent-optimization skill runs 10+ checks automatically that would take 30+ minutes to do manually.
+> **Key Insight:** Skills encode repeatable workflows so you get consistent, thorough results every time. The cortex-agent skill handles agent creation, debugging, and evaluation automatically.
 
 ---
 
@@ -464,7 +464,7 @@ use it in any project.
 
 Before proceeding, verify:
 - [ ] Explored and listed available bundled skills
-- [ ] Used the `agent-optimization` skill successfully
+- [ ] Examined the `cortex-agent` skill structure
 - [ ] Created `pawcore-launch-readiness` skill with proper structure
 - [ ] Skill has clear frontmatter and workflow steps
 - [ ] Skill includes appropriate stopping points
