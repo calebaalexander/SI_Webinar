@@ -36,19 +36,13 @@ To learn about **Cortex Code in Snowsight**, the AI coding assistant built direc
 
 ### Step 2: Open Cortex Code
 
-Cortex Code in Snowsight can be accessed in two ways:
-
-**Option A: From Projects (Recommended)**
 1. Click **Projects** in the left sidebar
-2. Open an existing project or create a new one
-3. The Cortex Code AI assistant panel appears on the right side
+2. Click **+ New** to create a new project (or open an existing one)
+3. In your project, click the **+** button in the top-right tab bar
+4. Select **SQL file** to create a new SQL file
+5. The **Cortex Code AI assistant panel** appears on the right side of your workspace
 
-**Option B: From a SQL Worksheet**
-1. Open any SQL Worksheet
-2. Look for the **AI Assistant** icon (sparkle/star icon) in the worksheet toolbar
-3. Click it to open the Cortex Code side panel
-
-> **Tip:** The Cortex Code panel is context-aware — it knows which database, schema, and worksheet you're working in.
+> **Tip:** The Cortex Code panel is context-aware — it knows which project, database, and files you're working with.
 
 ### Step 3: Load PawCore Data
 
