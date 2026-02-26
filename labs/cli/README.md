@@ -366,22 +366,22 @@ What sub-skills does it contain?
 
 ---
 
-### Task 2: Use a Bundled Skill (5 min)
+### Task 2: Understand a Bundled Skill (5 min)
 
-Let's use the `agent-optimization` skill to audit and improve the Cortex Agent we created in Exercise 1.
+Let's examine the `agent-optimization` skill structure to understand how skills work.
 
 ```
-Use the agent-optimization skill to audit and improve the PawCore Launch
-Analyst we created in Exercise 1. Proceed autonomously.
-
-Check for:
-1. Are the guardrails appropriate for product launch data?
-2. Is the semantic model complete?
-3. Are there edge cases we're missing?
-4. What questions might fail?
-
-Fix any gaps identified.
+Show me the structure of the agent-optimization skill.
+What workflow steps does it follow?
+What checks does it perform on a Cortex Agent?
 ```
+
+**What you should see:** A breakdown showing:
+- Directory structure with sub-skills (audit, debug, best-practices)
+- Workflow: gather agent config → audit against best practices → identify gaps → apply fixes
+- Checks for guardrails, tool descriptions, error handling, edge cases
+
+> **Key Insight:** Skills encode repeatable workflows so you get consistent, thorough results every time. The agent-optimization skill runs 10+ checks automatically that would take 30+ minutes to do manually.
 
 ---
 
