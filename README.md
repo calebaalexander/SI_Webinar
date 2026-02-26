@@ -19,13 +19,12 @@ Materials for the **Cortex Code CLI & UI** hands-on labs (V2 launch readiness st
 2-Cortex-Code/
 ├── setup/
 │   └── CoCo_PawCore_Setup.sql    # One-click environment setup
-├── labs/
-│   ├── cli/                       # CLI lab materials
-│   │   ├── README.md
-│   │   ├── pawcore_company_brief.md
-│   │   └── pawcore_discovery_notes.md
-│   └── ui/                        # UI lab materials
-│       └── README.md
+├── CoCo CLI/                      # CoCo CLI lab materials
+│   ├── README.md
+│   ├── pawcore_company_brief.md
+│   └── pawcore_discovery_notes.md
+├── CoCo UI/                       # CoCo UI lab materials
+│   └── README.md
 └── data/                          # Sample data files
     ├── Telemetry/
     ├── Manufacturing/

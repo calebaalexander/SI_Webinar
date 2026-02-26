@@ -585,7 +585,7 @@ You've completed the **Intro to Cortex Code CLI** Hands-On Lab.
 - Refine the Semantic View based on real user questions
 - Share the `pawcore-launch-readiness` skill with colleagues
 - Explore more bundled skills: `cost-management`, `data-governance`, `dynamic-tables`
-- Try the **Intro to Cortex Code UI** lab for the visual Snowsight experience
+- Try the **Intro to CoCo UI** lab for the visual Snowsight experience
 
 ### Cleanup
 
