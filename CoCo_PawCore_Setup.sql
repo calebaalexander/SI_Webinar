@@ -184,9 +184,10 @@ CREATE TABLE IF NOT EXISTS IMAGE_FILES (
 );
 
 -- ========================================================================
--- LOAD DATA INTO TABLES (Truncate first to ensure consistent counts)
+-- LOAD DATA INTO TABLES (Truncate first to avoid duplication)
 -- ========================================================================
--- TRUNCATE ensures re-running the script doesn't duplicate data.
+-- Using TRUNCATE + FORCE=TRUE ensures fresh data load each time.
+-- This prevents duplication when re-running the script.
 
 TRUNCATE TABLE IF EXISTS DEVICE_DATA.TELEMETRY;
 TRUNCATE TABLE IF EXISTS MANUFACTURING.QUALITY_LOGS;
@@ -217,7 +218,11 @@ FILE_FORMAT = (
     ERROR_ON_COLUMN_COUNT_MISMATCH = FALSE
 )
 PATTERN = '.*[.]csv'
-ON_ERROR = 'CONTINUE';
+ON_ERROR = 'CONTINUE'
+FORCE = TRUE;
+
+-- ========================================================================
+-- UNSTRUCTURED DATA
 
 COPY INTO MANUFACTURING.QUALITY_LOGS
 FROM @PAWCORE_ANALYTICS.SEMANTIC.PAWCORE_DATA_STAGE/Manufacturing/
@@ -233,7 +238,8 @@ FILE_FORMAT = (
     TRIM_SPACE = TRUE
 )
 PATTERN = '.*[.]csv'
-ON_ERROR = 'CONTINUE';
+ON_ERROR = 'CONTINUE'
+FORCE = TRUE;
 
 COPY INTO SUPPORT.CUSTOMER_REVIEWS (review_id, device_id, lot_number, rating, review_text, date, region)
 FROM (
@@ -277,7 +283,8 @@ FILE_FORMAT = (
     TRIM_SPACE = TRUE
 )
 PATTERN = '.*customer_reviews.*[.]csv'
-ON_ERROR = 'CONTINUE';
+ON_ERROR = 'CONTINUE'
+FORCE = TRUE;
 
 COPY INTO SUPPORT.SLACK_MESSAGES (message_id, slack_channel, user_name, text, thread_id)
 FROM @PAWCORE_ANALYTICS.SEMANTIC.PAWCORE_DATA_STAGE/Document_Stage/pawcore_slack.csv
@@ -292,10 +299,8 @@ FILE_FORMAT = (
     ERROR_ON_COLUMN_COUNT_MISMATCH = FALSE
     TRIM_SPACE = TRUE
 )
-ON_ERROR = 'CONTINUE';
-
--- ========================================================================
--- UNSTRUCTURED DATA - PDF PARSING (Only if table is empty or missing)
+ON_ERROR = 'CONTINUE'
+FORCE = TRUE; - PDF PARSING (Only if table is empty or missing)
 -- ========================================================================
 
 USE SCHEMA UNSTRUCTURED;
@@ -1082,30 +1087,14 @@ verified_queries:
     verified_by: Operations Team
 module_custom_instructions:
   question_categorization: |-
-    You are a specialized data analyst for PawCore, a smart pet collar manufacturing company in a GROWTH PHASE. 
-      
-      CRITICAL CONTEXT — READ FIRST:
-      - LOT341 quality issues (Q4 2024) have been FULLY RESOLVED. Do NOT investigate or focus on LOT341 failures.
-      - The company has moved past the quality investigation phase and is now focused on GROWTH and V2 LAUNCH.
-      - When asked about quality, emphasize CURRENT STATE and FORWARD-LOOKING metrics, not past issues.
+    You are a specialized data analyst for PawCore, a smart pet collar manufacturing company in a growth phase. 
       
       BUSINESS CONTEXT:
       - PawCore manufactures SmartCollar devices with GPS, health sensors, and activity tracking
       - Key markets include Americas, EMEA, and APAC regions
-      - Quality issues from Q4 2024 are RESOLVED — leadership is now focused on growth opportunities
+      - Previous quality issues (Q4 2024) have been resolved — the company is now focused on growth
       - Preparing to launch SmartCollar V2 with extended battery, new sensors, and IP68 rating
       - Expanding into veterinary clinics, pet resorts, and new APAC markets
-      
-      ANALYSIS FOCUS (CURRENT PRIORITIES):
-      1. V2 Launch Readiness — regional performance, quality stability, customer demand signals
-      2. Customer Experience — satisfaction trends, review sentiment, engagement metrics
-      3. Regional Expansion — market comparisons, growth opportunities, launch sequencing
-      4. Manufacturing Readiness — current pass rates, quality stability, production capacity
-      
-      DO NOT FOCUS ON:
-      - LOT341 historical failures (these are resolved and not the current business priority)
-      - Root cause analysis of past quality issues (investigation phase is complete)
-      - EMEA humidity/moisture problems (corrective actions already implemented)
       
       DATA INTERPRETATION GUIDELINES:
       
@@ -1116,10 +1105,10 @@ module_custom_instructions:
          - Temperature and humidity data supports environmental performance benchmarks
       
       2. QUALITY METRICS FOCUS:
-         - Focus on RECENT lots (LOT339, LOT340) which represent current manufacturing quality
-         - Pass rates by test type show manufacturing readiness for V2
+         - Pass rates by test type show manufacturing readiness
+         - Trends over time indicate quality stability (key for V2 launch approval)
+         - Cross-lot comparisons validate consistency across production batches
          - High pass rates (>95%) signal readiness for new product introduction
-         - Quality STABILITY is the key metric — is manufacturing consistent enough for V2?
       
       3. CUSTOMER SENTIMENT PRIORITIES:
          - Average ratings by region indicate market satisfaction and V2 demand
@@ -1129,7 +1118,7 @@ module_custom_instructions:
       
       4. REGIONAL CONSIDERATIONS:
          - Americas is the largest revenue market
-         - EMEA has recovered and represents growth opportunity
+         - EMEA has recovered from previous issues and represents growth opportunity
          - APAC is an expansion target with different usage patterns
          - Regional performance data drives V2 launch sequencing decisions
       
@@ -1139,7 +1128,6 @@ module_custom_instructions:
       - Include actionable recommendations for product and business teams
       - Highlight regional strengths and areas for improvement
       - Connect data patterns to strategic business decisions
-      - Do NOT dwell on or investigate past quality issues — focus on forward-looking analysis
   sql_generation: |-
     You are a SQL generation specialist for PawCore smart collar analytics.
     
