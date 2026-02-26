@@ -158,18 +158,16 @@ If Git integration isn't available in your environment:
 Ask Cortex Code to validate:
 
 ```
-Show me row counts for all tables in PAWCORE_ANALYTICS database.
-Just the counts, no analysis needed.
+Run verification queries to confirm the PawCore data loaded correctly.
+Show me row counts for all tables in PAWCORE_ANALYTICS.
 ```
 
 **What you should see:**
 - TELEMETRY table: ~21,000 rows
 - QUALITY_LOGS table: ~800+ rows
-- CUSTOMER_REVIEWS table: ~1,550 rows
+- CUSTOMER_REVIEWS table: ~1,500+ rows
 - SLACK_MESSAGES table: ~37 rows
 - PARSED_CONTENT table: 7 documents
-
-> **Note:** The data includes historical records from Q4 2024 (including resolved quality issues). Our focus for this lab is on **V2 launch readiness and growth** — not investigating past issues. You'll learn more about the current business context in Exercise 1.
 
 ---
 
@@ -212,9 +210,9 @@ Read pawcore_discovery_notes.md and identify:
 
 ---
 
-### Task 2: Work with the Semantic View (10 min)
+### Task 2: Create a Semantic View for Cortex Analyst (10 min)
 
-A Semantic View tells Cortex Analyst how to understand your data — table relationships, business-friendly names, metrics, and sample questions. The setup script already created one called `PAWCORE_ANALYSIS`.
+A Semantic View tells Cortex Analyst how to understand your data — table relationships, business-friendly names, metrics, and sample questions.
 
 #### Step 1: Understand Semantic Views
 
@@ -224,22 +222,32 @@ for natural language queries. How is it different from a YAML semantic
 model? Keep it brief — 3-4 sentences.
 ```
 
-#### Step 2: Explore the Existing Semantic View
+#### Step 2: Generate the Semantic View
 
 ```
-Show me the semantic view PAWCORE_ANALYTICS.SEMANTIC.PAWCORE_ANALYSIS.
-What tables does it include? What metrics are defined?
+Create a Cortex Analyst semantic view for the PAWCORE_ANALYTICS database.
+Proceed autonomously.
+
+The semantic view should:
+1. Include the TELEMETRY, QUALITY_LOGS, CUSTOMER_REVIEWS, and SLACK_MESSAGES tables
+2. Define relationships between tables (lot_number, device_id)
+3. Add business-friendly descriptions and synonyms
+4. Define key metrics: avg_battery_level, pass_rate, avg_rating, device_count
+5. Frame everything around V2 launch readiness analysis
+6. Use CREATE SEMANTIC VIEW SQL syntax
+
+Execute the SQL.
 ```
 
 #### Step 3: Test with launch readiness questions
 
 ```
-Using the PAWCORE_ANALYSIS semantic view, test these questions that
+Using the semantic view we just created, test these questions that
 Rina and Derek will ask:
 
-1. "What are our top-performing regions based on customer satisfaction?"
-2. "Show me quality pass rates by test type"
-3. "How engaged are customers with their devices?"
+1. "Which region should we prioritize for V2 launch based on customer satisfaction?"
+2. "Compare regional performance — ratings, battery health, and quality pass rates"
+3. "Show me quality pass rates by test type — are we above the 95% threshold?"
 
 For each question, show me:
 - The natural language question
@@ -287,9 +295,9 @@ Execute all SQL.
 ```
 Test the agent with questions Rina and Derek would ask:
 
-1. "What regions should we prioritize for V2 based on current performance?"
-2. "What does our quality trend look like — are we ready for a new product launch?"
-3. "How engaged are customers with their devices?"
+1. "Rank our regions by V2 launch readiness — consider ratings, battery, and quality"
+2. "What does our quality trend look like — are all test types above 95%?"
+3. "Which region has the highest customer engagement and satisfaction?"
 ```
 
 ---

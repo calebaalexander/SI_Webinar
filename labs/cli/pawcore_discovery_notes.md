@@ -78,10 +78,9 @@ The team confirmed the following data is already in Snowflake (PAWCORE_ANALYTICS
 ---
 
 ## Questions the POC Should Answer
-- What are our top-performing product lines by region?
-- Which customer segments have the highest review scores?
-- What do quality pass rates look like over the last 6 months — are we trending up?
-- What regions should we prioritize for V2 based on current device performance?
-- What does our quality trend look like — are we ready for a new product launch?
-- How engaged are customers with their devices (charging cycles, active usage)?
-- What are customers saying in their reviews — what themes emerge?
+- What are our top-performing regions based on customer ratings and device performance?
+- Compare regional readiness — who leads in quality, battery health, and satisfaction?
+- What do quality pass rates look like by test type — are we above 95%?
+- Which region should we prioritize for V2 launch and why?
+- How does device engagement compare across regions?
+- What themes emerge in customer reviews by region?

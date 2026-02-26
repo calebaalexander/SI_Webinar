@@ -267,7 +267,7 @@ Use CREATE SEMANTIC VIEW SQL syntax. Execute the SQL.
 #### Step 3: Test it
 
 ```
-Using the semantic view, answer: "What are the top customer complaints by product line?"
+Using the semantic view, answer: "Which region has the highest customer satisfaction and why?"
 Show me the natural language question, the SQL generated, and the results.
 ```
 
@@ -298,9 +298,9 @@ Execute all SQL.
 ```
 Test the PawCore CX Analyst with these questions:
 
-1. "What are the top customer complaints by region?"
-2. "How does customer satisfaction correlate with device performance?"
-3. "What are the most common themes in negative reviews?"
+1. "What regions have the strongest customer satisfaction — compare ratings?"
+2. "How does device performance correlate with customer ratings by region?"
+3. "What themes appear in reviews from our top-rated regions?"
 ```
 
 ---
@@ -323,11 +323,11 @@ Now let's use the agent through Snowflake Intelligence — the conversational ch
 Try these questions in the Intelligence chat:
 
 ```
-Give me a customer experience health check across all regions
+Give me a customer experience health check — compare satisfaction across regions
 ```
 
 ```
-What should our CX team focus on this quarter?
+What should our CX team highlight as regional strengths this quarter?
 ```
 
 ```
