@@ -212,9 +212,9 @@ Read pawcore_discovery_notes.md and identify:
 
 ---
 
-### Task 2: Create a Semantic View for Cortex Analyst (10 min)
+### Task 2: Work with the Semantic View (10 min)
 
-A Semantic View tells Cortex Analyst how to understand your data — table relationships, business-friendly names, metrics, and sample questions.
+A Semantic View tells Cortex Analyst how to understand your data — table relationships, business-friendly names, metrics, and sample questions. The setup script already created one called `PAWCORE_ANALYSIS`.
 
 #### Step 1: Understand Semantic Views
 
@@ -224,32 +224,22 @@ for natural language queries. How is it different from a YAML semantic
 model? Keep it brief — 3-4 sentences.
 ```
 
-#### Step 2: Generate the Semantic View
+#### Step 2: Explore the Existing Semantic View
 
 ```
-Create a Cortex Analyst semantic view for the PAWCORE_ANALYTICS database.
-Proceed autonomously.
-
-The semantic view should:
-1. Include the TELEMETRY, QUALITY_LOGS, CUSTOMER_REVIEWS, and SLACK_MESSAGES tables
-2. Define relationships between tables (lot_number, device_id)
-3. Add business-friendly descriptions and synonyms
-4. Define key metrics: avg_battery_level, pass_rate, avg_rating, device_count
-5. Frame everything around V2 launch readiness analysis
-6. Use CREATE SEMANTIC VIEW SQL syntax
-
-Execute the SQL.
+Show me the semantic view PAWCORE_ANALYTICS.SEMANTIC.PAWCORE_ANALYSIS.
+What tables does it include? What metrics are defined?
 ```
 
 #### Step 3: Test with launch readiness questions
 
 ```
-Using the semantic view we just created, test these questions that
+Using the PAWCORE_ANALYSIS semantic view, test these questions that
 Rina and Derek will ask:
 
-1. "What are our top-performing product lines by region?"
-2. "Which customer segments have the highest review scores?"
-3. "Show me quality pass rates by test type over the last 6 months"
+1. "What are our top-performing regions based on customer satisfaction?"
+2. "Show me quality pass rates by test type"
+3. "How engaged are customers with their devices?"
 
 For each question, show me:
 - The natural language question
