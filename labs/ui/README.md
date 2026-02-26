@@ -34,11 +34,19 @@ To learn about **Cortex Code in Snowsight**, the AI coding assistant built direc
 2. Log in with your credentials
 3. Ensure you are using the **ACCOUNTADMIN** role (or a role with sufficient privileges)
 
-### Step 2: Open the Cortex Code Panel
+### Step 2: Open Cortex Code
 
-1. Look for the **Cortex Code icon** in the left sidebar of Snowsight (AI assistant icon)
-2. Click it to open the side panel
-3. You should see a chat interface where you can type natural language requests
+Cortex Code in Snowsight can be accessed in two ways:
+
+**Option A: From Projects (Recommended)**
+1. Click **Projects** in the left sidebar
+2. Open an existing project or create a new one
+3. The Cortex Code AI assistant panel appears on the right side
+
+**Option B: From a SQL Worksheet**
+1. Open any SQL Worksheet
+2. Look for the **AI Assistant** icon (sparkle/star icon) in the worksheet toolbar
+3. Click it to open the Cortex Code side panel
 
 > **Tip:** The Cortex Code panel is context-aware — it knows which database, schema, and worksheet you're working in.
 
