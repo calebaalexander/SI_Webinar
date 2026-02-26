@@ -1,5 +1,7 @@
 # Intro to Cortex Code CLI | Hands-On Lab
 
+> **DISCLAIMER:** PawCore is a fictional company. All data, names, metrics, and scenarios in this lab are simulated for demonstration purposes only. Nothing here represents real customer data, real products, or real business outcomes.
+
 ---
 
 ## Tab 1: Why Are We Here?
