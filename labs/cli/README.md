@@ -295,9 +295,8 @@ Execute all SQL.
 ```
 Test the agent with questions Rina and Derek would ask:
 
-1. "Rank our regions by V2 launch readiness — consider ratings, battery, and quality"
-2. "What does our quality trend look like — are all test types above 95%?"
-3. "Which region has the highest customer engagement and satisfaction?"
+1. "Rank our regions by V2 launch readiness — consider ratings and battery health"
+2. "Which region has the highest customer engagement and satisfaction?"
 ```
 
 ---
