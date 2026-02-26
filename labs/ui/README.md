@@ -37,10 +37,11 @@ To learn about **Cortex Code in Snowsight**, the AI coding assistant built direc
 ### Step 2: Open Cortex Code
 
 1. Click **Projects** in the left sidebar
-2. Click **+ New** to create a new project (or open an existing one)
-3. In your project, click the **+** button in the top-right tab bar
-4. Select **SQL file** to create a new SQL file
-5. The **Cortex Code AI assistant panel** appears on the right side of your workspace
+2. Select **Workspaces** from the dropdown menu
+3. Click **+ Workspace** to create a new workspace (or open an existing one)
+4. Inside your workspace, click the **+** button in the tab bar (top-right)
+5. Select **SQL file**
+6. The **Cortex Code AI assistant panel** appears on the right side
 
 > **Tip:** The Cortex Code panel is context-aware — it knows which project, database, and files you're working with.
 
