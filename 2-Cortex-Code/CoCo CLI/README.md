@@ -589,13 +589,31 @@ You've completed the **Intro to Cortex Code CLI** Hands-On Lab.
 
 ### Cleanup
 
+**Using Cortex Code CLI (recommended):**
+
+```
+Clean up all PawCore demo objects from my account. Drop the PAWCORE_ANALYTICS database, 
+the PAWCORE_DEMO_WH warehouse, the github_api integration, and any Cortex Agents or 
+Cortex Search Services we created. Use ACCOUNTADMIN role and confirm each drop statement 
+executes successfully.
+```
+
+**For partial cleanup** (keep data, remove just the lab objects):
+
+```
+Drop only the semantic view PAWCORE_ANALYTICS.SEMANTIC.V2_LAUNCH_READINESS and the 
+Cortex Agent PAWCORE_LAUNCH_ANALYST. Keep the underlying data tables and warehouse 
+for other demos.
+```
+
+**Or use SQL directly:**
+
 To remove CoCo-specific objects only (preserves shared data for other demos):
 
 ```sql
 USE ROLE ACCOUNTADMIN;
--- Drop semantic view created during this lab
-DROP SEMANTIC VIEW IF EXISTS PAWCORE_ANALYTICS.SEMANTIC.PAWCORE_ANALYSIS;
--- Drop any Cortex Agents created during this lab
+DROP SEMANTIC VIEW IF EXISTS PAWCORE_ANALYTICS.SEMANTIC.V2_LAUNCH_READINESS;
+DROP CORTEX SEARCH SERVICE IF EXISTS PAWCORE_ANALYTICS.SEMANTIC.PAWCORE_DOCUMENT_SEARCH;
 -- DROP AGENT IF EXISTS <your_agent_name>;
 ```
 
