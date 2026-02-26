@@ -49,12 +49,15 @@ To learn about **Cortex Code in Snowsight**, the AI coding assistant built direc
 
 **Choose your setup path:**
 
-#### Option A: Snowflake Git Integration (Recommended)
+---
+
+#### Option A: Pull from GitHub (Recommended)
+
+No downloads required — use Snowflake's native Git integration to pull everything directly from GitHub.
 
 1. Open a **new SQL Worksheet** in Snowsight
 2. Paste the full **CoCo_PawCore_Setup.sql** script into the worksheet
-   - You can find this script in the GitHub repo: `https://github.com/calebaalexander/HandsOnLabs`
-   - Navigate to the `setup/` or `02_Scripts/` folder and copy the contents of `CoCo_PawCore_Setup.sql`
+   - Get it from: `https://raw.githubusercontent.com/calebaalexander/HandsOnLabs/main/2-Cortex-Code/setup/CoCo_PawCore_Setup.sql`
 3. Click **"Run All"** (or select all and run)
 4. The script will:
    - Create the `PAWCORE_ANALYTICS` database with 6 schemas (using IF NOT EXISTS)
@@ -69,7 +72,21 @@ To learn about **Cortex Code in Snowsight**, the AI coding assistant built direc
 
 > **What you should see:** Each statement will show a green checkmark as it completes. The full script takes 2-3 minutes.
 
-#### Option B: Download from GitHub and Upload Manually
+---
+
+#### Option B: Pull from Local Machine
+
+If you prefer to work locally (offline, customizing data, etc.):
+
+1. Clone the repo:
+   ```bash
+   git clone https://github.com/calebaalexander/HandsOnLabs.git
+   ```
+2. Navigate to the setup folder: `HandsOnLabs/2-Cortex-Code/setup/`
+3. Copy the contents of `CoCo_PawCore_Setup.sql` into a Snowsight SQL Worksheet
+4. Click **"Run All"**
+
+**Or upload files manually via Snowsight:**
 
 1. Go to **https://github.com/calebaalexander/HandsOnLabs**
 2. Click the green **"Code"** button → **"Download ZIP"**
@@ -94,9 +111,11 @@ To learn about **Cortex Code in Snowsight**, the AI coding assistant built direc
    ```
 5. Upload the data files to the stage:
    - In Snowsight: **Data** → **Databases** → **PAWCORE_ANALYTICS** → **SEMANTIC** → **Stages** → **PAWCORE_DATA_STAGE**
-   - Click **"+ Files"** and upload files from the extracted `data/` subfolders
+   - Click **"+ Files"** and upload files from the extracted `2-Cortex-Code/data/` subfolders
    - Upload to matching subfolders: `Telemetry/`, `Manufacturing/`, `Document_Stage/`, `HR/`
 6. Run the **table creation and COPY INTO** sections of the setup SQL (skip the Git integration section marked in the script)
+
+---
 
 ### Step 4: Verify Data Loaded
 

@@ -99,23 +99,17 @@ You should see skills organized by category. Look for `semantic-view` and `corte
 
 **Choose your setup path:**
 
-#### Option A: Snowflake Git Integration (Recommended)
+---
 
-The PawCore setup SQL connects directly to the public GitHub repo and pulls all data files automatically.
+#### Option A: Pull from GitHub (Recommended)
 
-1. Ask Cortex Code to find and review the setup SQL:
-   ```
-   Read the file CoCo_PawCore_Setup.sql and summarize what it does. Then execute it
-   to set up the PawCore environment. Proceed autonomously — when prompted for
-   SQL permissions, allow all statements in PAWCORE_ANALYTICS.
-   ```
+No downloads required — Cortex Code fetches and executes the setup script directly from GitHub.
 
-   Or, if you have the setup SQL file locally, you can simply say:
-   ```
-   Run the CoCo_PawCore_Setup.sql file to set up the demo environment. Proceed autonomously.
-   ```
+```
+Fetch and execute the setup script from https://raw.githubusercontent.com/calebaalexander/HandsOnLabs/main/2-Cortex-Code/setup/CoCo_PawCore_Setup.sql to set up the PawCore environment. Proceed autonomously — when prompted for SQL permissions, allow all statements in PAWCORE_ANALYTICS.
+```
 
-2. The script will:
+The script will:
    - Create the `PAWCORE_ANALYTICS` database and schemas (using IF NOT EXISTS)
    - Create a Git integration with `https://github.com/calebaalexander/HandsOnLabs.git`
    - Copy data files from the Git repo to an internal stage
@@ -125,9 +119,34 @@ The PawCore setup SQL connects directly to the public GitHub repo and pulls all 
 
 > **Note:** This script is non-destructive. If you already have a PAWCORE_ANALYTICS database from a previous demo, all existing objects are preserved.
 
-#### Option B: Download from GitHub and Upload Manually
+**Important — Permission Prompts:**
 
-If Git integration isn't available in your environment:
+When Cortex Code asks for permission to execute SQL, you'll see options like:
+- **Yes** — Allow this specific statement
+- **Allow CREATE in any schema** — Allow all CREATE statements  
+- **Allow all non-read SQL** — Allow any statement that modifies data
+- **No** — Deny this statement
+
+**You are responsible for what you allow.** In a demo environment, "Allow all non-read SQL" speeds things up. In production, review each statement carefully.
+
+---
+
+#### Option B: Pull from Local Machine
+
+If you prefer to work locally (offline, customizing data, etc.):
+
+1. Clone the repo:
+   ```bash
+   git clone https://github.com/calebaalexander/HandsOnLabs.git
+   cd HandsOnLabs/2-Cortex-Code/setup
+   ```
+
+2. Launch Cortex Code from that directory and run:
+   ```
+   Read and execute the setup script at ./CoCo_PawCore_Setup.sql to set up the PawCore environment. Proceed autonomously — when prompted for SQL permissions, allow all statements in PAWCORE_ANALYTICS.
+   ```
+
+Alternatively, you can manually upload data files via Snowsight:
 
 1. Go to **https://github.com/calebaalexander/HandsOnLabs**
 2. Click the green **"Code"** button → **"Download ZIP"**
@@ -152,6 +171,8 @@ If Git integration isn't available in your environment:
    PUT file:///path/to/data/Document_Stage/pawcore_slack.csv @PAWCORE_DATA_STAGE/Document_Stage/;
    ```
 6. Run only the **table creation and COPY INTO** sections of the setup SQL (skip the Git integration section).
+
+---
 
 ### Step 6: Verify Data Loaded
 
