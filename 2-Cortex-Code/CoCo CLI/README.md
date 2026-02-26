@@ -252,7 +252,7 @@ Create a Cortex Analyst semantic view for the PAWCORE_ANALYTICS database.
 Proceed autonomously.
 
 The semantic view should:
-1. Include the TELEMETRY, QUALITY_LOGS, CUSTOMER_REVIEWS, and SLACK_MESSAGES tables
+1. Include the TELEMETRY, QUALITY_LOGS, and CUSTOMER_REVIEWS tables
 2. Define relationships between tables (lot_number, device_id)
 3. Add business-friendly descriptions and synonyms
 4. Define key metrics: avg_battery_level, pass_rate, avg_rating, device_count
