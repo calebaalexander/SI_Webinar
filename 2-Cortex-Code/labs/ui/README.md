@@ -53,13 +53,13 @@ To learn about **Cortex Code in Snowsight**, the AI coding assistant built direc
 
 1. Open a **new SQL Worksheet** in Snowsight
 2. Paste the full **CoCo_PawCore_Setup.sql** script into the worksheet
-   - You can find this script in the GitHub repo: `https://github.com/calebaalexander/SI_Webinar`
+   - You can find this script in the GitHub repo: `https://github.com/calebaalexander/HandsOnLabs`
    - Navigate to the `setup/` or `02_Scripts/` folder and copy the contents of `CoCo_PawCore_Setup.sql`
 3. Click **"Run All"** (or select all and run)
 4. The script will:
    - Create the `PAWCORE_ANALYTICS` database with 6 schemas (using IF NOT EXISTS)
    - Create an API integration with the public GitHub repo
-   - Create a Git Repository object pointing to `https://github.com/calebaalexander/SI_Webinar.git`
+   - Create a Git Repository object pointing to `https://github.com/calebaalexander/HandsOnLabs.git`
    - Copy all data files from the Git repo into an internal Snowflake stage
    - Create tables and load data (skips if data already exists)
    - Set up a Cortex Search Service for document search
@@ -71,7 +71,7 @@ To learn about **Cortex Code in Snowsight**, the AI coding assistant built direc
 
 #### Option B: Download from GitHub and Upload Manually
 
-1. Go to **https://github.com/calebaalexander/SI_Webinar**
+1. Go to **https://github.com/calebaalexander/HandsOnLabs**
 2. Click the green **"Code"** button → **"Download ZIP"**
 3. Extract the ZIP file on your computer
 4. In a new SQL Worksheet, run the database and stage creation SQL:

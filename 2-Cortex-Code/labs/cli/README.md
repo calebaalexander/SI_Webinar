@@ -117,7 +117,7 @@ The PawCore setup SQL connects directly to the public GitHub repo and pulls all 
 
 2. The script will:
    - Create the `PAWCORE_ANALYTICS` database and schemas (using IF NOT EXISTS)
-   - Create a Git integration with `https://github.com/calebaalexander/SI_Webinar.git`
+   - Create a Git integration with `https://github.com/calebaalexander/HandsOnLabs.git`
    - Copy data files from the Git repo to an internal stage
    - Create and load all tables (skips if data already exists)
    - Set up a Cortex Search Service
@@ -129,7 +129,7 @@ The PawCore setup SQL connects directly to the public GitHub repo and pulls all 
 
 If Git integration isn't available in your environment:
 
-1. Go to **https://github.com/calebaalexander/SI_Webinar**
+1. Go to **https://github.com/calebaalexander/HandsOnLabs**
 2. Click the green **"Code"** button → **"Download ZIP"**
 3. Extract the ZIP file locally
 4. In Snowsight, create the database and stage:
