@@ -91,32 +91,32 @@ ALTER WAREHOUSE PAWCORE_DEMO_WH SET WAREHOUSE_SIZE = 'LARGE';
 
 COPY FILES
 INTO @PAWCORE_DATA_STAGE/Document_Stage/
-FROM @pawcore_repo/branches/main/data/Document_Stage/;
+FROM @pawcore_repo/branches/main/2-Cortex-Code/data/Document_Stage/;
 
 COPY FILES
 INTO @PAWCORE_DATA_STAGE/images/
-FROM @pawcore_repo/branches/main/data/images/
+FROM @pawcore_repo/branches/main/2-Cortex-Code/data/images/
 PATTERN = 'SmartCollar.*[.]jpeg';
 
 COPY FILES
 INTO @PAWCORE_DATA_STAGE/images/
-FROM @pawcore_repo/branches/main/data/images/barkour.jpg;
+FROM @pawcore_repo/branches/main/2-Cortex-Code/data/images/barkour.jpg;
 
 COPY FILES
 INTO @PAWCORE_DATA_STAGE/HR/
-FROM @pawcore_repo/branches/main/data/HR/;
+FROM @pawcore_repo/branches/main/2-Cortex-Code/data/HR/;
 
 COPY FILES
 INTO @PAWCORE_DATA_STAGE/Manufacturing/
-FROM @pawcore_repo/branches/main/data/Manufacturing/;
+FROM @pawcore_repo/branches/main/2-Cortex-Code/data/Manufacturing/;
 
 COPY FILES
 INTO @PAWCORE_DATA_STAGE/Telemetry/
-FROM @pawcore_repo/branches/main/data/Telemetry/;
+FROM @pawcore_repo/branches/main/2-Cortex-Code/data/Telemetry/;
 
 COPY FILES
 INTO @PAWCORE_DATA_STAGE/
-FROM @pawcore_repo/branches/main/pawcore_semantic_layer.yaml;
+FROM @pawcore_repo/branches/main/2-Cortex-Code/setup/pawcore_semantic_layer.yaml;
 
 LIST @PAWCORE_DATA_STAGE;
 
