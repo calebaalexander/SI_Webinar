@@ -472,7 +472,7 @@ You've completed the **Intro to Cortex Code UI** Hands-On Lab.
 - Refine the Semantic View based on real user questions
 - Create additional Cortex Agents for other teams (Engineering, Finance)
 - Explore more AI SQL functions: EXTRACT_ANSWER, CLASSIFY_TEXT, TRANSLATE
-- Try the **Intro to Cortex Code CLI** lab for the terminal-based experience with skills and automation
+- Try the **Intro to CoCo CLI** lab for the terminal-based experience with skills and automation
 
 ### Cleanup
 
