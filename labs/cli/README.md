@@ -93,7 +93,7 @@ Verify available skills:
 list skills
 ```
 
-You should see `semantic-view` and `cortex-agent` in the bundled skills (marked [REQUIRED]).
+You should see skills organized by category. Look for `semantic-view` and `cortex-agent` under **Snowflake Features**.
 
 ### Step 5: Load PawCore Data
 
@@ -333,7 +333,10 @@ Before proceeding, verify:
 List all available skills and briefly describe what each does.
 ```
 
-You should see skills like `semantic-view`, `cortex-agent`, `cost-management`, `data-governance`, and more. Skills marked [REQUIRED] are automatically invoked when tasks match their domain.
+You should see skills organized by category:
+- **Data & Analytics:** `analyzing-data`, `data-governance`, `lineage`
+- **Snowflake Features:** `semantic-view`, `cortex-agent`, `dynamic-tables`, `cost-management`
+- **Development:** `developing-with-streamlit`, `machine-learning`, `dbt-projects-on-snowflake`
 
 #### Step 2: Understand skill structure
 
