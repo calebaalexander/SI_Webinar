@@ -162,7 +162,7 @@ CREATE API INTEGRATION github_api
 -- Create Git repository IN SEMANTIC SCHEMA
 CREATE GIT REPOSITORY pawcore_repo
     API_INTEGRATION = github_api
-    ORIGIN = 'https://github.com/calebaalexander/SI_Webinar.git'
+    ORIGIN = 'https://github.com/calebaalexander/HandsOnLabs.git'
     COMMENT = 'PawCore demo data repository';
 
 -- Fetch repository

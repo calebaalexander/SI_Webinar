@@ -36,12 +36,12 @@ Materials for the **Cortex Code CLI & UI** hands-on labs (V2 launch readiness st
 
 **Setup URL:**
 ```
-https://raw.githubusercontent.com/calebaalexander/SI_Webinar/main/2-Cortex-Code/setup/CoCo_PawCore_Setup.sql
+https://raw.githubusercontent.com/calebaalexander/HandsOnLabs/main/2-Cortex-Code/setup/CoCo_PawCore_Setup.sql
 ```
 
 In Cortex Code CLI:
 ```
-Fetch and execute the setup script from https://raw.githubusercontent.com/calebaalexander/SI_Webinar/main/2-Cortex-Code/setup/CoCo_PawCore_Setup.sql
+Fetch and execute the setup script from https://raw.githubusercontent.com/calebaalexander/HandsOnLabs/main/2-Cortex-Code/setup/CoCo_PawCore_Setup.sql
 ```
 
 ## Data Story Differences

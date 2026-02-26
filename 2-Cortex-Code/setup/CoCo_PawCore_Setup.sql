@@ -67,7 +67,7 @@ CREATE API INTEGRATION IF NOT EXISTS github_api
 
 CREATE GIT REPOSITORY IF NOT EXISTS pawcore_repo
     API_INTEGRATION = github_api
-    ORIGIN = 'https://github.com/calebaalexander/SI_Webinar.git'
+    ORIGIN = 'https://github.com/calebaalexander/HandsOnLabs.git'
     COMMENT = 'PawCore demo data repository';
 
 ALTER GIT REPOSITORY pawcore_repo FETCH;
