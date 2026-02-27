@@ -135,7 +135,9 @@ Show me row counts for all tables in PAWCORE_ANALYTICS
 | MANUFACTURING.QUALITY_LOGS | ~800+ |
 | SUPPORT.CUSTOMER_REVIEWS | ~1,500+ |
 | SUPPORT.SLACK_MESSAGES | ~37 |
-| UNSTRUCTURED.PARSED_CONTENT | 7 |
+| SUPPORT.SUPPORT_TICKETS | ~240 (V1 issues) |
+| SUPPORT.V2_BETA_FEEDBACK | ~120 (V2 beta ratings) |
+| UNSTRUCTURED.PARSED_CONTENT | 1+ |
 
 ---
 
@@ -274,7 +276,8 @@ Include these tables:
 1. DEVICE_DATA.TELEMETRY — device sensor readings
 2. MANUFACTURING.QUALITY_LOGS — QC test results
 3. SUPPORT.CUSTOMER_REVIEWS — customer ratings and feedback
-4. SUPPORT.SLACK_MESSAGES — internal team communications
+4. SUPPORT.SUPPORT_TICKETS — V1 customer support issues (identifies problems to fix before V2)
+5. SUPPORT.V2_BETA_FEEDBACK — beta tester feedback on V2 features (shows V2 readiness)
 
 Define relationships:
 - TELEMETRY ↔ QUALITY_LOGS on lot_number
@@ -284,6 +287,8 @@ Add metrics for customer experience analysis:
 - avg_rating, satisfaction_score, avg_sentiment
 - pass_rate, failure_count
 - avg_battery_level, device_count
+- avg_beta_rating (from V2_BETA_FEEDBACK)
+- ticket_count, critical_ticket_count (from SUPPORT_TICKETS)
 
 Use CREATE SEMANTIC VIEW SQL syntax. Execute the SQL.
 ```

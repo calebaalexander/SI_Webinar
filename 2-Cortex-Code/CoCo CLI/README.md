@@ -190,7 +190,9 @@ Show me row counts for all tables in PAWCORE_ANALYTICS.
 - QUALITY_LOGS table: ~800+ rows
 - CUSTOMER_REVIEWS table: ~1,500+ rows
 - SLACK_MESSAGES table: ~37 rows
-- PARSED_CONTENT table: 7 documents
+- SUPPORT_TICKETS table: ~240 rows (V1 support issues by region)
+- V2_BETA_FEEDBACK table: ~120 rows (V2 beta tester feedback)
+- PARSED_CONTENT table: 1+ documents
 
 ---
 
@@ -252,10 +254,15 @@ Create a Cortex Analyst semantic view for the PAWCORE_ANALYTICS database.
 Proceed autonomously.
 
 The semantic view should:
-1. Include the TELEMETRY, QUALITY_LOGS, and CUSTOMER_REVIEWS tables
-2. Define relationships between tables (lot_number, device_id)
+1. Include these tables:
+   - DEVICE_DATA.TELEMETRY (device sensor data)
+   - MANUFACTURING.QUALITY_LOGS (QC test results)
+   - SUPPORT.CUSTOMER_REVIEWS (customer ratings)
+   - SUPPORT.SUPPORT_TICKETS (V1 support issues - helps identify problems to fix before V2)
+   - SUPPORT.V2_BETA_FEEDBACK (beta tester feedback - shows V2 readiness by region)
+2. Define relationships between tables (lot_number, device_id, region)
 3. Add business-friendly descriptions and synonyms
-4. Define key metrics: avg_battery_level, pass_rate (use UPPER(pass_fail) = 'PASS'), avg_rating, device_count
+4. Define key metrics: avg_battery_level, pass_rate (use UPPER(pass_fail) = 'PASS'), avg_rating, avg_beta_rating, ticket_count, critical_ticket_count
 5. Frame everything around V2 launch readiness analysis
 6. Use CREATE SEMANTIC VIEW SQL syntax
 
