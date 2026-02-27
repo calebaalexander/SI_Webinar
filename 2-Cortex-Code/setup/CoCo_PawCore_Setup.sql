@@ -300,8 +300,14 @@ FILE_FORMAT = (
     TRIM_SPACE = TRUE
 )
 ON_ERROR = 'CONTINUE'
-FORCE = TRUE; - PDF PARSING (Only if table is empty or missing)
+FORCE = TRUE;
+
 -- ========================================================================
+-- UNSTRUCTURED DATA - PDF PARSING (Optional - may fail in some accounts)
+-- ========================================================================
+-- Note: PARSE_DOCUMENT requires Cortex features enabled. If this section
+-- fails, the demo will still work - Cortex Search just won't have PDF content.
+-- The structured data (Telemetry, Quality Logs, Reviews) is the core demo.
 
 USE SCHEMA UNSTRUCTURED;
 
@@ -311,84 +317,37 @@ CREATE TABLE IF NOT EXISTS PARSED_CONTENT (
     content TEXT
 );
 
+-- Pre-populate with markdown content that doesn't require PARSE_DOCUMENT
+-- This ensures Cortex Search has content even if PDF parsing fails
 INSERT INTO PARSED_CONTENT (relative_path, file_name, content)
 SELECT relative_path, file_name, content
 FROM (
     SELECT 
-        'Document_Stage/QC_standards_SEPT24.pdf' as relative_path,
-        'QC_standards_SEPT24.pdf' as file_name,
-        SNOWFLAKE.CORTEX.PARSE_DOCUMENT(
-            @PAWCORE_ANALYTICS.SEMANTIC.PAWCORE_DATA_STAGE,
-            'Document_Stage/QC_standards_SEPT24.pdf',
-            {'mode':'LAYOUT'}
-        ):content::string AS content
+        'Document_Stage/QC_standards_summary.md' as relative_path,
+        'QC_standards_summary.md' as file_name,
+        'PawCore Quality Control Standards (September 2024)
 
-    UNION ALL
+TESTING PROTOCOLS:
+- Temperature Testing: Required for all units, range -10°C to 50°C
+- Humidity Testing: Performed when equipment available, target 85% threshold
+- Battery Cycling: 500 charge cycles minimum before certification
+- Water Resistance: IP67 rating verification required
 
-    SELECT 
-        'Manufacturing/quality_control_documentation.md' as relative_path,
-        'quality_control_documentation.md' as file_name,
-        SNOWFLAKE.CORTEX.PARSE_DOCUMENT(
-            @PAWCORE_ANALYTICS.SEMANTIC.PAWCORE_DATA_STAGE,
-            'Manufacturing/quality_control_documentation.md',
-            {'mode':'LAYOUT'}
-        ):content::string AS content
+KEY THRESHOLDS:
+- Battery health: >80% capacity after 500 cycles
+- Moisture sensor trigger: 85% humidity (specification)
+- Pass rate target: 95% across all test types
 
-    UNION ALL
+KNOWN ISSUES (Q4 2024):
+- LOT341 moisture sensors triggering at 65% instead of 85%
+- Issue isolated to EMEA-bound units
+- Corrective action: Recalibration of sensor batch
 
-    SELECT 
-        'HR/resume_good_experience.pdf' as relative_path,
-        'resume_good_experience.pdf' as file_name,
-        SNOWFLAKE.CORTEX.PARSE_DOCUMENT(
-            @PAWCORE_ANALYTICS.SEMANTIC.PAWCORE_DATA_STAGE,
-            'HR/resume_good_experience.pdf',
-            {'mode':'LAYOUT'}
-        ):content::string AS content
-
-    UNION ALL
-
-    SELECT 
-        'HR/resume_perfect_match.pdf' as relative_path,
-        'resume_perfect_match.pdf' as file_name,
-        SNOWFLAKE.CORTEX.PARSE_DOCUMENT(
-            @PAWCORE_ANALYTICS.SEMANTIC.PAWCORE_DATA_STAGE,
-            'HR/resume_perfect_match.pdf',
-            {'mode':'LAYOUT'}
-        ):content::string AS content
-
-    UNION ALL
-
-    SELECT 
-        'HR/resume_technical_wrong_focus.pdf' as relative_path,
-        'resume_technical_wrong_focus.pdf' as file_name,
-        SNOWFLAKE.CORTEX.PARSE_DOCUMENT(
-            @PAWCORE_ANALYTICS.SEMANTIC.PAWCORE_DATA_STAGE,
-            'HR/resume_technical_wrong_focus.pdf',
-            {'mode':'LAYOUT'}
-        ):content::string AS content
-
-    UNION ALL
-
-    SELECT 
-        'HR/resume_wrong_experience_level.pdf' as relative_path,
-        'resume_wrong_experience_level.pdf' as file_name,
-        SNOWFLAKE.CORTEX.PARSE_DOCUMENT(
-            @PAWCORE_ANALYTICS.SEMANTIC.PAWCORE_DATA_STAGE,
-            'HR/resume_wrong_experience_level.pdf',
-            {'mode':'LAYOUT'}
-        ):content::string AS content
-
-    UNION ALL
-
-    SELECT 
-        'HR/resume_wrong_industry.pdf' as relative_path,
-        'resume_wrong_industry.pdf' as file_name,
-        SNOWFLAKE.CORTEX.PARSE_DOCUMENT(
-            @PAWCORE_ANALYTICS.SEMANTIC.PAWCORE_DATA_STAGE,
-            'HR/resume_wrong_industry.pdf',
-            {'mode':'LAYOUT'}
-        ):content::string AS content
-) AS new_docs
+IMPROVEMENTS IMPLEMENTED:
+- Enhanced humidity testing now mandatory (not optional)
+- Increased QC sampling rate for moisture sensors
+- Added regional climate simulation testing' as content
+) AS seed_content
 WHERE NOT EXISTS (SELECT 1 FROM PARSED_CONTENT LIMIT 1);
 
 INSERT INTO IMAGE_FILES (file_name, file_type, content_type, metadata)

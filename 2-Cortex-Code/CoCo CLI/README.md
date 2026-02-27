@@ -255,7 +255,7 @@ The semantic view should:
 1. Include the TELEMETRY, QUALITY_LOGS, and CUSTOMER_REVIEWS tables
 2. Define relationships between tables (lot_number, device_id)
 3. Add business-friendly descriptions and synonyms
-4. Define key metrics: avg_battery_level, pass_rate, avg_rating, device_count
+4. Define key metrics: avg_battery_level, pass_rate (use UPPER(pass_fail) = 'PASS'), avg_rating, device_count
 5. Frame everything around V2 launch readiness analysis
 6. Use CREATE SEMANTIC VIEW SQL syntax
 
@@ -286,40 +286,25 @@ For each question, show me:
 
 ```
 Create a Cortex Agent for PawCore's V2 launch readiness analysis.
-Proceed autonomously and execute all SQL including grants.
 
-The agent should:
-1. Be named "PawCore Launch Analyst"
-2. Use the semantic view we created
-3. Include the Cortex Search Service (PAWCORE_DOCUMENT_SEARCH) for document search
-4. Have instructions appropriate for product and executive stakeholders
-5. Include sample questions based on the V2 launch scenario
-6. Grant USAGE to appropriate roles
-7. Use automatic model selection
+Agent name: PAWCORE_LAUNCH_ANALYST
+Semantic view: PAWCORE_ANALYTICS.SEMANTIC.V2_LAUNCH_READINESS
+Cortex Search: PAWCORE_ANALYTICS.SEMANTIC.PAWCORE_DOCUMENT_SEARCH
 
-Execute all SQL.
+Use this exact YAML structure in the specification:
+- tools section with cortex_analyst_text_to_sql and cortex_search tool_specs
+- tool_resources section mapping each tool to its resource
+- instructions.response for stakeholder-friendly responses
+- Do NOT include sample_questions at the top level
+
+Grant USAGE to PUBLIC after creation.
+Execute all SQL now.
 ```
 
-#### Step 2: Enable in Snowflake Intelligence
+#### Step 2: Test the agent
 
 ```
-Make the PawCore Launch Analyst agent available in Snowflake Intelligence.
-Proceed autonomously — assume yes to all grants.
-
-1. Grant USAGE on the agent to PUBLIC
-2. Add the agent to Snowflake Intelligence
-3. Verify it was added successfully
-
-Execute all SQL.
-```
-
-#### Step 3: Test the agent
-
-```
-Test the agent with questions Rina and Derek would ask:
-
-1. "Rank our regions by V2 launch readiness — consider ratings and battery health"
-2. "Which region has the highest customer engagement and satisfaction?"
+Ask the PAWCORE_LAUNCH_ANALYST agent: "Which region should we prioritize for V2 launch?"
 ```
 
 ---
