@@ -115,8 +115,8 @@ INTO @PAWCORE_DATA_STAGE/Telemetry/
 FROM @pawcore_repo/branches/main/2-Cortex-Code/data/Telemetry/;
 
 COPY FILES
-INTO @PAWCORE_DATA_STAGE/
-FROM @pawcore_repo/branches/main/2-Cortex-Code/setup/pawcore_semantic_layer.yaml;
+INTO @PAWCORE_DATA_STAGE/Support/
+FROM @pawcore_repo/branches/main/2-Cortex-Code/data/Support/;
 
 LIST @PAWCORE_DATA_STAGE;
 
@@ -173,6 +173,31 @@ CREATE TABLE IF NOT EXISTS SLACK_MESSAGES (
     thread_id VARCHAR(50)
 );
 
+CREATE TABLE IF NOT EXISTS SUPPORT_TICKETS (
+    ticket_id VARCHAR(50),
+    device_id VARCHAR(50),
+    lot_number VARCHAR(50),
+    region VARCHAR(50),
+    category VARCHAR(50),
+    priority VARCHAR(20),
+    status VARCHAR(20),
+    created_date DATE,
+    resolved_date DATE,
+    description TEXT
+);
+
+CREATE TABLE IF NOT EXISTS V2_BETA_FEEDBACK (
+    feedback_id VARCHAR(50),
+    region VARCHAR(50),
+    feature_tested VARCHAR(100),
+    rating INTEGER,
+    feedback_text TEXT,
+    tester_type VARCHAR(20),
+    submission_date DATE,
+    device_version VARCHAR(50),
+    lot_number VARCHAR(50)
+);
+
 USE SCHEMA UNSTRUCTURED;
 
 CREATE TABLE IF NOT EXISTS IMAGE_FILES (
@@ -193,6 +218,8 @@ TRUNCATE TABLE IF EXISTS DEVICE_DATA.TELEMETRY;
 TRUNCATE TABLE IF EXISTS MANUFACTURING.QUALITY_LOGS;
 TRUNCATE TABLE IF EXISTS SUPPORT.CUSTOMER_REVIEWS;
 TRUNCATE TABLE IF EXISTS SUPPORT.SLACK_MESSAGES;
+TRUNCATE TABLE IF EXISTS SUPPORT.SUPPORT_TICKETS;
+TRUNCATE TABLE IF EXISTS SUPPORT.V2_BETA_FEEDBACK;
 
 COPY INTO DEVICE_DATA.TELEMETRY (device_id, timestamp, battery_level, humidity_reading, temperature, charging_cycles, lot_number, region)
 FROM (
@@ -296,6 +323,40 @@ FILE_FORMAT = (
     NULL_IF = ('NULL', 'null')
     EMPTY_FIELD_AS_NULL = TRUE
     TIMESTAMP_FORMAT = 'YYYY-MM-DD HH24:MI:SS'
+    ERROR_ON_COLUMN_COUNT_MISMATCH = FALSE
+    TRIM_SPACE = TRUE
+)
+ON_ERROR = 'CONTINUE'
+FORCE = TRUE;
+
+-- Load Support Tickets (NEW - V2 launch readiness data)
+COPY INTO SUPPORT.SUPPORT_TICKETS
+FROM @PAWCORE_ANALYTICS.SEMANTIC.PAWCORE_DATA_STAGE/Support/support_tickets.csv
+FILE_FORMAT = (
+    TYPE = 'CSV'
+    FIELD_DELIMITER = ','
+    SKIP_HEADER = 1
+    FIELD_OPTIONALLY_ENCLOSED_BY = '"'
+    NULL_IF = ('NULL', 'null')
+    EMPTY_FIELD_AS_NULL = TRUE
+    DATE_FORMAT = 'YYYY-MM-DD'
+    ERROR_ON_COLUMN_COUNT_MISMATCH = FALSE
+    TRIM_SPACE = TRUE
+)
+ON_ERROR = 'CONTINUE'
+FORCE = TRUE;
+
+-- Load V2 Beta Feedback (NEW - V2 launch readiness data)
+COPY INTO SUPPORT.V2_BETA_FEEDBACK
+FROM @PAWCORE_ANALYTICS.SEMANTIC.PAWCORE_DATA_STAGE/Support/v2_beta_feedback.csv
+FILE_FORMAT = (
+    TYPE = 'CSV'
+    FIELD_DELIMITER = ','
+    SKIP_HEADER = 1
+    FIELD_OPTIONALLY_ENCLOSED_BY = '"'
+    NULL_IF = ('NULL', 'null')
+    EMPTY_FIELD_AS_NULL = TRUE
+    DATE_FORMAT = 'YYYY-MM-DD'
     ERROR_ON_COLUMN_COUNT_MISMATCH = FALSE
     TRIM_SPACE = TRUE
 )
@@ -452,6 +513,10 @@ UNION ALL
 SELECT 'CUSTOMER_REVIEWS' as table_name, COUNT(*) as row_count FROM SUPPORT.CUSTOMER_REVIEWS
 UNION ALL
 SELECT 'SLACK_MESSAGES' as table_name, COUNT(*) as row_count FROM SUPPORT.SLACK_MESSAGES
+UNION ALL
+SELECT 'SUPPORT_TICKETS' as table_name, COUNT(*) as row_count FROM SUPPORT.SUPPORT_TICKETS
+UNION ALL
+SELECT 'V2_BETA_FEEDBACK' as table_name, COUNT(*) as row_count FROM SUPPORT.V2_BETA_FEEDBACK
 UNION ALL
 SELECT 'PARSED_CONTENT' as table_name, COUNT(*) as row_count FROM UNSTRUCTURED.PARSED_CONTENT
 UNION ALL
