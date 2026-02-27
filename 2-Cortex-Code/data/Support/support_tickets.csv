@@ -1,0 +1,241 @@
+ticket_id,device_id,lot_number,region,category,priority,status,created_date,resolved_date,description
+TKT-001,SC-2024-341-001,LOT341,EMEA,battery,high,resolved,2024-10-05,2024-10-08,Battery draining within 4 hours of full charge
+TKT-002,SC-2024-341-002,LOT341,EMEA,battery,high,resolved,2024-10-06,2024-10-10,Device shutting down unexpectedly at 30% battery
+TKT-003,SC-2024-341-003,LOT341,EMEA,connectivity,medium,resolved,2024-10-07,2024-10-09,Bluetooth disconnecting frequently from app
+TKT-004,SC-2024-341-004,LOT341,EMEA,battery,critical,open,2024-10-08,,Device not charging at all
+TKT-005,SC-2024-341-005,LOT341,EMEA,durability,medium,resolved,2024-10-09,2024-10-12,Collar clasp broke after 2 weeks
+TKT-006,SC-2024-341-010,LOT341,EMEA,battery,high,resolved,2024-10-10,2024-10-14,Battery life decreased significantly after update
+TKT-007,SC-2024-341-020,LOT341,EMEA,connectivity,low,resolved,2024-10-11,2024-10-13,GPS accuracy issues in urban areas
+TKT-008,SC-2024-341-050,LOT341,EMEA,battery,high,open,2024-10-12,,Rapid battery drain in cold weather
+TKT-009,SC-2024-341-100,LOT341,EMEA,durability,medium,resolved,2024-10-13,2024-10-16,Water damage despite IP67 rating
+TKT-010,SC-2024-341-200,LOT341,EMEA,battery,critical,open,2024-10-14,,Device overheating during charging
+TKT-011,SC-2024-340-001,LOT340,Americas,connectivity,low,resolved,2024-10-05,2024-10-06,Minor sync delays with mobile app
+TKT-012,SC-2024-340-002,LOT340,Americas,other,low,resolved,2024-10-06,2024-10-07,Question about activity tracking accuracy
+TKT-013,SC-2024-340-003,LOT340,Americas,connectivity,medium,resolved,2024-10-08,2024-10-10,App crashes when viewing historical data
+TKT-014,SC-2024-340-004,LOT340,Americas,other,low,resolved,2024-10-10,2024-10-11,Feature request for sleep tracking
+TKT-015,SC-2024-340-005,LOT340,Americas,durability,low,resolved,2024-10-12,2024-10-13,Strap color fading slightly
+TKT-016,SC-2024-339-001,LOT339,APAC,connectivity,medium,resolved,2024-10-05,2024-10-08,WiFi sync issues in certain locations
+TKT-017,SC-2024-339-002,LOT339,APAC,other,low,resolved,2024-10-07,2024-10-08,Translation issues in Japanese app version
+TKT-018,SC-2024-339-003,LOT339,APAC,battery,medium,resolved,2024-10-09,2024-10-12,Battery drains faster in high humidity
+TKT-019,SC-2024-339-004,LOT339,APAC,connectivity,low,resolved,2024-10-11,2024-10-12,Occasional GPS drift
+TKT-020,SC-2024-339-005,LOT339,APAC,other,low,resolved,2024-10-13,2024-10-14,Request for Mandarin language support
+TKT-021,SC-2024-341-006,LOT341,EMEA,battery,high,resolved,2024-10-15,2024-10-19,Battery showing incorrect percentage
+TKT-022,SC-2024-341-007,LOT341,EMEA,battery,critical,open,2024-10-16,,Smoke coming from charging port
+TKT-023,SC-2024-341-008,LOT341,EMEA,connectivity,medium,resolved,2024-10-17,2024-10-20,Lost connection during firmware update
+TKT-024,SC-2024-341-009,LOT341,EMEA,durability,high,open,2024-10-18,,Sensor stopped working after rain exposure
+TKT-025,SC-2024-341-011,LOT341,EMEA,battery,high,resolved,2024-10-19,2024-10-23,Device not holding charge overnight
+TKT-026,SC-2024-341-012,LOT341,EMEA,battery,medium,resolved,2024-10-20,2024-10-22,Charging takes 6+ hours
+TKT-027,SC-2024-341-013,LOT341,EMEA,connectivity,high,open,2024-10-21,,Complete loss of Bluetooth connectivity
+TKT-028,SC-2024-341-014,LOT341,EMEA,battery,high,resolved,2024-10-22,2024-10-26,Battery percentage jumps erratically
+TKT-029,SC-2024-341-015,LOT341,EMEA,durability,medium,resolved,2024-10-23,2024-10-26,Screen scratched easily
+TKT-030,SC-2024-341-016,LOT341,EMEA,battery,critical,open,2024-10-24,,Battery swelling noticed
+TKT-031,SC-2024-340-006,LOT340,Americas,other,low,resolved,2024-10-15,2024-10-16,How to export activity data
+TKT-032,SC-2024-340-007,LOT340,Americas,connectivity,low,resolved,2024-10-17,2024-10-18,Notification delays on iOS
+TKT-033,SC-2024-340-008,LOT340,Americas,other,low,resolved,2024-10-19,2024-10-20,Collar size exchange request
+TKT-034,SC-2024-340-009,LOT340,Americas,connectivity,medium,resolved,2024-10-21,2024-10-23,Data not syncing to cloud backup
+TKT-035,SC-2024-340-010,LOT340,Americas,durability,low,resolved,2024-10-23,2024-10-24,Minor cosmetic scuff on device
+TKT-036,SC-2024-339-006,LOT339,APAC,connectivity,medium,resolved,2024-10-15,2024-10-18,App timeout issues on Android
+TKT-037,SC-2024-339-007,LOT339,APAC,other,low,resolved,2024-10-17,2024-10-18,Feature request for multiple pet profiles
+TKT-038,SC-2024-339-008,LOT339,APAC,battery,low,resolved,2024-10-19,2024-10-20,Battery indicator stuck at 100%
+TKT-039,SC-2024-339-009,LOT339,APAC,connectivity,medium,resolved,2024-10-21,2024-10-24,Geofence alerts delayed
+TKT-040,SC-2024-339-010,LOT339,APAC,other,low,resolved,2024-10-23,2024-10-24,Timezone display issue
+TKT-041,SC-2024-341-017,LOT341,EMEA,battery,high,open,2024-10-25,,Battery life now less than 2 hours
+TKT-042,SC-2024-341-018,LOT341,EMEA,battery,high,resolved,2024-10-26,2024-10-30,Device turns off when battery shows 50%
+TKT-043,SC-2024-341-019,LOT341,EMEA,connectivity,medium,resolved,2024-10-27,2024-10-29,GPS tracking stops randomly
+TKT-044,SC-2024-341-021,LOT341,EMEA,durability,high,open,2024-10-28,,Moisture detected inside display
+TKT-045,SC-2024-341-022,LOT341,EMEA,battery,critical,open,2024-10-29,,Device completely dead after 3 weeks
+TKT-046,SC-2024-341-023,LOT341,EMEA,battery,high,resolved,2024-10-30,2024-11-03,Inconsistent charging behavior
+TKT-047,SC-2024-341-024,LOT341,EMEA,connectivity,medium,open,2024-10-31,,Firmware update bricked device
+TKT-048,SC-2024-341-025,LOT341,EMEA,battery,high,resolved,2024-11-01,2024-11-05,Fast drain during activity tracking
+TKT-049,SC-2024-341-026,LOT341,EMEA,durability,medium,resolved,2024-11-02,2024-11-05,Rubber seal deteriorating
+TKT-050,SC-2024-341-027,LOT341,EMEA,battery,high,open,2024-11-03,,Battery health at 40% after 1 month
+TKT-051,SC-2024-340-011,LOT340,Americas,connectivity,low,resolved,2024-10-25,2024-10-26,Widget not updating on home screen
+TKT-052,SC-2024-340-012,LOT340,Americas,other,low,resolved,2024-10-27,2024-10-28,Question about warranty coverage
+TKT-053,SC-2024-340-013,LOT340,Americas,connectivity,low,resolved,2024-10-29,2024-10-30,Sharing feature not working
+TKT-054,SC-2024-340-014,LOT340,Americas,other,low,resolved,2024-10-31,2024-11-01,Account login issues
+TKT-055,SC-2024-340-015,LOT340,Americas,durability,medium,resolved,2024-11-02,2024-11-05,Buckle mechanism stiff
+TKT-056,SC-2024-339-011,LOT339,APAC,connectivity,low,resolved,2024-10-25,2024-10-27,App language keeps resetting
+TKT-057,SC-2024-339-012,LOT339,APAC,other,low,resolved,2024-10-27,2024-10-28,Distance tracking seems off
+TKT-058,SC-2024-339-013,LOT339,APAC,battery,low,resolved,2024-10-29,2024-10-31,Charging notification not appearing
+TKT-059,SC-2024-339-014,LOT339,APAC,connectivity,low,resolved,2024-10-31,2024-11-01,Health data not syncing to Apple Health
+TKT-060,SC-2024-339-015,LOT339,APAC,other,low,resolved,2024-11-02,2024-11-03,Need help setting up geofence
+TKT-061,SC-2024-341-028,LOT341,EMEA,battery,critical,open,2024-11-04,,Replacement device also has battery issues
+TKT-062,SC-2024-341-029,LOT341,EMEA,battery,high,resolved,2024-11-05,2024-11-09,Power button unresponsive
+TKT-063,SC-2024-341-030,LOT341,EMEA,connectivity,high,open,2024-11-06,,Cannot pair with any device
+TKT-064,SC-2024-341-031,LOT341,EMEA,durability,medium,resolved,2024-11-07,2024-11-10,LED indicator not working
+TKT-065,SC-2024-341-032,LOT341,EMEA,battery,high,open,2024-11-08,,Third replacement still has issues
+TKT-066,SC-2024-341-033,LOT341,EMEA,battery,high,resolved,2024-11-09,2024-11-13,Battery calibration problems
+TKT-067,SC-2024-341-034,LOT341,EMEA,connectivity,medium,resolved,2024-11-10,2024-11-12,Range issues with Bluetooth
+TKT-068,SC-2024-341-035,LOT341,EMEA,battery,critical,open,2024-11-11,,Device caught fire during charging
+TKT-069,SC-2024-341-036,LOT341,EMEA,durability,high,open,2024-11-12,,Water ingress after swimming
+TKT-070,SC-2024-341-037,LOT341,EMEA,battery,high,resolved,2024-11-13,2024-11-17,Charging port corrosion
+TKT-071,SC-2024-340-016,LOT340,Americas,other,low,resolved,2024-11-04,2024-11-05,How to customize alerts
+TKT-072,SC-2024-340-017,LOT340,Americas,connectivity,low,resolved,2024-11-06,2024-11-07,Slow app performance
+TKT-073,SC-2024-340-018,LOT340,Americas,other,low,resolved,2024-11-08,2024-11-09,Gift wrapping for order
+TKT-074,SC-2024-340-019,LOT340,Americas,connectivity,medium,resolved,2024-11-10,2024-11-12,OTA update stuck at 50%
+TKT-075,SC-2024-340-020,LOT340,Americas,battery,low,resolved,2024-11-12,2024-11-13,Battery indicator flickers occasionally
+TKT-076,SC-2024-339-016,LOT339,APAC,connectivity,medium,resolved,2024-11-04,2024-11-07,Cannot connect to 5GHz WiFi
+TKT-077,SC-2024-339-017,LOT339,APAC,other,low,resolved,2024-11-06,2024-11-07,Activity goals not saving
+TKT-078,SC-2024-339-018,LOT339,APAC,battery,medium,resolved,2024-11-08,2024-11-11,Battery performance in extreme heat
+TKT-079,SC-2024-339-019,LOT339,APAC,connectivity,low,resolved,2024-11-10,2024-11-11,Push notifications inconsistent
+TKT-080,SC-2024-339-020,LOT339,APAC,other,low,resolved,2024-11-12,2024-11-13,How to enable dark mode in app
+TKT-081,SC-2024-341-038,LOT341,EMEA,battery,high,open,2024-11-14,,Battery replacement needed after 6 weeks
+TKT-082,SC-2024-341-039,LOT341,EMEA,battery,high,resolved,2024-11-15,2024-11-19,Device overheating during use
+TKT-083,SC-2024-341-040,LOT341,EMEA,connectivity,medium,open,2024-11-16,,Bluetooth keeps dropping in humid weather
+TKT-084,SC-2024-341-041,LOT341,EMEA,durability,high,open,2024-11-17,,Sensor malfunction after exposure to rain
+TKT-085,SC-2024-341-042,LOT341,EMEA,battery,critical,open,2024-11-18,,Full refund requested due to ongoing battery issues
+TKT-086,SC-2024-341-043,LOT341,EMEA,battery,high,resolved,2024-11-19,2024-11-23,Charging cable compatibility issues
+TKT-087,SC-2024-341-044,LOT341,EMEA,connectivity,medium,resolved,2024-11-20,2024-11-22,App not recognizing device after reset
+TKT-088,SC-2024-341-045,LOT341,EMEA,battery,high,open,2024-11-21,,Battery depletes even when device is off
+TKT-089,SC-2024-341-046,LOT341,EMEA,durability,medium,resolved,2024-11-22,2024-11-25,Strap material causing skin irritation
+TKT-090,SC-2024-341-047,LOT341,EMEA,battery,high,open,2024-11-23,,Considering legal action over battery defects
+TKT-091,SC-2024-340-021,LOT340,Americas,connectivity,low,resolved,2024-11-14,2024-11-15,Achievement badges not unlocking
+TKT-092,SC-2024-340-022,LOT340,Americas,other,low,resolved,2024-11-16,2024-11-17,Family sharing setup help
+TKT-093,SC-2024-340-023,LOT340,Americas,other,low,resolved,2024-11-18,2024-11-19,How to change pet profile photo
+TKT-094,SC-2024-340-024,LOT340,Americas,connectivity,low,resolved,2024-11-20,2024-11-21,Map view loading slowly
+TKT-095,SC-2024-340-025,LOT340,Americas,other,low,resolved,2024-11-22,2024-11-23,Subscription plan questions
+TKT-096,SC-2024-339-021,LOT339,APAC,connectivity,low,resolved,2024-11-14,2024-11-16,App crashing on older Android devices
+TKT-097,SC-2024-339-022,LOT339,APAC,other,low,resolved,2024-11-16,2024-11-17,Export data to CSV not working
+TKT-098,SC-2024-339-023,LOT339,APAC,battery,low,resolved,2024-11-18,2024-11-19,Power saving mode suggestion
+TKT-099,SC-2024-339-024,LOT339,APAC,connectivity,medium,resolved,2024-11-20,2024-11-23,Live tracking has 30 second delay
+TKT-100,SC-2024-339-025,LOT339,APAC,other,low,resolved,2024-11-22,2024-11-23,Request for Korean language
+TKT-101,SC-2024-341-048,LOT341,EMEA,battery,high,open,2024-11-24,,Class action inquiry about battery defects
+TKT-102,SC-2024-341-049,LOT341,EMEA,battery,critical,open,2024-11-25,,Device exploded during charging
+TKT-103,SC-2024-341-051,LOT341,EMEA,connectivity,high,open,2024-11-26,,Total system failure
+TKT-104,SC-2024-341-052,LOT341,EMEA,durability,high,open,2024-11-27,,Complete seal failure
+TKT-105,SC-2024-341-053,LOT341,EMEA,battery,high,resolved,2024-11-28,2024-12-02,USB-C port damaged
+TKT-106,SC-2024-341-054,LOT341,EMEA,battery,high,open,2024-11-29,,Fourth device replacement requested
+TKT-107,SC-2024-341-055,LOT341,EMEA,connectivity,medium,resolved,2024-11-30,2024-12-02,Cannot update to latest firmware
+TKT-108,SC-2024-341-056,LOT341,EMEA,battery,critical,open,2024-12-01,,Demanding full refund plus compensation
+TKT-109,SC-2024-341-057,LOT341,EMEA,durability,medium,resolved,2024-12-02,2024-12-05,Button responsiveness degraded
+TKT-110,SC-2024-341-058,LOT341,EMEA,battery,high,open,2024-12-03,,Battery warranty claim
+TKT-111,SC-2024-340-026,LOT340,Americas,other,low,resolved,2024-11-24,2024-11-25,Two-factor authentication help
+TKT-112,SC-2024-340-027,LOT340,Americas,connectivity,low,resolved,2024-11-26,2024-11-27,Calendar integration not syncing
+TKT-113,SC-2024-340-028,LOT340,Americas,other,low,resolved,2024-11-28,2024-11-29,Positive feedback - love the product
+TKT-114,SC-2024-340-029,LOT340,Americas,connectivity,low,resolved,2024-11-30,2024-12-01,Notification sounds not customizable
+TKT-115,SC-2024-340-030,LOT340,Americas,battery,low,resolved,2024-12-02,2024-12-03,Question about optimal charging practices
+TKT-116,SC-2024-339-026,LOT339,APAC,connectivity,low,resolved,2024-11-24,2024-11-26,WeChat integration request
+TKT-117,SC-2024-339-027,LOT339,APAC,other,low,resolved,2024-11-26,2024-11-27,Metric vs imperial units toggle
+TKT-118,SC-2024-339-028,LOT339,APAC,battery,low,resolved,2024-11-28,2024-11-29,LED brightness adjustment request
+TKT-119,SC-2024-339-029,LOT339,APAC,connectivity,low,resolved,2024-11-30,2024-12-01,QR code pairing not scanning
+TKT-120,SC-2024-339-030,LOT339,APAC,other,low,resolved,2024-12-02,2024-12-03,Pet weight tracking feature request
+TKT-121,SC-2024-341-059,LOT341,EMEA,battery,high,open,2024-12-04,,Initiating chargeback for defective product
+TKT-122,SC-2024-341-060,LOT341,EMEA,battery,high,resolved,2024-12-05,2024-12-09,Battery showing negative percentage
+TKT-123,SC-2024-341-061,LOT341,EMEA,connectivity,medium,open,2024-12-06,,Device not discoverable by any phone
+TKT-124,SC-2024-341-062,LOT341,EMEA,durability,high,open,2024-12-07,,Cracked casing without impact
+TKT-125,SC-2024-341-063,LOT341,EMEA,battery,critical,open,2024-12-08,,Posting negative reviews everywhere
+TKT-126,SC-2024-341-064,LOT341,EMEA,battery,high,resolved,2024-12-09,2024-12-13,Wireless charging not working
+TKT-127,SC-2024-341-065,LOT341,EMEA,connectivity,medium,resolved,2024-12-10,2024-12-12,Cannot re-pair after factory reset
+TKT-128,SC-2024-341-066,LOT341,EMEA,battery,high,open,2024-12-11,,Filing complaint with consumer protection
+TKT-129,SC-2024-341-067,LOT341,EMEA,durability,medium,resolved,2024-12-12,2024-12-15,Display discoloration
+TKT-130,SC-2024-341-068,LOT341,EMEA,battery,high,open,2024-12-13,,Media inquiry about battery issues
+TKT-131,SC-2024-340-031,LOT340,Americas,connectivity,low,resolved,2024-12-04,2024-12-05,Siri shortcuts not triggering
+TKT-132,SC-2024-340-032,LOT340,Americas,other,low,resolved,2024-12-06,2024-12-07,Bulk order for dog training school
+TKT-133,SC-2024-340-033,LOT340,Americas,other,low,resolved,2024-12-08,2024-12-09,Referral program questions
+TKT-134,SC-2024-340-034,LOT340,Americas,connectivity,low,resolved,2024-12-10,2024-12-11,Apple Watch companion app request
+TKT-135,SC-2024-340-035,LOT340,Americas,durability,low,resolved,2024-12-12,2024-12-13,Extra strap length options
+TKT-136,SC-2024-339-031,LOT339,APAC,connectivity,medium,resolved,2024-12-04,2024-12-07,Line app notification integration
+TKT-137,SC-2024-339-032,LOT339,APAC,other,low,resolved,2024-12-06,2024-12-07,Multi-pet discount inquiry
+TKT-138,SC-2024-339-033,LOT339,APAC,battery,low,resolved,2024-12-08,2024-12-09,Solar charging feature request
+TKT-139,SC-2024-339-034,LOT339,APAC,connectivity,low,resolved,2024-12-10,2024-12-11,NFC tap not registering
+TKT-140,SC-2024-339-035,LOT339,APAC,other,low,resolved,2024-12-12,2024-12-13,Regional pricing feedback
+TKT-141,SC-2024-341-069,LOT341,EMEA,battery,high,open,2024-12-14,,Escalating to executive team
+TKT-142,SC-2024-341-070,LOT341,EMEA,battery,critical,open,2024-12-15,,Product recall demand
+TKT-143,SC-2024-341-071,LOT341,EMEA,connectivity,high,open,2024-12-16,,Hardware failure affecting all functions
+TKT-144,SC-2024-341-072,LOT341,EMEA,durability,high,open,2024-12-17,,Waterproofing completely failed
+TKT-145,SC-2024-341-073,LOT341,EMEA,battery,high,resolved,2024-12-18,2024-12-22,Charging circuit malfunction
+TKT-146,SC-2024-341-074,LOT341,EMEA,battery,high,open,2024-12-19,,Viral social media post about battery fire
+TKT-147,SC-2024-341-075,LOT341,EMEA,connectivity,medium,resolved,2024-12-20,2024-12-22,Antenna issues suspected
+TKT-148,SC-2024-341-076,LOT341,EMEA,battery,critical,open,2024-12-21,,Regulatory complaint filed
+TKT-149,SC-2024-341-077,LOT341,EMEA,durability,medium,resolved,2024-12-22,2024-12-25,Accelerometer stopped working
+TKT-150,SC-2024-341-078,LOT341,EMEA,battery,high,open,2024-12-23,,Full product line return
+TKT-151,SC-2024-340-036,LOT340,Americas,other,low,resolved,2024-12-14,2024-12-15,Gift card redemption help
+TKT-152,SC-2024-340-037,LOT340,Americas,connectivity,low,resolved,2024-12-16,2024-12-17,Alexa skill not responding
+TKT-153,SC-2024-340-038,LOT340,Americas,other,low,resolved,2024-12-18,2024-12-19,Warranty extension purchase
+TKT-154,SC-2024-340-039,LOT340,Americas,other,low,resolved,2024-12-20,2024-12-21,Holiday shipping timeline
+TKT-155,SC-2024-340-040,LOT340,Americas,battery,low,resolved,2024-12-22,2024-12-23,Question about battery replacement service
+TKT-156,SC-2024-339-036,LOT339,APAC,connectivity,low,resolved,2024-12-14,2024-12-16,Kakaotalk integration request
+TKT-157,SC-2024-339-037,LOT339,APAC,other,low,resolved,2024-12-16,2024-12-17,Customizable collar colors request
+TKT-158,SC-2024-339-038,LOT339,APAC,battery,low,resolved,2024-12-18,2024-12-19,Fast charging support inquiry
+TKT-159,SC-2024-339-039,LOT339,APAC,connectivity,medium,resolved,2024-12-20,2024-12-23,5G connectivity issues
+TKT-160,SC-2024-339-040,LOT339,APAC,other,low,resolved,2024-12-22,2024-12-23,Veterinarian partnership program inquiry
+TKT-161,SC-2024-341-079,LOT341,EMEA,battery,high,open,2024-12-24,,Christmas ruined by defective device
+TKT-162,SC-2024-341-080,LOT341,EMEA,battery,high,resolved,2024-12-25,2024-12-29,Gift recipient disappointed with battery life
+TKT-163,SC-2024-341-081,LOT341,EMEA,connectivity,medium,open,2024-12-26,,New Year sale purchase already failing
+TKT-164,SC-2024-341-082,LOT341,EMEA,durability,high,open,2024-12-27,,Device fell apart during unboxing
+TKT-165,SC-2024-341-083,LOT341,EMEA,battery,critical,open,2024-12-28,,Legal team contact request
+TKT-166,SC-2024-341-084,LOT341,EMEA,battery,high,resolved,2024-12-29,2025-01-02,Battery indicator frozen
+TKT-167,SC-2024-341-085,LOT341,EMEA,connectivity,medium,resolved,2024-12-30,2025-01-01,Pairing code not generating
+TKT-168,SC-2024-341-086,LOT341,EMEA,battery,high,open,2024-12-31,,New Year resolution to get refund
+TKT-169,SC-2024-341-087,LOT341,EMEA,durability,medium,resolved,2025-01-01,2025-01-04,Heart rate sensor inaccurate
+TKT-170,SC-2024-341-088,LOT341,EMEA,battery,high,open,2025-01-02,,Consumer watchdog complaint
+TKT-171,SC-2024-340-041,LOT340,Americas,connectivity,low,resolved,2024-12-24,2024-12-26,Holiday firmware update feedback
+TKT-172,SC-2024-340-042,LOT340,Americas,other,low,resolved,2024-12-26,2024-12-27,Pet trainer testimonial to share
+TKT-173,SC-2024-340-043,LOT340,Americas,other,low,resolved,2024-12-28,2024-12-29,Ambassador program application
+TKT-174,SC-2024-340-044,LOT340,Americas,connectivity,low,resolved,2024-12-30,2024-12-31,CarPlay integration request
+TKT-175,SC-2024-340-045,LOT340,Americas,other,low,resolved,2025-01-01,2025-01-02,New Year wishes and product praise
+TKT-176,SC-2024-339-041,LOT339,APAC,connectivity,low,resolved,2024-12-24,2024-12-27,Lunar New Year promotion inquiry
+TKT-177,SC-2024-339-042,LOT339,APAC,other,low,resolved,2024-12-26,2024-12-27,Local retailer partnership inquiry
+TKT-178,SC-2024-339-043,LOT339,APAC,battery,low,resolved,2024-12-28,2024-12-29,Eco-friendly packaging praise
+TKT-179,SC-2024-339-044,LOT339,APAC,connectivity,low,resolved,2024-12-30,2024-12-31,Smart home integration request
+TKT-180,SC-2024-339-045,LOT339,APAC,other,low,resolved,2025-01-01,2025-01-02,Happy customer testimonial
+TKT-181,SC-2024-341-089,LOT341,EMEA,battery,high,open,2025-01-03,,Press inquiry about battery defects
+TKT-182,SC-2024-341-090,LOT341,EMEA,battery,critical,open,2025-01-04,,Insurance claim for property damage
+TKT-183,SC-2024-341-091,LOT341,EMEA,connectivity,high,open,2025-01-05,,Complete product failure
+TKT-184,SC-2024-341-092,LOT341,EMEA,durability,high,open,2025-01-06,,Quality control complaint to management
+TKT-185,SC-2024-341-093,LOT341,EMEA,battery,high,resolved,2025-01-07,2025-01-11,Temperature sensor affecting battery
+TKT-186,SC-2024-341-094,LOT341,EMEA,battery,high,open,2025-01-08,,Social media influencer complaint
+TKT-187,SC-2024-341-095,LOT341,EMEA,connectivity,medium,resolved,2025-01-09,2025-01-11,NFC payment feature not working
+TKT-188,SC-2024-341-096,LOT341,EMEA,battery,critical,open,2025-01-10,,Considering class action participation
+TKT-189,SC-2024-341-097,LOT341,EMEA,durability,medium,resolved,2025-01-11,2025-01-14,GPS module failure
+TKT-190,SC-2024-341-098,LOT341,EMEA,battery,high,open,2025-01-12,,CEO email requested
+TKT-191,SC-2024-340-046,LOT340,Americas,other,low,resolved,2025-01-03,2025-01-04,Veterinarian recommendation program
+TKT-192,SC-2024-340-047,LOT340,Americas,connectivity,low,resolved,2025-01-05,2025-01-06,Android Auto support request
+TKT-193,SC-2024-340-048,LOT340,Americas,other,low,resolved,2025-01-07,2025-01-08,Success story for marketing
+TKT-194,SC-2024-340-049,LOT340,Americas,connectivity,low,resolved,2025-01-09,2025-01-10,Smartwatch integration improvement
+TKT-195,SC-2024-340-050,LOT340,Americas,battery,low,resolved,2025-01-11,2025-01-12,Long-term battery maintenance tips
+TKT-196,SC-2024-339-046,LOT339,APAC,connectivity,low,resolved,2025-01-03,2025-01-06,Alibaba marketplace listing inquiry
+TKT-197,SC-2024-339-047,LOT339,APAC,other,low,resolved,2025-01-05,2025-01-06,Breed-specific features request
+TKT-198,SC-2024-339-048,LOT339,APAC,battery,low,resolved,2025-01-07,2025-01-08,Portable charger compatibility
+TKT-199,SC-2024-339-049,LOT339,APAC,connectivity,low,resolved,2025-01-09,2025-01-10,Regional server latency feedback
+TKT-200,SC-2024-339-050,LOT339,APAC,other,low,resolved,2025-01-11,2025-01-12,Wholesale pricing inquiry
+TKT-201,SC-2024-341-099,LOT341,EMEA,battery,high,open,2025-01-13,,Blog post warning others about battery
+TKT-202,SC-2024-341-100,LOT341,EMEA,battery,high,resolved,2025-01-14,2025-01-18,Battery management system reset needed
+TKT-203,SC-2024-341-101,LOT341,EMEA,connectivity,medium,open,2025-01-15,,WiFi module suspected faulty
+TKT-204,SC-2024-341-102,LOT341,EMEA,durability,high,open,2025-01-16,,Structural integrity compromised
+TKT-205,SC-2024-341-103,LOT341,EMEA,battery,critical,open,2025-01-17,,Demanding product recall
+TKT-206,SC-2024-341-104,LOT341,EMEA,battery,high,resolved,2025-01-18,2025-01-22,Power management IC failure
+TKT-207,SC-2024-341-105,LOT341,EMEA,connectivity,medium,resolved,2025-01-19,2025-01-21,OTA update corrupted device
+TKT-208,SC-2024-341-106,LOT341,EMEA,battery,high,open,2025-01-20,,Fifth replacement device needed
+TKT-209,SC-2024-341-107,LOT341,EMEA,durability,medium,resolved,2025-01-21,2025-01-24,Microphone not picking up sounds
+TKT-210,SC-2024-341-108,LOT341,EMEA,battery,high,open,2025-01-22,,YouTube review warning about product
+TKT-211,SC-2024-340-051,LOT340,Americas,connectivity,low,resolved,2025-01-13,2025-01-14,Google Fit sync improvement
+TKT-212,SC-2024-340-052,LOT340,Americas,other,low,resolved,2025-01-15,2025-01-16,Non-profit discount request
+TKT-213,SC-2024-340-053,LOT340,Americas,other,low,resolved,2025-01-17,2025-01-18,Press sample request
+TKT-214,SC-2024-340-054,LOT340,Americas,connectivity,low,resolved,2025-01-19,2025-01-20,Strava integration improvement
+TKT-215,SC-2024-340-055,LOT340,Americas,durability,low,resolved,2025-01-21,2025-01-22,Color options expansion request
+TKT-216,SC-2024-339-051,LOT339,APAC,connectivity,medium,resolved,2025-01-13,2025-01-16,Regional payment method support
+TKT-217,SC-2024-339-052,LOT339,APAC,other,low,resolved,2025-01-15,2025-01-16,Shipping to rural areas
+TKT-218,SC-2024-339-053,LOT339,APAC,battery,low,resolved,2025-01-17,2025-01-18,USB-C PD charging support
+TKT-219,SC-2024-339-054,LOT339,APAC,connectivity,low,resolved,2025-01-19,2025-01-20,Local cloud server request
+TKT-220,SC-2024-339-055,LOT339,APAC,other,low,resolved,2025-01-21,2025-01-22,Reseller certification inquiry
+TKT-221,SC-2024-341-109,LOT341,EMEA,battery,critical,open,2025-01-23,,Attorney letter regarding battery defects
+TKT-222,SC-2024-341-110,LOT341,EMEA,battery,high,resolved,2025-01-24,2025-01-28,Charging protocol incompatibility
+TKT-223,SC-2024-341-111,LOT341,EMEA,connectivity,high,open,2025-01-25,,Bluetooth 5.0 regression
+TKT-224,SC-2024-341-112,LOT341,EMEA,durability,high,open,2025-01-26,,Material defect visible
+TKT-225,SC-2024-341-113,LOT341,EMEA,battery,high,open,2025-01-27,,Warranty claim for business disruption
+TKT-226,SC-2024-341-114,LOT341,EMEA,battery,high,resolved,2025-01-28,2025-02-01,Thermal throttling issues
+TKT-227,SC-2024-341-115,LOT341,EMEA,connectivity,medium,resolved,2025-01-29,2025-01-31,Certificate pinning issue
+TKT-228,SC-2024-341-116,LOT341,EMEA,battery,critical,open,2025-01-30,,Government agency complaint filed
+TKT-229,SC-2024-341-117,LOT341,EMEA,durability,medium,resolved,2025-01-31,2025-02-03,Speaker grille damage
+TKT-230,SC-2024-341-118,LOT341,EMEA,battery,high,open,2025-02-01,,Organized boycott of brand
+TKT-231,SC-2024-340-056,LOT340,Americas,other,low,resolved,2025-01-23,2025-01-24,Feature comparison with competitors
+TKT-232,SC-2024-340-057,LOT340,Americas,connectivity,low,resolved,2025-01-25,2025-01-26,Samsung SmartThings integration
+TKT-233,SC-2024-340-058,LOT340,Americas,other,low,resolved,2025-01-27,2025-01-28,Academic research collaboration
+TKT-234,SC-2024-340-059,LOT340,Americas,connectivity,medium,resolved,2025-01-29,2025-02-01,Thread/Matter protocol support
+TKT-235,SC-2024-340-060,LOT340,Americas,battery,low,resolved,2025-01-31,2025-02-01,Qi wireless charging pad recommendation
+TKT-236,SC-2024-339-056,LOT339,APAC,connectivity,low,resolved,2025-01-23,2025-01-26,Huawei HarmonyOS support
+TKT-237,SC-2024-339-057,LOT339,APAC,other,low,resolved,2025-01-25,2025-01-26,Local celebrity endorsement inquiry
+TKT-238,SC-2024-339-058,LOT339,APAC,battery,medium,resolved,2025-01-27,2025-01-30,Reverse wireless charging request
+TKT-239,SC-2024-339-059,LOT339,APAC,connectivity,low,resolved,2025-01-29,2025-01-30,Xiaomi ecosystem integration
+TKT-240,SC-2024-339-060,LOT339,APAC,other,low,resolved,2025-01-31,2025-02-01,Regional event sponsorship

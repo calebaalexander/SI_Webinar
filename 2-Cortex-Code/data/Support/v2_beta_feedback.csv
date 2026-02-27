@@ -1,0 +1,121 @@
+feedback_id,region,feature_tested,rating,feedback_text,tester_type,submission_date,device_version,lot_number
+BF-001,Americas,extended_battery,5,Battery life is incredible - lasting 14 days on single charge. Huge improvement over V1.,external,2024-11-01,V2-PROTO-A,LOT350
+BF-002,Americas,extended_battery,5,Finally a pet collar that doesn't need constant charging. Very impressed.,external,2024-11-02,V2-PROTO-A,LOT350
+BF-003,Americas,moisture_resistance,5,Took my dog swimming and the collar worked perfectly. IP68 rating is legit.,external,2024-11-03,V2-PROTO-A,LOT350
+BF-004,Americas,gps_accuracy,4,GPS tracking is much more accurate than V1. Only minor drift in dense urban areas.,external,2024-11-04,V2-PROTO-A,LOT350
+BF-005,Americas,app_redesign,5,New app interface is beautiful and intuitive. Love the dashboard widgets.,external,2024-11-05,V2-PROTO-A,LOT350
+BF-006,Americas,health_monitoring,4,Heart rate monitoring seems accurate. Would like to see sleep tracking improved.,external,2024-11-06,V2-PROTO-A,LOT350
+BF-007,Americas,extended_battery,5,Two weeks without charging - this is a game changer for pet owners.,internal,2024-11-07,V2-PROTO-A,LOT350
+BF-008,Americas,moisture_resistance,5,Submerged in pool for 30 minutes during testing - zero issues.,internal,2024-11-08,V2-PROTO-A,LOT350
+BF-009,Americas,quick_charge,5,15 minute charge gives 3 days of battery. Perfect for forgetful owners.,external,2024-11-09,V2-PROTO-A,LOT350
+BF-010,Americas,durability,5,Drop tested from 6 feet onto concrete - not a scratch. Very durable.,internal,2024-11-10,V2-PROTO-A,LOT350
+BF-011,EMEA,extended_battery,3,Battery better than V1 but still only getting 8-9 days in humid conditions.,external,2024-11-01,V2-PROTO-B,LOT351
+BF-012,EMEA,extended_battery,3,Improvement over V1 but not as dramatic as advertised. Maybe 10 days max.,external,2024-11-02,V2-PROTO-B,LOT351
+BF-013,EMEA,moisture_resistance,4,Better water resistance but had minor condensation inside after rain.,external,2024-11-03,V2-PROTO-B,LOT351
+BF-014,EMEA,gps_accuracy,3,GPS works but takes longer to lock in European cities. Need optimization.,external,2024-11-04,V2-PROTO-B,LOT351
+BF-015,EMEA,app_redesign,4,App looks good but localization for German/French is incomplete.,external,2024-11-05,V2-PROTO-B,LOT351
+BF-016,EMEA,health_monitoring,3,Sensors seem less accurate in cold weather. Needs calibration.,external,2024-11-06,V2-PROTO-B,LOT351
+BF-017,EMEA,extended_battery,3,Battery drain faster than expected in UK winter conditions.,internal,2024-11-07,V2-PROTO-B,LOT351
+BF-018,EMEA,moisture_resistance,3,Some moisture warnings appearing during heavy rainfall testing.,internal,2024-11-08,V2-PROTO-B,LOT351
+BF-019,EMEA,quick_charge,4,Quick charge works but slightly slower than spec in 230V regions.,external,2024-11-09,V2-PROTO-B,LOT351
+BF-020,EMEA,durability,4,Good durability but strap material feels different from US version.,internal,2024-11-10,V2-PROTO-B,LOT351
+BF-021,APAC,extended_battery,4,Battery life solid at 11-12 days. Good improvement over V1.,external,2024-11-01,V2-PROTO-C,LOT352
+BF-022,APAC,extended_battery,4,Happy with battery but high humidity in Singapore affects it slightly.,external,2024-11-02,V2-PROTO-C,LOT352
+BF-023,APAC,moisture_resistance,4,Monsoon season test passed. Minor concerns in extreme humidity.,external,2024-11-03,V2-PROTO-C,LOT352
+BF-024,APAC,gps_accuracy,4,GPS good in major cities. Rural coverage in some countries limited.,external,2024-11-04,V2-PROTO-C,LOT352
+BF-025,APAC,app_redesign,3,Need Japanese and Korean language support. Chinese simplified available.,external,2024-11-05,V2-PROTO-C,LOT352
+BF-026,APAC,health_monitoring,4,Sensors work well in tropical climate. Impressed with accuracy.,external,2024-11-06,V2-PROTO-C,LOT352
+BF-027,APAC,extended_battery,4,Consistent 12 day battery in Australian testing conditions.,internal,2024-11-07,V2-PROTO-C,LOT352
+BF-028,APAC,moisture_resistance,4,Handled Tokyo rainy season well. Minor firmware adjustment needed.,internal,2024-11-08,V2-PROTO-C,LOT352
+BF-029,APAC,quick_charge,4,Quick charge effective. Regional power adapter compatibility verified.,external,2024-11-09,V2-PROTO-C,LOT352
+BF-030,APAC,durability,4,Durable design. Some requests for smaller sizes for toy breeds.,internal,2024-11-10,V2-PROTO-C,LOT352
+BF-031,Americas,ai_activity_recognition,5,AI correctly identified walking vs running vs playing 95% of time.,external,2024-11-11,V2-PROTO-A,LOT350
+BF-032,Americas,ai_activity_recognition,5,Love that it knows when my dog is at the dog park vs backyard.,external,2024-11-12,V2-PROTO-A,LOT350
+BF-033,Americas,geofencing,5,Safe zone alerts are instant. Much better than V1 delays.,external,2024-11-13,V2-PROTO-A,LOT350
+BF-034,Americas,live_tracking,5,Real-time tracking is actually real-time now. Huge improvement.,external,2024-11-14,V2-PROTO-A,LOT350
+BF-035,Americas,extended_battery,5,Still impressed by battery after 2 weeks of testing. Consistent.,external,2024-11-15,V2-PROTO-A,LOT350
+BF-036,Americas,temperature_alerts,4,Heat warnings worked great. Cold alerts might be too sensitive.,external,2024-11-16,V2-PROTO-A,LOT350
+BF-037,Americas,lost_pet_mode,5,Lost pet mode with community alerts is brilliant feature.,internal,2024-11-17,V2-PROTO-A,LOT350
+BF-038,Americas,led_beacon,5,LED night beacon is super bright. Great for evening walks.,external,2024-11-18,V2-PROTO-A,LOT350
+BF-039,Americas,voice_commands,4,Voice command integration with Alexa works smoothly.,external,2024-11-19,V2-PROTO-A,LOT350
+BF-040,Americas,multi_pet,5,Multi-pet household support finally works properly. Managing 3 dogs easily.,external,2024-11-20,V2-PROTO-A,LOT350
+BF-041,EMEA,ai_activity_recognition,3,AI recognition inconsistent. Needs training for European dog breeds.,external,2024-11-11,V2-PROTO-B,LOT351
+BF-042,EMEA,ai_activity_recognition,3,Activity detection delayed compared to US beta reports.,external,2024-11-12,V2-PROTO-B,LOT351
+BF-043,EMEA,geofencing,3,Geofencing alerts delayed by 30-60 seconds in some EU locations.,external,2024-11-13,V2-PROTO-B,LOT351
+BF-044,EMEA,live_tracking,3,Live tracking has more latency than expected. Server location issue?,external,2024-11-14,V2-PROTO-B,LOT351
+BF-045,EMEA,extended_battery,3,Battery life dropped to 7 days after firmware update. Concerning.,external,2024-11-15,V2-PROTO-B,LOT351
+BF-046,EMEA,temperature_alerts,4,Temperature monitoring accurate but alerts in Celsius would be nice.,external,2024-11-16,V2-PROTO-B,LOT351
+BF-047,EMEA,lost_pet_mode,3,Lost pet community feature limited - not many EU beta testers.,internal,2024-11-17,V2-PROTO-B,LOT351
+BF-048,EMEA,led_beacon,4,LED beacon good but would prefer adjustable brightness.,external,2024-11-18,V2-PROTO-B,LOT351
+BF-049,EMEA,voice_commands,3,Google Assistant integration buggy. Alexa works but limited EU availability.,external,2024-11-19,V2-PROTO-B,LOT351
+BF-050,EMEA,multi_pet,4,Multi-pet works but UI confusing with metric/imperial mix.,external,2024-11-20,V2-PROTO-B,LOT351
+BF-051,APAC,ai_activity_recognition,4,AI recognition learning well. Would like more breed-specific insights.,external,2024-11-11,V2-PROTO-C,LOT352
+BF-052,APAC,ai_activity_recognition,4,Activity tracking accurate for Shiba Inu specific movements.,external,2024-11-12,V2-PROTO-C,LOT352
+BF-053,APAC,geofencing,4,Geofencing reliable in Tokyo urban environment.,external,2024-11-13,V2-PROTO-C,LOT352
+BF-054,APAC,live_tracking,4,Live tracking good but occasional gaps in rural Australia.,external,2024-11-14,V2-PROTO-C,LOT352
+BF-055,APAC,extended_battery,4,Battery holding up well in varied APAC climates.,external,2024-11-15,V2-PROTO-C,LOT352
+BF-056,APAC,temperature_alerts,4,Temperature alerts helpful during Australian summer testing.,external,2024-11-16,V2-PROTO-C,LOT352
+BF-057,APAC,lost_pet_mode,4,Lost pet mode promising but needs more regional adoption.,internal,2024-11-17,V2-PROTO-C,LOT352
+BF-058,APAC,led_beacon,4,LED beacon visible and effective. Good safety feature.,external,2024-11-18,V2-PROTO-C,LOT352
+BF-059,APAC,voice_commands,3,Need Siri Shortcuts and local assistant integration.,external,2024-11-19,V2-PROTO-C,LOT352
+BF-060,APAC,multi_pet,4,Multi-pet feature works well. Supporting different collar sizes.,external,2024-11-20,V2-PROTO-C,LOT352
+BF-061,Americas,bluetooth_range,5,Bluetooth range extended to 100m. Much better for large yards.,external,2024-11-21,V2-PROTO-A,LOT350
+BF-062,Americas,sleep_tracking,4,Sleep tracking new feature is useful. Accuracy improving.,external,2024-11-22,V2-PROTO-A,LOT350
+BF-063,Americas,bark_detection,5,Bark detection and alerts working great for training purposes.,external,2024-11-23,V2-PROTO-A,LOT350
+BF-064,Americas,calorie_tracking,4,Calorie burn estimates seem reasonable. Helpful for weight management.,external,2024-11-24,V2-PROTO-A,LOT350
+BF-065,Americas,vet_sharing,5,Ability to share health data with vet is fantastic addition.,external,2024-11-25,V2-PROTO-A,LOT350
+BF-066,Americas,firmware_ota,5,OTA updates seamless. No issues during multiple update cycles.,internal,2024-11-26,V2-PROTO-A,LOT350
+BF-067,Americas,material_quality,5,New strap material more comfortable and durable than V1.,external,2024-11-27,V2-PROTO-A,LOT350
+BF-068,Americas,night_vision_cam,4,Optional camera attachment works well in low light.,external,2024-11-28,V2-PROTO-A,LOT350
+BF-069,Americas,social_features,5,Pet social network integration is fun. Comparing activity with friends.,external,2024-11-29,V2-PROTO-A,LOT350
+BF-070,Americas,overall_satisfaction,5,Best pet wearable I have tested. Ready for launch in my opinion.,external,2024-11-30,V2-PROTO-A,LOT350
+BF-071,EMEA,bluetooth_range,3,Bluetooth range claims not matching reality in stone buildings.,external,2024-11-21,V2-PROTO-B,LOT351
+BF-072,EMEA,sleep_tracking,3,Sleep tracking not accounting for different time zones properly.,external,2024-11-22,V2-PROTO-B,LOT351
+BF-073,EMEA,bark_detection,3,Bark detection triggering on other dogs nearby. Too sensitive.,external,2024-11-23,V2-PROTO-B,LOT351
+BF-074,EMEA,calorie_tracking,3,Calorie estimates seem off for larger European breeds.,external,2024-11-24,V2-PROTO-B,LOT351
+BF-075,EMEA,vet_sharing,4,Vet sharing useful but GDPR compliance questions.,external,2024-11-25,V2-PROTO-B,LOT351
+BF-076,EMEA,firmware_ota,3,OTA update failed twice. Required manual intervention.,internal,2024-11-26,V2-PROTO-B,LOT351
+BF-077,EMEA,material_quality,3,Strap material feels cheaper than US version. Supply issue?,external,2024-11-27,V2-PROTO-B,LOT351
+BF-078,EMEA,night_vision_cam,4,Camera attachment works but would prefer privacy shutter.,external,2024-11-28,V2-PROTO-B,LOT351
+BF-079,EMEA,social_features,3,Social features limited due to smaller EU beta community.,external,2024-11-29,V2-PROTO-B,LOT351
+BF-080,EMEA,overall_satisfaction,3,Product has potential but needs regional optimization before EU launch.,external,2024-11-30,V2-PROTO-B,LOT351
+BF-081,APAC,bluetooth_range,4,Bluetooth range acceptable. Works well in apartment buildings.,external,2024-11-21,V2-PROTO-C,LOT352
+BF-082,APAC,sleep_tracking,4,Sleep tracking good. Would like breed-specific sleep insights.,external,2024-11-22,V2-PROTO-C,LOT352
+BF-083,APAC,bark_detection,4,Bark detection reasonably accurate with sensitivity adjustment.,external,2024-11-23,V2-PROTO-C,LOT352
+BF-084,APAC,calorie_tracking,4,Calorie tracking helpful for diet management. Good accuracy.,external,2024-11-24,V2-PROTO-C,LOT352
+BF-085,APAC,vet_sharing,4,Vet sharing feature well received by local veterinarians.,external,2024-11-25,V2-PROTO-C,LOT352
+BF-086,APAC,firmware_ota,4,OTA updates successful but would like scheduled updates.,internal,2024-11-26,V2-PROTO-C,LOT352
+BF-087,APAC,material_quality,4,Material quality good. Request for additional color options.,external,2024-11-27,V2-PROTO-C,LOT352
+BF-088,APAC,night_vision_cam,4,Camera useful feature. Works well in low light conditions.,external,2024-11-28,V2-PROTO-C,LOT352
+BF-089,APAC,social_features,4,Social features interesting. Regional community growing.,external,2024-11-29,V2-PROTO-C,LOT352
+BF-090,APAC,overall_satisfaction,4,Solid product. Ready for APAC launch with minor adjustments.,external,2024-11-30,V2-PROTO-C,LOT352
+BF-091,Americas,integration_test,5,Full integration test passed. All systems working together.,internal,2024-12-01,V2-PROTO-A,LOT350
+BF-092,Americas,stress_test,5,72-hour stress test completed. No failures or degradation.,internal,2024-12-02,V2-PROTO-A,LOT350
+BF-093,Americas,field_trial,5,Month-long field trial with 50 dogs. 98% positive feedback.,internal,2024-12-03,V2-PROTO-A,LOT350
+BF-094,Americas,manufacturing_qa,5,Production samples meeting all quality standards.,internal,2024-12-04,V2-PROTO-A,LOT350
+BF-095,Americas,regulatory_compliance,5,FCC certification obtained. Ready for US market.,internal,2024-12-05,V2-PROTO-A,LOT350
+BF-096,EMEA,integration_test,3,Integration issues between EU servers and core features.,internal,2024-12-01,V2-PROTO-B,LOT351
+BF-097,EMEA,stress_test,3,Stress test revealed memory leaks in certain conditions.,internal,2024-12-02,V2-PROTO-B,LOT351
+BF-098,EMEA,field_trial,3,Field trial feedback mixed. Battery concerns persist.,internal,2024-12-03,V2-PROTO-B,LOT351
+BF-099,EMEA,manufacturing_qa,3,Production sample variance higher than target tolerance.,internal,2024-12-04,V2-PROTO-B,LOT351
+BF-100,EMEA,regulatory_compliance,4,CE certification pending additional documentation.,internal,2024-12-05,V2-PROTO-B,LOT351
+BF-101,APAC,integration_test,4,Integration stable with minor regional API adjustments needed.,internal,2024-12-01,V2-PROTO-C,LOT352
+BF-102,APAC,stress_test,4,Stress test passed with acceptable performance margins.,internal,2024-12-02,V2-PROTO-C,LOT352
+BF-103,APAC,field_trial,4,Field trial positive. Local language support requested.,internal,2024-12-03,V2-PROTO-C,LOT352
+BF-104,APAC,manufacturing_qa,4,Regional production meeting quality standards.,internal,2024-12-04,V2-PROTO-C,LOT352
+BF-105,APAC,regulatory_compliance,4,Japan TELEC certification in progress. Australia approved.,internal,2024-12-05,V2-PROTO-C,LOT352
+BF-106,Americas,final_review,5,V2 exceeds all launch criteria. Recommend immediate release.,internal,2024-12-06,V2-PROTO-A,LOT350
+BF-107,Americas,final_review,5,Customer acceptance testing 100% positive. Launch ready.,external,2024-12-07,V2-PROTO-A,LOT350
+BF-108,Americas,final_review,5,Retail partners excited about V2 features. Strong pre-orders.,internal,2024-12-08,V2-PROTO-A,LOT350
+BF-109,Americas,final_review,5,Marketing materials approved. Campaign ready to launch.,internal,2024-12-09,V2-PROTO-A,LOT350
+BF-110,Americas,final_review,5,Support team trained. Documentation complete. GO for launch.,internal,2024-12-10,V2-PROTO-A,LOT350
+BF-111,EMEA,final_review,3,V2 needs 4-6 weeks additional development for EU market.,internal,2024-12-06,V2-PROTO-B,LOT351
+BF-112,EMEA,final_review,3,Recommend delaying EU launch until battery issues resolved.,external,2024-12-07,V2-PROTO-B,LOT351
+BF-113,EMEA,final_review,3,Partner feedback: wait for localization completion.,internal,2024-12-08,V2-PROTO-B,LOT351
+BF-114,EMEA,final_review,3,GDPR review ongoing. Privacy policy updates required.,internal,2024-12-09,V2-PROTO-B,LOT351
+BF-115,EMEA,final_review,3,EU launch blocked pending regulatory and technical readiness.,internal,2024-12-10,V2-PROTO-B,LOT351
+BF-116,APAC,final_review,4,V2 ready for select APAC markets. Full rollout in Q2.,internal,2024-12-06,V2-PROTO-C,LOT352
+BF-117,APAC,final_review,4,Australia and Singapore launch approved. Japan pending.,external,2024-12-07,V2-PROTO-C,LOT352
+BF-118,APAC,final_review,4,Distribution partners aligned. Logistics confirmed.,internal,2024-12-08,V2-PROTO-C,LOT352
+BF-119,APAC,final_review,4,Regional marketing adapted. Local campaigns ready.,internal,2024-12-09,V2-PROTO-C,LOT352
+BF-120,APAC,final_review,4,APAC launch GO for tier-1 markets. Tier-2 in 8 weeks.,internal,2024-12-10,V2-PROTO-C,LOT352
