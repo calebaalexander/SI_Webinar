@@ -1,6 +1,6 @@
 # Cortex Code Installation & Setup Guide
 
-Get Cortex Code (CoCo) running on your machine in minutes. This guide covers both the **CLI** (terminal) and **Desktop UI** (VS Code extension).
+Get Cortex Code (CoCo) running in minutes. This guide covers both the **CLI** (terminal) and the **Snowsight UI** (browser).
 
 ---
 
@@ -14,13 +14,22 @@ Before you begin, ensure you have:
 | **Account Role** | ACCOUNTADMIN or role with CREATE DATABASE privileges |
 | **Operating System** | macOS, Windows, or Linux |
 | **Terminal Access** | Terminal (macOS/Linux) or PowerShell/CMD (Windows) |
-| **VS Code** (for Desktop UI) | [Download VS Code](https://code.visualstudio.com/) |
 
 ---
 
 ## Part 1: Install Cortex Code CLI
 
-### Step 1: Download the CLI
+### Step 1: Identify Your System
+
+Not sure which download to use? Here's how to check:
+
+| Platform | How to Check | What to Look For |
+|----------|-------------|------------------|
+| **macOS** | Apple menu → About This Mac | **Chip: Apple M1/M2/M3/M4** = Apple Silicon (ARM64). **Processor: Intel** = Intel (AMD64) |
+| **Windows** | Settings → System → About | **System type: 64-bit operating system, x64-based processor** = standard Windows download |
+| **Linux** | Run `uname -m` in terminal | **x86_64** = AMD64. **aarch64** = ARM64 |
+
+### Step 2: Download the CLI
 
 #### macOS (Apple Silicon)
 ```bash
@@ -51,7 +60,7 @@ tar -xzf cortex.tar.gz
 sudo mv cortex /usr/local/bin/
 ```
 
-### Step 2: Verify Installation
+### Step 3: Verify Installation
 
 ```bash
 cortex --version
@@ -106,60 +115,63 @@ cortex connection use my_connection
 
 ---
 
-## Part 3: Enable Desktop UI (VS Code Extension)
+## Part 3: Enable Cortex Code in Snowsight
 
-### Step 1: Install the Extension
+Cortex Code is built directly into the Snowsight browser interface — no installation or extension required.
 
-1. Open **VS Code**
-2. Go to **Extensions** (Cmd+Shift+X on Mac, Ctrl+Shift+X on Windows)
-3. Search for **"Cortex Code"** or **"Snowflake Cortex"**
-4. Click **Install**
+### Step 1: Open Snowsight
 
-### Step 2: Configure the Extension
+1. Navigate to your Snowflake account URL in a browser
+2. Log in with your credentials
+3. Ensure you are using the **ACCOUNTADMIN** role (or a role with sufficient privileges)
 
-1. Open **VS Code Settings** (Cmd+, on Mac, Ctrl+, on Windows)
-2. Search for **"Cortex"**
-3. Set your default connection name (same as CLI)
+### Step 2: Open the Cortex Code Panel
 
-### Step 3: Activate Cortex Code Panel
+1. Click **Projects** in the left sidebar
+2. Select **Workspaces** from the dropdown menu
+3. Click **+ Workspace** to create a new workspace (or open an existing one)
+4. Inside your workspace, click the **+** button in the tab bar
+5. Select **SQL file**
+6. The **Cortex Code AI assistant panel** appears on the right side
 
-1. Click the **Cortex Code icon** in the VS Code sidebar (left panel)
-2. Or use the keyboard shortcut: **Cmd+Shift+P** → "Cortex Code: Open Chat"
+> **Tip:** The Cortex Code panel is context-aware — it picks up your current database, schema, and role from the Snowsight session automatically.
 
-### Step 4: Verify Connection
+### Step 3: Verify Connection
 
 In the Cortex Code chat panel, type:
 
 ```
-What Snowflake account am I connected to?
+What databases exist in my account?
 ```
 
-CoCo should respond with your account details.
+CoCo should respond with your database list, confirming it's connected and aware of your environment.
 
 ---
 
 ## Part 4: Quick Verification Checklist
 
-Run through these commands to confirm everything is working:
+### CLI
 
 ```bash
-# Check CLI version
 cortex --version
-
-# List connections
 cortex connection list
-
-# Test active connection
 cortex connection test
-
-# Start an interactive session
 cortex chat
 ```
 
-In VS Code:
-- [ ] Cortex Code extension installed
-- [ ] Cortex Code icon visible in sidebar
-- [ ] Chat panel opens and responds
+In the `cortex chat` session, type:
+```
+Show me my warehouses
+```
+
+*(Exit with Ctrl+C or type 'exit')*
+
+### Snowsight UI
+
+- [ ] Logged into Snowsight
+- [ ] Created a workspace with a SQL file
+- [ ] Cortex Code panel visible on the right side
+- [ ] CoCo responds to a test question
 
 ---
 
@@ -185,11 +197,48 @@ export PATH=$PATH:/usr/local/bin
 2. Check network/firewall settings
 3. Try `externalbrowser` auth if password fails
 
-### VS Code Extension Not Responding
+### CoCo Panel Not Appearing in Snowsight
 
-1. Reload VS Code window (Cmd+Shift+P → "Reload Window")
-2. Check that CLI is installed and working first
-3. Verify connection name in VS Code settings matches CLI
+If you don't see the Cortex Code icon in the bottom-right corner of Snowsight, check the following:
+
+#### 1. Missing Database Roles
+
+Your user needs two database roles granted. An ACCOUNTADMIN can run:
+
+```sql
+-- Required for all users
+GRANT DATABASE ROLE SNOWFLAKE.COPILOT_USER TO ROLE <your_role>;
+
+-- At least one of these is also required
+GRANT DATABASE ROLE SNOWFLAKE.CORTEX_USER TO ROLE <your_role>;
+-- OR for full agentic capabilities:
+GRANT DATABASE ROLE SNOWFLAKE.CORTEX_AGENT_USER TO ROLE <your_role>;
+```
+
+#### 2. Cross-Region Inference Not Enabled
+
+Cortex Code requires access to large language models that may not be hosted in your account's region. An ACCOUNTADMIN must enable cross-region inference:
+
+```sql
+ALTER ACCOUNT SET CORTEX_ENABLED_CROSS_REGION = 'AWS_US';
+```
+
+Replace `AWS_US` with the appropriate value for your deployment:
+
+| Value | Description |
+|-------|-------------|
+| `AWS_US` | Route to US-based AWS regions |
+| `AWS_EU` | Route to EU-based AWS regions |
+| `AWS_APJ` | Route to Asia-Pacific AWS regions |
+| `ANY_REGION` | Route to any available region (most flexible) |
+
+#### 3. Legacy Copilot Was Opted Out
+
+If your account previously disabled Snowflake Copilot (the earlier version of this feature), Cortex Code will also be disabled. Contact your Snowflake account team to re-enable it.
+
+#### 4. Not in a Workspace
+
+Make sure you are inside a **Workspace** (not a standalone worksheet). Navigate to **Projects → Workspaces**, open or create a workspace, and add a **SQL file**. The CoCo icon appears in the bottom-right corner of the workspace.
 
 ---
 
@@ -197,8 +246,8 @@ export PATH=$PATH:/usr/local/bin
 
 Now that Cortex Code is installed, continue to:
 
-- **[CoCo CLI Lab](../CoCo%20CLI/)** — Build semantic views and agents from the terminal
-- **[CoCo UI Lab](../CoCo%20UI/)** — Visual development with VS Code integration
+- **[CoCo CLI Lab](../CoCo%20CLI/)** — Build semantic views, Cortex Agents, and custom skills from the terminal
+- **[CoCo UI Lab](../CoCo%20UI/)** — Screenshot debugging, notebooks, Dynamic Tables, and Streamlit apps in Snowsight
 
 ---
 
