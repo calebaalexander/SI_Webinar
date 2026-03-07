@@ -6,13 +6,25 @@
 
 ## Tab 1: Why Are We Here?
 
-To learn about **Cortex Code CLI**, the first truly Snowflake-native AI coding agent. Cortex Code turns complex data engineering, analytics, machine learning, and agent-building tasks into simple, natural language interactions with high accuracy.
+To learn about **Cortex Code CLI (CoCo)** — Snowflake's AI-powered coding agent for the terminal. In about 30 minutes, you will go from raw data to board-ready deliverables: a semantic layer, an AI agent, a reusable skill, and stakeholder documentation — all from the command line.
 
 ### Structure of the Session
+
+This lab follows a **Tell-Show-Tell** format across three acts:
+
+1. **ACT 1: THE HOOK** — Slides introducing the problem, CoCo, and the PawCore scenario
+2. **ACT 2: THE BUILD** — Live terminal work: load data, create semantic view, deploy agent, build skill
+3. **ACT 3: THE PAYOFF** — Generate stakeholder documentation, recap, next steps
+
+### Exercises
 1. **Getting Started** — Install, authenticate, and load data
-2. **Exercise 1: Build the PawCore Analytics Environment** — Set up data, create a Semantic View, and launch a Snowflake Intelligence agent
+2. **Exercise 1: Build the PawCore Analytics Environment** — Create a Semantic View, deploy a Cortex Agent, enable Snowflake Intelligence
 3. **Exercise 2: Master Cortex Code Skills** — Explore built-in skills and create a custom one
 4. **Exercise 3: Generate Launch Documentation** — Produce stakeholder-ready reports and diagrams
+
+### Scenario: PawCore / SmartCollar V2
+
+PawCore is a fictional pet health and fitness tracker company. Their flagship product is the SmartCollar, and they are preparing to launch Version 2. The data includes device telemetry, manufacturing quality logs, customer reviews, support tickets, and V2 beta tester feedback — all in Snowflake. The question: are we ready to launch, and where do we launch first?
 
 ### Key Concepts
 
@@ -22,6 +34,7 @@ To learn about **Cortex Code CLI**, the first truly Snowflake-native AI coding a
 | **Semantic Views** | A SQL-based data model layer that describes your tables, relationships, metrics, and business definitions to Cortex Analyst. |
 | **Snowflake Intelligence** | A conversational AI chat interface built on Cortex Agents. Lets users explore data through conversation. |
 | **Skills** | Reusable workflows packaged as markdown files that teach Cortex Code how to complete specific tasks consistently. |
+| **Cortex Agents** | Combine structured data queries (via Semantic Views) and unstructured document search (via Cortex Search) in one conversational interface. |
 | **Cortex Search** | AI-powered search across unstructured documents (PDFs, text files) stored in Snowflake. |
 
 ---
@@ -29,6 +42,8 @@ To learn about **Cortex Code CLI**, the first truly Snowflake-native AI coding a
 ## Tab 2: Getting Started
 
 **Time: ~10 minutes**
+
+> **Prerequisite:** This lab assumes Cortex Code CLI is already installed and connected to your Snowflake account. If you have not completed setup yet, follow the [Install Guide](../CoCo%20Install/README.md) first — it takes about 10 minutes. Once you can run `cortex` and see your connections, come back here.
 
 ### Step 1: Download Use Case Context Files
 
@@ -39,43 +54,7 @@ Download the PawCore company context files that provide the business scenario fo
 
 These files simulate real discovery artifacts you'd receive from a customer engagement. Save them to a folder you can easily access from your terminal.
 
-### Step 2: Install Cortex Code CLI
-
-Install Cortex Code CLI by running the following command in your terminal:
-
-```bash
-curl -LsS https://ai.snowflake.com/static/cc-scripts/install.sh | sh
-```
-
-This installs the `cortex` executable to `~/.local/bin` by default.
-
-**Prerequisites:**
-- macOS (Apple Silicon or Intel), Linux (Intel), or Windows Subsystem for Linux (WSL)
-- Snowflake CLI installed
-- Access to bash, zsh, or fish shell
-
-### Step 3: Authenticate with Snowflake
-
-Cortex Code requires a **Programmatic Access Token (PAT)** to connect to your Snowflake account.
-
-1. **Generate a PAT in Snowsight:**
-   - Log in to Snowsight
-   - Click your username (bottom-left) → **My Profile**
-   - Navigate to **Authentication** → **Programmatic access tokens**
-   - Click **Generate token**, provide a name and expiration, then copy the token
-
-2. **Add the token to your connections file:**
-   - Open `~/.snowflake/connections.toml` in a text editor
-   - Add or update your connection:
-     ```toml
-     [my_connection]
-     account = "your_account"
-     user = "your_username"
-     authenticator = "programmatic_access_token"
-     token = "your_pat_token_here"
-     ```
-
-### Step 4: Launch Cortex Code and Verify
+### Step 2: Launch Cortex Code and Verify
 
 ```bash
 cortex
@@ -97,7 +76,7 @@ list skills
 
 You should see skills organized by category. Look for `semantic-view` and `cortex-agent` under **Snowflake Features**.
 
-### Step 5: Load PawCore Data
+### Step 3: Load PawCore Data
 
 **Choose your setup path:**
 
@@ -176,7 +155,7 @@ Alternatively, you can manually upload data files via Snowsight:
 
 ---
 
-### Step 6: Verify Data Loaded
+### Step 4: Verify Data Loaded
 
 Ask Cortex Code to validate:
 
@@ -568,16 +547,23 @@ Save to a file called board_presentation_script.md
 You've completed the **Intro to Cortex Code CLI** Hands-On Lab.
 
 ### What You Accomplished
-- Built a working analytics environment with Cortex Code CLI
-- Created a Semantic View and Cortex Agent for Snowflake Intelligence
-- Mastered using built-in skills and created a custom skill for your team
-- Generated professional documentation for a board presentation
+- Loaded and explored data from GitHub in minutes
+- Built a semantic layer that lets anyone ask business questions without SQL
+- Deployed a Cortex Agent that combines structured data and document search in one conversational interface
+- Created a custom skill that encodes a launch readiness workflow for reuse
+- Generated stakeholder documentation ready for the board
 
-### What You Can Do Next
+### Your Next Steps
+1. **Install CoCo** — one command, 30 seconds
+2. **Run `list skills`** — see what's already built for you
+3. **Pick one repetitive task** — that report you run every Monday, that environment setup you've done a dozen times
+4. **Build a skill for it** — or find a bundled one that already does it
+
+### Continue Learning
 - Refine the Semantic View based on real user questions
 - Share the `pawcore-launch-readiness` skill with colleagues
 - Explore more bundled skills: `cost-management`, `data-governance`, `dynamic-tables`
-- Try the **Intro to CoCo UI** lab for the visual Snowsight experience
+- Try the **[Intro to CoCo UI](../CoCo%20UI/)** lab for the visual Snowsight experience
 
 ### Cleanup
 
