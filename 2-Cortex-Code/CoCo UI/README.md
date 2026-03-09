@@ -12,7 +12,7 @@ To learn about **Cortex Code in Snowsight**, the AI coding assistant built direc
 
 ### Structure of the Session
 1. **Getting Started** — Log in, open the Cortex Code panel, load data via CoCo
-2. **Exercise 1: Screenshot Error Repair** — Paste a screenshot of an error and watch CoCo fix it
+2. **Exercise 1: Three Ways to Fix Code** — Fix errors using natural language, the Fix button, and screenshot repair
 3. **Exercise 2: Snowflake Notebook** — Build a support operations analysis notebook from natural language
 4. **Exercise 3: Dynamic Table Pipeline** — Operationalize support metrics as an auto-refreshing pipeline
 5. **Exercise 4: Streamlit Application** — Build and deploy a live support ops dashboard from a single prompt
@@ -124,13 +124,13 @@ Show me row counts for all tables in PAWCORE_ANALYTICS
 
 ---
 
-## Tab 3: Exercise 1 — Screenshot Error Repair
+## Tab 3: Exercise 1 — Three Ways to Fix Code
 
-**Objective:** Demonstrate that Cortex Code can read screenshots — paste an image of an error and CoCo diagnoses and fixes it.
+**Objective:** Demonstrate three escalating methods for fixing code with CoCo — natural language, the inline Fix button, and screenshot repair — plus the Explain button for code comprehension.
 
-**Time: ~5 minutes**
+**Time: ~8 minutes**
 
-**Background:** PawCore's CX team tries to run SQL queries to understand their support ticket load but keeps hitting errors. They don't know SQL well enough to debug them. CoCo to the rescue.
+**Background:** PawCore's CX team tries to run SQL queries to understand their support ticket load but keeps hitting errors. This exercise shows three different ways CoCo can help, from simplest to most powerful.
 
 ---
 
@@ -139,63 +139,117 @@ Show me row counts for all tables in PAWCORE_ANALYTICS
 Copy and paste this **intentionally broken** SQL into your worksheet:
 
 ```sql
-SELECT region, severity, COUNT(*) as tiket_count,
+SELECT region, severity, COUNT(*) as tiket_count
 FROM PAWCORE_ANALYTICS.SUPORT.SUPPORT_TICKETS
 GROUP BY region, severity
 ORDER BY tiket_count DES;
 ```
 
-Run it. You will get an error.
-
-> **What's wrong:** Three bugs are hidden in this query:
-> 1. `tiket_count` — should be `ticket_count` (missing C)
+> **What's wrong:** Three errors are hidden in this query:
+> 1. `DES` — should be `DESC`
 > 2. `SUPORT` — should be `SUPPORT`
-> 3. `DES` — should be `DESC`
+> 3. `severity` — should be `PRIORITY` (the actual column name in the table)
+>
+> Plus a cosmetic issue: `tiket_count` should be `ticket_count` — but the compiler won't catch this one.
 
 ---
 
-### Task 2: Screenshot the Error (1 min)
+### Task 2: Use the Explain Button (1 min)
 
-1. Take a **screenshot** of the error message in Snowsight (Cmd+Shift+4 on Mac, Win+Shift+S on Windows)
-2. Save the screenshot to your desktop or clipboard
+Before fixing anything, try the **Explain** feature:
 
-> **Tip:** Capture both the query and the error message in the screenshot for best results.
+1. **Select the entire query** in the worksheet
+2. The **inline toolbar** appears: Add to Chat, Explain, Quick Edit, Format
+3. Click **Explain**
+4. CoCo returns a plain-English explanation of what the query does — the aggregation, grouping, and sort
+
+> **Key Feature:** If you inherited code from someone who left the team, you don't have to reverse-engineer it. Highlight and click Explain.
 
 ---
 
-### Task 3: Paste into CoCo and Fix (3 min)
+### Task 3: Method 1 — Natural Language Fix (1 min)
 
-1. Click into the Cortex Code panel
-2. **Paste the screenshot** directly into the chat input (Cmd+V / Ctrl+V)
-3. Add a message:
+Fix the `DES` error using natural language:
+
+1. **Select `DES`** on line 4
+2. The inline toolbar appears — click **"Add to Chat"**
+3. In the CoCo panel, type:
+
+```
+Fix this — it should be DESC
+```
+
+4. CoCo returns the corrected line. **Accept the change.**
+
+> **Why this method:** You can see the problem and know the fix. Just tell CoCo in plain English.
+
+---
+
+### Task 4: Method 2 — Fix Button (1 min)
+
+Fix the `SUPORT` error using the inline Fix button:
+
+1. **Run the query** — you'll get an error: `Schema 'PAWCORE_ANALYTICS.SUPORT' does not exist or not authorized.`
+2. A **Fix** button appears below the error message
+3. **Click Fix** — CoCo shows a diff view (red/green changes)
+4. CoCo identifies the typo: `SUPORT` → `SUPPORT`
+5. Click **"Keep all in file"** to accept
+
+> **Why this method:** You don't even need to diagnose the problem. The Fix button reads the compiler error and resolves it automatically.
+
+---
+
+### Task 5: Method 3 — Screenshot Fix (2 min)
+
+Fix the `severity` → `PRIORITY` error using a screenshot:
+
+1. **Run the query** — you'll get: `invalid identifier 'SEVERITY'`
+2. **Screenshot the entire screen** — query and error together (Cmd+Shift+4 on Mac, Win+Shift+S on Windows)
+3. **Paste the screenshot** into the CoCo panel and type:
 
 ```
 Fix this error
 ```
 
-4. CoCo will:
-   - Read the screenshot image
-   - Identify the SQL errors (alias typo, schema name, sort order)
-   - Generate corrected SQL
-5. Run the corrected SQL — success!
+4. CoCo reads the image, checks the actual table columns, and finds that the table uses `PRIORITY`, not `severity`
+5. **Accept the change.** Run the query — success! 8 rows returned.
 
-> **Key Feature:** Cortex Code can read images. Paste error screenshots, broken queries, even UI error dialogs — CoCo diagnoses the problem and generates the fix. This is transformative for teams that aren't SQL experts.
+> **Why this method:** When you don't know the right column name, CoCo can introspect the table and figure it out from a screenshot.
+
+---
+
+### Task 6: Bonus — Screenshot Catches What Compilers Can't (1 min)
+
+The query works, but notice the column header says `TIKET_COUNT` — a cosmetic typo the compiler ignored.
+
+1. **Screenshot the successful results** showing the `TIKET_COUNT` header
+2. **Paste into CoCo:**
+
+```
+Fix the typo in this query
+```
+
+3. CoCo reads the image, spots `tiket_count`, corrects it to `ticket_count`
+4. Accept and re-run — clean column: `TICKET_COUNT`
+
+> **Key Feature:** The screenshot method catches issues no compiler ever will — wrong columns, cosmetic typos, misleading aliases. One gesture: screenshot, paste, fix.
 
 ---
 
 ### Validation Checklist — Exercise 1
 
-- [ ] Ran the broken SQL and got an error
-- [ ] Took a screenshot of the error
-- [ ] Pasted the screenshot into the CoCo panel
-- [ ] CoCo identified all three errors
-- [ ] Corrected SQL runs successfully
+- [ ] Used the Explain button to understand the query
+- [ ] Fixed `DES` → `DESC` using natural language (Add to Chat)
+- [ ] Fixed `SUPORT` → `SUPPORT` using the Fix button
+- [ ] Fixed `severity` → `PRIORITY` using a screenshot
+- [ ] Fixed `tiket_count` → `ticket_count` using a screenshot of results
+- [ ] Final query runs successfully with clean column names
 
 ---
 
 ## Tab 4: Exercise 2 — Snowflake Notebook: Support Ops Analysis
 
-**Objective:** Have CoCo create a Snowflake Notebook that analyzes PawCore's support operations readiness, then demonstrate screenshot error repair on a notebook cell.
+**Objective:** Have CoCo create a Snowflake Notebook that analyzes PawCore's support operations readiness, then use the screenshot method to fix a cell that returns no results.
 
 **Time: ~8 minutes**
 
@@ -222,52 +276,38 @@ on critical ticket counts and sentiment scores.
 Use data from SUPPORT_TICKETS, CUSTOMER_REVIEWS, and TELEMETRY tables.
 Use SNOWFLAKE.CORTEX.SENTIMENT for the sentiment analysis cell.
 
-Create and run the notebook.
+Create and run the notebook. Continue autonomously.
 ```
 
-**What you should see:** A multi-cell notebook showing which regions have support operations under control and which are stretched thin.
+**What you should see:** A multi-cell notebook with ticket breakdown, customer frustration signals, telemetry patterns, AI sentiment, and a composite readiness score.
 
 ---
 
-### Task 2: Break and Fix a Cell (3 min)
+### Task 2: Fix the "No Results" Cell with a Screenshot (3 min)
 
-Now let's demonstrate screenshot repair in a notebook context.
+After the notebook runs, check the cells. Cell 4 (the telemetry anomalies cell) may return **"Query produced no results"** — the query ran clean with no error, but zero rows came back. This is the kind of issue a compiler will never catch.
 
-#### Step 1: Intentionally break a cell
-
-Edit Cell 5 to introduce an error — change a column name:
-
-```sql
--- Change "critical_tickets" to "critical_count" (doesn't exist)
-```
-
-Run the cell. It will fail.
-
-#### Step 2: Screenshot the error
-
-Take a screenshot of the failed notebook cell showing the error output.
-
-#### Step 3: Fix with CoCo
-
-Paste the screenshot into the CoCo panel:
+1. **Screenshot Cell 4** — capture both the query and the "Query produced no results" output
+2. **Paste the screenshot** into the CoCo panel:
 
 ```
-Fix this notebook cell error
+This cell returned no results. Fix the query so it returns data.
 ```
 
-CoCo reads the screenshot, identifies the wrong column name, and provides the corrected SQL.
+3. CoCo reads the image, checks the actual column values in the table, and finds that the WHERE filter doesn't match the data
+4. **Accept the corrected query.** Re-run Cell 4 — results appear.
 
-> **Key Feature:** The screenshot repair pattern works everywhere in Snowsight — SQL worksheets, notebooks, Streamlit errors, even the Activity panel. One interaction pattern, many surfaces.
+> **Key Feature:** Same pattern from Exercise 1 — screenshot, paste, fix. The screenshot method works on notebooks too, and catches issues that produce no error message at all.
 
 ---
 
 ### Validation Checklist — Exercise 2
 
-- [ ] Notebook created with 5 cells
+- [ ] Notebook created with multiple analysis cells
 - [ ] All cells execute successfully with meaningful results
 - [ ] Sentiment analysis shows regional patterns
 - [ ] Support ops summary shows SUPPORT_READY flags
-- [ ] Screenshot error repair worked on the notebook cell
+- [ ] Screenshot fix resolved the Cell 4 "no results" issue
 
 ---
 
@@ -421,7 +461,6 @@ In the Cortex Code panel:
 ```
 Create a Cortex Analyst semantic view called
 PAWCORE_ANALYTICS.SEMANTIC.SUPPORT_OPS for support operations analysis.
-Proceed autonomously.
 
 Include these tables:
 1. SUPPORT.SUPPORT_TICKETS — ticket volume, severity, and status by region
@@ -432,7 +471,8 @@ Include these tables:
 Define metrics: total_tickets, critical_ticket_count, avg_rating,
 avg_battery_level, low_battery_event_count, avg_beta_rating.
 
-Execute the SQL.
+IMPORTANT: Do NOT use "data_type" in the YAML — it is not a valid
+semantic view field and will cause parsing errors. Continue autonomously.
 ```
 
 ---
@@ -440,16 +480,20 @@ Execute the SQL.
 ### Task 2: Create the Agent & Test in Intelligence (2 min)
 
 ```
-Create a Cortex Agent called PAWCORE_SUPPORT_OPS_AGENT in PAWCORE_ANALYTICS.SEMANTIC.
-Proceed autonomously and execute all SQL including grants.
-
-Use the SUPPORT_OPS semantic view and the PAWCORE_DOCUMENT_SEARCH
-Cortex Search service. Grant USAGE to PUBLIC. Use automatic model selection.
-
-Execute all SQL.
+Create a Cortex Agent PAWCORE_ANALYTICS.SEMANTIC.PAWCORE_SUPPORT_OPS_AGENT
+using model 'claude-haiku-4-5' with tools for
+PAWCORE_ANALYTICS.SEMANTIC.SUPPORT_OPS semantic view and the Cortex Search
+service PAWCORE_ANALYTICS.SEMANTIC.PAWCORE_DOCUMENT_SEARCH. Run
+SHOW CORTEX SEARCH SERVICES IN SCHEMA PAWCORE_ANALYTICS.SEMANTIC to confirm
+it exists. If the search service doesn't exist, STOP and tell me — the
+setup script should have created it. Do NOT create it yourself. Add
+orchestration and response instructions so the agent knows its role, uses
+the right tool for each question type, and responds concisely with bullet
+points and regional breakdowns. Grant USAGE on the agent to PUBLIC.
+Continue autonomously.
 ```
 
-Then open **Snowflake Intelligence** (AI & ML → Snowflake Intelligence) and test:
+Then navigate to **AI & ML → Agents → Snowflake Intelligence tab**. Click **"Add existing agent"**, search for `PAWCORE_SUPPORT_OPS_AGENT`, select it, and confirm. Then switch to **Snowflake Intelligence** and test:
 
 ```
 Which region has the highest support ticket load and what's driving it?
@@ -480,7 +524,7 @@ You've completed the **Intro to Cortex Code UI** Hands-On Lab.
 
 | Asset | What It Does |
 |-------|-------------|
-| **Screenshot Error Repair** | Diagnosed and fixed SQL errors from a pasted screenshot |
+| **Three Fix Methods** | Fixed errors using natural language, Fix button, and screenshot repair |
 | **Snowflake Notebook** | Interactive support ops analysis with AI sentiment scoring |
 | **Dynamic Table** | Auto-refreshing pipeline aggregating regional support metrics |
 | **Streamlit Dashboard** | Live Support Ops Dashboard deployed in Snowflake |
