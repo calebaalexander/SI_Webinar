@@ -157,53 +157,49 @@ Fix `severity` -> `PRIORITY`:
 
 ## Step 3: Build a Snowflake Notebook
 
-Marcus needs a repeatable analysis of his team's support operations - ticket volumes, severity patterns, customer frustration signals, and device issues driving support calls.
+Marcus's team has a basic starter model that predicts customer review ratings from device telemetry. It works, but it only uses two features and a simple linear regression. We will upload it to Snowflake and use Cortex Code to turn it into a production-quality analysis.
 
-### Create the Notebook
+### Upload the Starter Notebook
+
+1. Download **`support_ops_starter.ipynb`** from the GitHub repo (`exercises/` folder)
+2. In Snowsight, navigate to **Notebooks** (left sidebar)
+3. Click the **down arrow** next to **+ Notebook** and select **Import .ipynb file**
+4. Upload `support_ops_starter.ipynb`
+5. Set the notebook location to **PAWCORE_ANALYTICS.SUPPORT**
+6. Set the warehouse to **PAWCORE_DEMO_WH**
+7. Rename the notebook to **Support Ops Readiness Analysis**
+
+### Review the Starter Model
+
+Open the notebook and review what exists:
+- **Cell 1:** Connects to Snowflake via `get_active_session()`
+- **Cell 2:** Joins CUSTOMER_REVIEWS and TELEMETRY, pulls only 2 features (AVG_BATTERY, AVG_TEMP)
+- **Cell 3:** Fits a basic `LinearRegression` with a train/test split
+
+This is intentionally bare-bones. The R-squared will be low because we are only using two numeric features and ignoring review text, support ticket data, and regional patterns.
+
+### Enhance with Cortex Code
 
 In the Cortex Code panel, paste this prompt:
 
 ```
-Create a Snowflake Notebook called "Support Ops Readiness Analysis" in
-PAWCORE_ANALYTICS.SUPPORT.
+This notebook has a basic linear regression predicting customer review
+ratings from only 2 telemetry features. It needs serious improvement.
 
-I want to analyze whether our support team is operationally ready for V2
-launch volume. Build cells that examine support ticket severity by region,
-customer review patterns that predict future ticket volume, device
-telemetry anomalies like low battery events that drive support calls,
-and AI-powered sentiment analysis on customer reviews. Finish with a
-composite summary that flags each region as SUPPORT_READY or not based
-on critical ticket counts and sentiment scores.
+Enhance this model:
+- Add feature engineering: pull in support ticket counts, critical ticket
+  ratios, and resolution times per device from PAWCORE_ANALYTICS.SUPPORT.SUPPORT_TICKETS
+- Add AI-powered sentiment scores on review text using SNOWFLAKE.CORTEX.SENTIMENT
+- Replace LinearRegression with a better model (RandomForest or GradientBoosting)
+- Add proper evaluation: cross-validation, feature importance plot, and
+  a comparison of before/after R-squared scores
+- Add a final summary cell that flags each region as SUPPORT_READY or
+  AT_RISK based on predicted ratings and sentiment
 
-Use data from SUPPORT_TICKETS, CUSTOMER_REVIEWS, and TELEMETRY tables.
-Use SNOWFLAKE.CORTEX.SENTIMENT for the sentiment analysis cell.
-
-Create and run the notebook. Continue autonomously.
+Run each cell after creating it. Continue autonomously.
 ```
 
-CoCo creates a multi-cell notebook with ticket breakdown, customer frustration signals, telemetry patterns, AI sentiment, and a composite readiness score.
-
-### Fix Broken Cells
-
-After running all cells, you will see issues:
-
-**Cell 2 (schema/column error):** Click the error, then in the CoCo panel type:
-
-```
-Fix this error
-```
-
-CoCo checks the actual schema/column names and corrects them.
-
-**Cell 3 (no results):** The query ran but returned zero rows. In the CoCo panel:
-
-```
-Cell 3 returned no results. The filters are too restrictive. Fix the query so it returns data.
-```
-
-CoCo checks the actual data ranges and relaxes the WHERE clause.
-
-> CoCo catches issues that produce no error message at all - like overly restrictive filters that return empty results.
+CoCo reads the existing notebook, understands the starter model, and builds on top of it - adding feature engineering cells, sentiment analysis, a stronger model, and proper evaluation metrics.
 
 ---
 
