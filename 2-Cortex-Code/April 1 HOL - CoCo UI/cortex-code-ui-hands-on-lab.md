@@ -1,43 +1,29 @@
-author: Caleb Alexander
-id: cortex-code-ui-hands-on-lab
-language: en
-summary: Learn how to use Cortex Code in Snowsight to fix broken queries, build notebooks, create dynamic table pipelines, deploy Streamlit apps, and launch Intelligence agents - all from natural language.
-categories: snowflake-site:taxonomy/solution-center/certification/quickstart, snowflake-site:taxonomy/product/ai, snowflake-site:taxonomy/snowflake-feature/snowflake-intelligence, snowflake-site:taxonomy/snowflake-feature/dynamic-tables
-environments: web
-status: Published
-feedback link: https://github.com/Snowflake-Labs/sfguides/issues
-fork repo link: https://github.com/calebaalexander/HandsOnLabs
-authors: Caleb Alexander
-
 # Cortex Code in Snowsight: Build a Full Data Pipeline with AI
-<!-- ------------------------ -->
-## Overview
-Duration: 5
 
-**PawCore is a fictional company. All data, names, metrics, and scenarios are simulated for demonstration purposes only.**
+> **PawCore is a fictional company.** All data, names, metrics, and scenarios are simulated for demonstration purposes only.
 
-In this guide you will use **Cortex Code**, the AI coding assistant built into Snowflake's web interface, to go from raw data to a fully operational analytics pipeline without writing a single line of code manually. You will fix broken queries, build a Snowflake Notebook, create a Dynamic Table pipeline, deploy a Streamlit application, and launch a Snowflake Intelligence agent - all through natural language conversation.
+In this quickstart you will use **Cortex Code**, the AI coding assistant built into Snowflake's web interface, to go from raw data to a fully operational analytics pipeline - without writing a single line of code manually. You will fix broken queries, build a Snowflake Notebook, create a Dynamic Table pipeline, deploy a Streamlit application, and launch a Snowflake Intelligence agent, all through natural language.
 
-The scenario: PawCore, a pet health technology company, is preparing to launch SmartCollar V2. Marcus Thompson, the CX lead, needs to know whether his support team is operationally ready for the volume V2 will bring. You will build the analytics infrastructure he needs.
+**The scenario:** PawCore, a pet health technology company, is preparing to launch SmartCollar V2. Marcus Thompson, the CX lead, needs to know whether his support team is operationally ready for the volume V2 will bring. You will build the analytics infrastructure he needs.
+
+---
 
 ### Prerequisites
+
 - A Snowflake account with the **ACCOUNTADMIN** role (or a role with sufficient privileges)
-- Cortex Code enabled in your Snowflake environment (Settings > Cortex Code > toggle on)
+- Cortex Code enabled in your Snowflake environment (**Settings > Cortex Code > toggle on**)
 - A modern web browser
+- Approximately 45 minutes
 
 ### What You Will Learn
-- How to fix broken SQL using natural language and the inline Fix button
-- How to create Snowflake Notebooks from a single prompt
-- How to build auto-refreshing Dynamic Table pipelines
-- How to deploy Streamlit applications directly in Snowflake
-- How to create Semantic Views and Cortex Agents for self-service analytics
 
-### What You Will Need
-- A [Snowflake account](https://signup.snowflake.com/) with ACCOUNTADMIN access
-- ~45 minutes
+- Fix broken SQL using natural language and the inline Fix button
+- Create Snowflake Notebooks from a single prompt
+- Build auto-refreshing Dynamic Table pipelines
+- Deploy Streamlit applications directly in Snowflake
+- Create Semantic Views and Cortex Agents for self-service analytics
 
 ### What You Will Build
-A complete analytics pipeline:
 
 ```
 Raw Data (7 tables)
@@ -47,9 +33,9 @@ Raw Data (7 tables)
       -> Intelligence Agent (conversational analytics for ad-hoc investigation)
 ```
 
-<!-- ------------------------ -->
-## Environment Setup
-Duration: 10
+---
+
+## Step 1: Environment Setup
 
 ### Create a Workspace
 
@@ -61,7 +47,7 @@ Duration: 10
 6. Inside your workspace, click the **+** button in the tab bar and select **SQL file**
 7. The **Cortex Code AI assistant panel** appears on the right side
 
-> **Tip:** The Cortex Code panel is context-aware. It knows which project, database, and files you're working with.
+> **Tip:** The Cortex Code panel is context-aware. It knows which project, database, and files you are working with.
 
 ### Load PawCore Data
 
@@ -105,11 +91,11 @@ Show me row counts for all tables in PAWCORE_ANALYTICS
 | SUPPORT.V2_BETA_FEEDBACK | ~120 |
 | UNSTRUCTURED.PARSED_CONTENT | 1+ |
 
-<!-- ------------------------ -->
-## Fix Broken Code with CoCo
-Duration: 8
+---
 
-CoCo can diagnose and fix broken SQL using natural language, the inline Fix button, and the Explain feature.
+## Step 2: Fix Broken Code with Cortex Code
+
+Cortex Code can diagnose and fix broken SQL using natural language, the inline Fix button, and the Explain feature.
 
 ### Stage the Broken Query
 
@@ -167,15 +153,9 @@ Fix `severity` -> `PRIORITY`:
 2. **Click Fix** - CoCo checks the actual table columns and finds the table uses `PRIORITY`
 3. **Accept the change.** Run the query - 8 rows returned.
 
-**Validation:**
-- [ ] Used the Explain button to understand the query
-- [ ] Fixed `DES` -> `DESC` using natural language
-- [ ] Fixed `SUPORT` -> `SUPPORT` using the Fix button
-- [ ] Fixed `severity` -> `PRIORITY` using the Fix button
+---
 
-<!-- ------------------------ -->
-## Build a Snowflake Notebook
-Duration: 8
+## Step 3: Build a Snowflake Notebook
 
 Marcus needs a repeatable analysis of his team's support operations - ticket volumes, severity patterns, customer frustration signals, and device issues driving support calls.
 
@@ -225,15 +205,9 @@ CoCo checks the actual data ranges and relaxes the WHERE clause.
 
 > CoCo catches issues that produce no error message at all - like overly restrictive filters that return empty results.
 
-**Validation:**
-- [ ] Notebook created with multiple analysis cells
-- [ ] All cells execute successfully with meaningful results
-- [ ] Sentiment analysis shows regional patterns
-- [ ] Support ops summary shows SUPPORT_READY flags
+---
 
-<!-- ------------------------ -->
-## Create a Dynamic Table Pipeline
-Duration: 5
+## Step 4: Create a Dynamic Table Pipeline
 
 Marcus says: *"Great analysis, but tickets come in every hour. I need this data live."* A Dynamic Table solves this - define a query, attach a refresh interval, and Snowflake handles the rest. No Airflow, no cron jobs, no orchestration layer.
 
@@ -276,14 +250,9 @@ Show me the refresh history for the SUPPORT_OPS_DASHBOARD dynamic table
 
 > Dynamic Tables eliminate ETL scheduling. Define the query once, and Snowflake automatically refreshes the results when upstream data changes.
 
-**Validation:**
-- [ ] Dynamic Table created with proper target lag
-- [ ] Query returns regional support ops metrics
-- [ ] SUPPORT_READY flag correctly identifies ready regions
+---
 
-<!-- ------------------------ -->
-## Deploy a Streamlit Application
-Duration: 8
+## Step 5: Deploy a Streamlit Application
 
 Marcus wants a dashboard his CX team can check every morning before standup - not a spreadsheet, not a notebook, but a real application.
 
@@ -330,15 +299,9 @@ filtered by the region selected in a sidebar dropdown.
 
 > CoCo builds full applications from natural language. The app reads from the Dynamic Table, so it is always current. You can iterate on the design conversationally.
 
-**Validation:**
-- [ ] Streamlit app created and deployed in Snowflake
-- [ ] Dashboard shows regional readiness with color coding
-- [ ] Bar chart displays ticket severity comparisons
-- [ ] App reads from the Dynamic Table (auto-refreshing data)
+---
 
-<!-- ------------------------ -->
-## Build a Semantic View and Intelligence Agent
-Duration: 5
+## Step 6: Build a Semantic View and Intelligence Agent
 
 The final step: give Marcus self-service analytics through Snowflake Intelligence. He can ask ad-hoc questions in natural language without writing SQL.
 
@@ -395,19 +358,14 @@ Is there a correlation between low battery events and critical support tickets?
 
 > The full pipeline is now connected: raw data -> Dynamic Table -> Streamlit dashboard -> Intelligence agent.
 
-**Validation:**
-- [ ] Semantic View created with support ops metrics
-- [ ] Cortex Agent created and granted to PUBLIC
-- [ ] Agent visible in Snowflake Intelligence
-- [ ] Intelligence answers support operations questions accurately
+---
 
-<!-- ------------------------ -->
-## Conclusion And Resources
-Duration: 2
+## Conclusion
 
 Congratulations! You have built a complete analytics pipeline using Cortex Code in Snowsight - entirely through natural language.
 
 ### What You Learned
+
 - How to fix broken SQL using the Explain button, natural language, and the inline Fix button
 - How to create multi-cell Snowflake Notebooks from a single prompt
 - How to build auto-refreshing Dynamic Table pipelines
@@ -445,6 +403,7 @@ DROP API INTEGRATION IF EXISTS github_api;
 ```
 
 ### Related Resources
+
 - [GitHub Repository](https://github.com/calebaalexander/HandsOnLabs)
 - [Cortex Code Documentation](https://docs.snowflake.com/en/user-guide/ui-snowsight-cortex-code)
 - [Dynamic Tables Documentation](https://docs.snowflake.com/en/user-guide/dynamic-tables-about)
