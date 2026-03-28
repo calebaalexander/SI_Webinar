@@ -116,17 +116,16 @@ CoCo can diagnose and fix broken SQL using natural language, the inline Fix butt
 Copy and paste this **intentionally broken** SQL into your worksheet:
 
 ```sql
-SELECT region, severity, COUNT(*) as tiket_count
+SELECT region, severity, COUNT(*) as ticket_count
 FROM PAWCORE_ANALYTICS.SUPORT.SUPPORT_TICKETS
 GROUP BY region, severity
-ORDER BY tiket_count DES;
+ORDER BY ticket_count DES;
 ```
 
 Three errors are hidden in this query:
 1. `DES` should be `DESC`
 2. `SUPORT` should be `SUPPORT`
 3. `severity` should be `PRIORITY` (the actual column name)
-4. `tiket_count` is a cosmetic typo the compiler will not catch
 
 ### Use the Explain Button
 
@@ -168,22 +167,11 @@ Fix `severity` -> `PRIORITY`:
 2. **Click Fix** - CoCo checks the actual table columns and finds the table uses `PRIORITY`
 3. **Accept the change.** Run the query - 8 rows returned.
 
-### Bonus: Cosmetic Fix
-
-The column header says `TIKET_COUNT`. Select the query, click **Add to Chat**, and type:
-
-```
-Fix the typo in this query - tiket_count should be ticket_count
-```
-
-Accept the fix and re-run. Clean column: `TICKET_COUNT`.
-
 **Validation:**
 - [ ] Used the Explain button to understand the query
 - [ ] Fixed `DES` -> `DESC` using natural language
 - [ ] Fixed `SUPORT` -> `SUPPORT` using the Fix button
 - [ ] Fixed `severity` -> `PRIORITY` using the Fix button
-- [ ] Fixed `tiket_count` -> `ticket_count` using natural language
 
 <!-- ------------------------ -->
 ## Build a Snowflake Notebook

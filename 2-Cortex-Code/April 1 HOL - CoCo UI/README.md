@@ -138,18 +138,16 @@ Show me row counts for all tables in PAWCORE_ANALYTICS
 Copy and paste this **intentionally broken** SQL into your worksheet:
 
 ```sql
-SELECT region, severity, COUNT(*) as tiket_count
+SELECT region, severity, COUNT(*) as ticket_count
 FROM PAWCORE_ANALYTICS.SUPORT.SUPPORT_TICKETS
 GROUP BY region, severity
-ORDER BY tiket_count DES;
+ORDER BY ticket_count DES;
 ```
 
 > **What's wrong:** Three errors are hidden in this query:
 > 1. `DES` - should be `DESC`
 > 2. `SUPORT` - should be `SUPPORT`
 > 3. `severity` - should be `PRIORITY` (the actual column name in the table)
->
-> Plus a cosmetic issue: `tiket_count` should be `ticket_count` - but the compiler won't catch this one.
 
 ---
 
@@ -211,31 +209,12 @@ Fix the `severity` → `PRIORITY` error using natural language:
 
 ---
 
-### Task 6: Bonus - Catching Cosmetic Issues (1 min)
-
-The query works, but notice the column header says `TIKET_COUNT` - a cosmetic typo the compiler ignored.
-
-1. **Select the query** and click **Add to Chat**
-2. In the CoCo panel, type:
-
-```
-Fix the typo in this query - tiket_count should be ticket_count
-```
-
-3. CoCo corrects the alias to `ticket_count`
-4. Accept and re-run - clean column: `TICKET_COUNT`
-
-> **Key Feature:** CoCo catches issues no compiler ever will - wrong aliases, cosmetic typos, misleading column names.
-
----
-
 ### Validation Checklist - Exercise 1
 
 - [ ] Used the Explain button to understand the query
-- [ ] Fixed `DES` → `DESC` using natural language (Add to Chat)
-- [ ] Fixed `SUPORT` → `SUPPORT` using the Fix button
-- [ ] Fixed `severity` → `PRIORITY` using the Fix button
-- [ ] Fixed `tiket_count` → `ticket_count` using natural language
+- [ ] Fixed `DES` -> `DESC` using natural language (Add to Chat)
+- [ ] Fixed `SUPORT` -> `SUPPORT` using the Fix button
+- [ ] Fixed `severity` -> `PRIORITY` using the Fix button
 - [ ] Final query runs successfully with clean column names
 
 ---
