@@ -1,5 +1,5 @@
 -- ========================================================================
--- PawCore Setup Script — Quick Reference
+-- PawCore Setup Script: Quick Reference
 -- ========================================================================
 -- Full setup script is at: 2-Cortex-Code/setup/CoCo_PawCore_Setup.sql
 --

@@ -17,7 +17,7 @@ ORDER BY tiket_count DES;
 --   → Fix with: the inline Fix button (run the query, click Fix on the error)
 --
 -- ERROR 3: severity should be PRIORITY (actual column name)
---   → Fix with: Fix button (run the query, click Fix on the error — CoCo introspects the table schema)
+--   → Fix with: Fix button (run the query, click Fix on the error. CoCo introspects the table schema)
 --
 -- ERROR 4: tiket_count should be ticket_count (cosmetic typo)
---   → Fix with: natural language (select the query, Add to Chat, type "Fix the typo — tiket_count should be ticket_count")
+--   → Fix with: natural language (select the query, Add to Chat, type "Fix the typo. tiket_count should be ticket_count")

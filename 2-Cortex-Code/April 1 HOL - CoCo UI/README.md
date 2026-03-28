@@ -6,17 +6,17 @@
 
 ## Tab 1: Why Are We Here?
 
-To learn about **Cortex Code in Snowsight**, the AI coding assistant built directly into Snowflake's web interface. In this lab, you'll use the Cortex Code side panel to load data, fix broken queries, build a Snowflake Notebook, create a Dynamic Table pipeline, deploy a Streamlit application, and launch a Snowflake Intelligence agent — all without leaving your browser.
+To learn about **Cortex Code in Snowsight**, the AI coding assistant built directly into Snowflake's web interface. In this lab, you'll use the Cortex Code side panel to load data, fix broken queries, build a Snowflake Notebook, create a Dynamic Table pipeline, deploy a Streamlit application, and launch a Snowflake Intelligence agent - all without leaving your browser.
 
 > **Prerequisites:** This lab assumes Cortex Code is already enabled and running in your Snowflake environment. If the CoCo panel does not appear in Snowsight, go to **Settings > Cortex Code** and toggle it on, or ask your account admin to enable it.
 
 ### Structure of the Session
-1. **Getting Started** — Log in, open the Cortex Code panel, load data via CoCo
-2. **Exercise 1: Fix Code with CoCo** — Fix errors using natural language and the inline Fix button
-3. **Exercise 2: Snowflake Notebook** — Build a support operations analysis notebook from natural language
-4. **Exercise 3: Dynamic Table Pipeline** — Operationalize support metrics as an auto-refreshing pipeline
-5. **Exercise 4: Streamlit Application** — Build and deploy a live support ops dashboard from a single prompt
-6. **Exercise 5: Semantic View & Intelligence Agent** — Create self-service support analytics with Cortex Analyst
+1. **Getting Started** - Log in, open the Cortex Code panel, load data via CoCo
+2. **Exercise 1: Fix Code with CoCo** - Fix errors using natural language and the inline Fix button
+3. **Exercise 2: Snowflake Notebook** - Build a support operations analysis notebook from natural language
+4. **Exercise 3: Dynamic Table Pipeline** - Operationalize support metrics as an auto-refreshing pipeline
+5. **Exercise 4: Streamlit Application** - Build and deploy a live support ops dashboard from a single prompt
+6. **Exercise 5: Semantic View & Intelligence Agent** - Create self-service support analytics with Cortex Analyst
 
 ### Key Concepts
 
@@ -34,7 +34,7 @@ The CLI demo asks the **strategic** question: *"Is PawCore ready to launch Smart
 
 This UI demo asks the **operational** question: *"Is Marcus's support team ready for the volume that V2 will bring?"*
 
-Same company, same data — different lens. Marcus needs to understand ticket patterns, severity trends, customer sentiment signals, and device telemetry correlations to know where his team is stretched thin before V2 launches.
+Same company, same data - different lens. Marcus needs to understand ticket patterns, severity trends, customer sentiment signals, and device telemetry correlations to know where his team is stretched thin before V2 launches.
 
 ---
 
@@ -57,29 +57,29 @@ Same company, same data — different lens. Marcus needs to understand ticket pa
 5. Select **SQL file**
 6. The **Cortex Code AI assistant panel** appears on the right side
 
-> **Tip:** The Cortex Code panel is context-aware — it knows which project, database, and files you're working with.
+> **Tip:** The Cortex Code panel is context-aware - it knows which project, database, and files you're working with.
 
 ### Step 3: Load PawCore Data via Cortex Code
 
 Unlike the CLI, Cortex Code in the UI cannot fetch files from external URLs. The way to get SQL scripts into Snowsight is to **copy and paste** them into a worksheet. Once pasted, you can either ask CoCo to execute the script or click "Run All" manually.
 
 1. Open the **CoCo_PawCore_Setup.sql** script from the GitHub repo:
-   - `https://raw.githubusercontent.com/calebaalexander/HandsOnLabs/main/2-Cortex-Code/setup/CoCo_PawCore_Setup.sql`
+  - `https://raw.githubusercontent.com/calebaalexander/HandsOnLabs/main/2-Cortex-Code/setup/CoCo_PawCore_Setup.sql`
 2. **Copy the full script** and **paste it into your SQL worksheet**
 3. In the Cortex Code panel, type:
 
 ```
-Execute this setup script in the worksheet. Proceed autonomously — allow all statements in PAWCORE_ANALYTICS.
+Execute this setup script in the worksheet. Proceed autonomously - allow all statements in PAWCORE_ANALYTICS.
 ```
 
-4. CoCo will parse and execute each statement. You'll see a **permission prompt** — choose "Allow all non-read SQL" to speed things up.
+4. CoCo will parse and execute each statement. You'll see a **permission prompt** - choose "Allow all non-read SQL" to speed things up.
 5. The script will:
-   - Create the `PAWCORE_ANALYTICS` database with 6 schemas (using IF NOT EXISTS)
-   - Create an API integration with the public GitHub repo
-   - Create a Git Repository object pointing to `https://github.com/calebaalexander/HandsOnLabs.git`
-   - Copy all data files from the Git repo into an internal Snowflake stage
-   - Create tables and load data (skips if data already exists)
-   - Set up a Cortex Search Service for document search
+  - Create the `PAWCORE_ANALYTICS` database with 6 schemas (using IF NOT EXISTS)
+  - Create an API integration with the public GitHub repo
+  - Create a Git Repository object pointing to `https://github.com/calebaalexander/HandsOnLabs.git`
+  - Copy all data files from the Git repo into an internal Snowflake stage
+  - Create tables and load data (skips if data already exists)
+  - Set up a Cortex Search Service for document search
 
 > **Note:** This script is non-destructive. If you already have a PAWCORE_ANALYTICS database from a previous demo, all existing objects are preserved.
 
@@ -123,9 +123,9 @@ Show me row counts for all tables in PAWCORE_ANALYTICS
 
 ---
 
-## Tab 3: Exercise 1 — Fix Code with CoCo
+## Tab 3: Exercise 1 - Fix Code with CoCo
 
-**Objective:** Demonstrate how CoCo fixes broken code using natural language and the inline Fix button — plus the Explain button for code comprehension.
+**Objective:** Demonstrate how CoCo fixes broken code using natural language and the inline Fix button - plus the Explain button for code comprehension.
 
 **Time: ~8 minutes**
 
@@ -145,11 +145,11 @@ ORDER BY tiket_count DES;
 ```
 
 > **What's wrong:** Three errors are hidden in this query:
-> 1. `DES` — should be `DESC`
-> 2. `SUPORT` — should be `SUPPORT`
-> 3. `severity` — should be `PRIORITY` (the actual column name in the table)
+> 1. `DES` - should be `DESC`
+> 2. `SUPORT` - should be `SUPPORT`
+> 3. `severity` - should be `PRIORITY` (the actual column name in the table)
 >
-> Plus a cosmetic issue: `tiket_count` should be `ticket_count` — but the compiler won't catch this one.
+> Plus a cosmetic issue: `tiket_count` should be `ticket_count` - but the compiler won't catch this one.
 
 ---
 
@@ -160,22 +160,22 @@ Before fixing anything, try the **Explain** feature:
 1. **Select the entire query** in the worksheet
 2. The **inline toolbar** appears: Add to Chat, Explain, Quick Edit, Format
 3. Click **Explain**
-4. CoCo returns a plain-English explanation of what the query does — the aggregation, grouping, and sort
+4. CoCo returns a plain-English explanation of what the query does - the aggregation, grouping, and sort
 
 > **Key Feature:** If you inherited code from someone who left the team, you don't have to reverse-engineer it. Highlight and click Explain.
 
 ---
 
-### Task 3: Method 1 — Natural Language Fix (1 min)
+### Task 3: Method 1 - Natural Language Fix (1 min)
 
 Fix the `DES` error using natural language:
 
 1. **Select `DES`** on line 4
-2. The inline toolbar appears — click **"Add to Chat"**
+2. The inline toolbar appears - click **"Add to Chat"**
 3. In the CoCo panel, type:
 
 ```
-Fix this — it should be DESC
+Fix this - it should be DESC
 ```
 
 4. CoCo returns the corrected line. **Accept the change.**
@@ -184,13 +184,13 @@ Fix this — it should be DESC
 
 ---
 
-### Task 4: Method 2 — Fix Button (1 min)
+### Task 4: Method 2 - Fix Button (1 min)
 
 Fix the `SUPORT` error using the inline Fix button:
 
-1. **Run the query** — you'll get an error: `Schema 'PAWCORE_ANALYTICS.SUPORT' does not exist or not authorized.`
+1. **Run the query** - you'll get an error: `Schema 'PAWCORE_ANALYTICS.SUPORT' does not exist or not authorized.`
 2. A **Fix** button appears below the error message
-3. **Click Fix** — CoCo shows a diff view (red/green changes)
+3. **Click Fix** - CoCo shows a diff view (red/green changes)
 4. CoCo identifies the typo: `SUPORT` → `SUPPORT`
 5. Click **"Keep all in file"** to accept
 
@@ -198,38 +198,38 @@ Fix the `SUPORT` error using the inline Fix button:
 
 ---
 
-### Task 5: Method 3 — Natural Language Fix for Unknown Columns (2 min)
+### Task 5: Method 3 - Natural Language Fix for Unknown Columns (2 min)
 
 Fix the `severity` → `PRIORITY` error using natural language:
 
-1. **Run the query** — you'll get: `invalid identifier 'SEVERITY'`
-2. A **Fix** button appears below the error — **click Fix**
+1. **Run the query** - you'll get: `invalid identifier 'SEVERITY'`
+2. A **Fix** button appears below the error - **click Fix**
 3. CoCo checks the actual table columns and finds the table uses `PRIORITY`, not `severity`
-4. **Accept the change.** Run the query — success! 8 rows returned.
+4. **Accept the change.** Run the query - success! 8 rows returned.
 
 > **Why this method:** Even when you don't know the right column name, CoCo can introspect the table schema and resolve it.
 
 ---
 
-### Task 6: Bonus — Catching Cosmetic Issues (1 min)
+### Task 6: Bonus - Catching Cosmetic Issues (1 min)
 
-The query works, but notice the column header says `TIKET_COUNT` — a cosmetic typo the compiler ignored.
+The query works, but notice the column header says `TIKET_COUNT` - a cosmetic typo the compiler ignored.
 
 1. **Select the query** and click **Add to Chat**
 2. In the CoCo panel, type:
 
 ```
-Fix the typo in this query — tiket_count should be ticket_count
+Fix the typo in this query - tiket_count should be ticket_count
 ```
 
 3. CoCo corrects the alias to `ticket_count`
-4. Accept and re-run — clean column: `TICKET_COUNT`
+4. Accept and re-run - clean column: `TICKET_COUNT`
 
-> **Key Feature:** CoCo catches issues no compiler ever will — wrong aliases, cosmetic typos, misleading column names.
+> **Key Feature:** CoCo catches issues no compiler ever will - wrong aliases, cosmetic typos, misleading column names.
 
 ---
 
-### Validation Checklist — Exercise 1
+### Validation Checklist - Exercise 1
 
 - [ ] Used the Explain button to understand the query
 - [ ] Fixed `DES` → `DESC` using natural language (Add to Chat)
@@ -240,13 +240,13 @@ Fix the typo in this query — tiket_count should be ticket_count
 
 ---
 
-## Tab 4: Exercise 2 — Snowflake Notebook: Support Ops Analysis
+## Tab 4: Exercise 2 - Snowflake Notebook: Support Ops Analysis
 
 **Objective:** Upload a starter notebook with partially working cells, then use CoCo to fix broken cells and upgrade incomplete ones.
 
 **Time: ~8 minutes**
 
-**Background:** Marcus Thompson needs a repeatable analysis of his team's support operations — ticket volumes, severity patterns, customer frustration signals, and device issues driving support calls. A Snowflake Notebook is the perfect format for this kind of multi-dimensional exploration. Notebooks are interactive, multi-cell documents that run directly inside Snowflake — think of them as a lab journal for data where you write SQL or Python in individual cells, run them one at a time or all at once, and the results stay inline so you can see the full story top to bottom.
+**Background:** Marcus Thompson needs a repeatable analysis of his team's support operations - ticket volumes, severity patterns, customer frustration signals, and device issues driving support calls. A Snowflake Notebook is the perfect format for this kind of multi-dimensional exploration. Notebooks are interactive, multi-cell documents that run directly inside Snowflake - think of them as a lab journal for data where you write SQL or Python in individual cells, run them one at a time or all at once, and the results stay inline so you can see the full story top to bottom.
 
 ---
 
@@ -296,11 +296,11 @@ Cell 3 returned no results. The filters are too restrictive. Fix the query so it
 
 CoCo checks the actual data ranges and relaxes the WHERE clause.
 
-> **Key Feature:** CoCo catches issues that produce no error message at all — like overly restrictive filters that return empty results.
+> **Key Feature:** CoCo catches issues that produce no error message at all - like overly restrictive filters that return empty results.
 
 ---
 
-### Validation Checklist — Exercise 2
+### Validation Checklist - Exercise 2
 
 - [ ] Notebook created with multiple analysis cells
 - [ ] All cells execute successfully with meaningful results
@@ -311,13 +311,13 @@ CoCo checks the actual data ranges and relaxes the WHERE clause.
 
 ---
 
-## Tab 5: Exercise 3 — Dynamic Table Pipeline
+## Tab 5: Exercise 3 - Dynamic Table Pipeline
 
-**Objective:** Operationalize the notebook analysis as an auto-refreshing Dynamic Table. Support tickets come in constantly — Marcus needs metrics that update themselves.
+**Objective:** Operationalize the notebook analysis as an auto-refreshing Dynamic Table. Support tickets come in constantly - Marcus needs metrics that update themselves.
 
 **Time: ~5 minutes**
 
-**Background:** Marcus says: *"Great analysis, but tickets come in every hour. I need this data live — not a report I re-run manually every Monday."* A Dynamic Table is the answer — you write a query that defines the result set you want, attach a refresh interval (called a "target lag"), and Snowflake handles the rest. When new tickets get filed, new reviews come in, or new telemetry readings land, the table refreshes automatically. No Airflow, no cron jobs, no orchestration layer.
+**Background:** Marcus says: *"Great analysis, but tickets come in every hour. I need this data live - not a report I re-run manually every Monday."* A Dynamic Table is the answer - you write a query that defines the result set you want, attach a refresh interval (called a "target lag"), and Snowflake handles the rest. When new tickets get filed, new reviews come in, or new telemetry readings land, the table refreshes automatically. No Airflow, no cron jobs, no orchestration layer.
 
 ---
 
@@ -360,11 +360,11 @@ Show me all rows from the SUPPORT_OPS_DASHBOARD dynamic table
 Show me the refresh history for the SUPPORT_OPS_DASHBOARD dynamic table
 ```
 
-> **Key Feature:** Dynamic Tables eliminate ETL scheduling. Define the query once, and Snowflake automatically refreshes the results when upstream data changes. The Streamlit app we build next will read from this table — always showing current data.
+> **Key Feature:** Dynamic Tables eliminate ETL scheduling. Define the query once, and Snowflake automatically refreshes the results when upstream data changes. The Streamlit app we build next will read from this table - always showing current data.
 
 ---
 
-### Validation Checklist — Exercise 3
+### Validation Checklist - Exercise 3
 
 - [ ] Dynamic Table created with proper target lag
 - [ ] Query returns regional support ops metrics
@@ -373,13 +373,13 @@ Show me the refresh history for the SUPPORT_OPS_DASHBOARD dynamic table
 
 ---
 
-## Tab 6: Exercise 4 — Build a Streamlit Application
+## Tab 6: Exercise 4 - Build a Streamlit Application
 
-**Objective:** Have CoCo build and deploy a Streamlit in Snowflake application that reads from the Dynamic Table — creating a live, auto-refreshing support operations dashboard.
+**Objective:** Have CoCo build and deploy a Streamlit in Snowflake application that reads from the Dynamic Table - creating a live, auto-refreshing support operations dashboard.
 
 **Time: ~8 minutes**
 
-**Background:** Marcus wants a dashboard his CX team can check every morning before standup — not a spreadsheet, not a notebook, but a real application. CoCo builds it from a single prompt.
+**Background:** Marcus wants a dashboard his CX team can check every morning before standup - not a spreadsheet, not a notebook, but a real application. CoCo builds it from a single prompt.
 
 ---
 
@@ -393,10 +393,10 @@ in PAWCORE_ANALYTICS.SUPPORT.
 
 The app should:
 1. Read from the SUPPORT_OPS_DASHBOARD dynamic table
-2. Show a header: "SmartCollar — Support Operations Dashboard"
+2. Show a header: "SmartCollar - Support Operations Dashboard"
 3. Display regional readiness cards with color coding:
-   - Green for SUPPORT_READY = TRUE
-   - Red for SUPPORT_READY = FALSE
+  - Green for SUPPORT_READY = TRUE
+  - Red for SUPPORT_READY = FALSE
 4. Show a bar chart comparing total_tickets vs critical_tickets
    by region
 5. Show a metrics table with all columns including avg_sentiment,
@@ -416,9 +416,9 @@ Use the Snowpark session for data access. Deploy the app.
 1. Navigate to **Projects** → **Streamlit** in Snowsight
 2. Open the **Support Ops Dashboard**
 3. Interact with the dashboard:
-   - Review regional readiness cards
-   - Check the ticket severity bar chart
-   - Read the risk assessment
+  - Review regional readiness cards
+  - Check the ticket severity bar chart
+  - Read the risk assessment
 
 ---
 
@@ -432,11 +432,11 @@ support tickets from PAWCORE_ANALYTICS.SUPPORT.SUPPORT_TICKETS,
 filtered by the region selected in a sidebar dropdown.
 ```
 
-> **Key Feature:** CoCo builds full applications from natural language — not just SQL queries. The app reads from the Dynamic Table, so it's always current. And you can iterate on the design conversationally.
+> **Key Feature:** CoCo builds full applications from natural language - not just SQL queries. The app reads from the Dynamic Table, so it's always current. And you can iterate on the design conversationally.
 
 ---
 
-### Validation Checklist — Exercise 4
+### Validation Checklist - Exercise 4
 
 - [ ] Streamlit app created and deployed in Snowflake
 - [ ] Dashboard shows regional readiness with color coding
@@ -446,7 +446,7 @@ filtered by the region selected in a sidebar dropdown.
 
 ---
 
-## Tab 7: Exercise 5 — Semantic View & Intelligence Agent
+## Tab 7: Exercise 5 - Semantic View & Intelligence Agent
 
 **Objective:** Create a Semantic View and Cortex Agent so Marcus can ask ad-hoc questions about support operations in natural language through Snowflake Intelligence.
 
@@ -463,15 +463,15 @@ Create a Cortex Analyst semantic view called
 PAWCORE_ANALYTICS.SEMANTIC.SUPPORT_OPS for support operations analysis.
 
 Include these tables:
-1. SUPPORT.SUPPORT_TICKETS — ticket volume, severity, and status by region
-2. SUPPORT.CUSTOMER_REVIEWS — customer ratings and review text
-3. DEVICE_DATA.TELEMETRY — device sensor readings and battery levels
-4. SUPPORT.V2_BETA_FEEDBACK — beta tester feedback on V2
+1. SUPPORT.SUPPORT_TICKETS - ticket volume, severity, and status by region
+2. SUPPORT.CUSTOMER_REVIEWS - customer ratings and review text
+3. DEVICE_DATA.TELEMETRY - device sensor readings and battery levels
+4. SUPPORT.V2_BETA_FEEDBACK - beta tester feedback on V2
 
 Define metrics: total_tickets, critical_ticket_count, avg_rating,
 avg_battery_level, low_battery_event_count, avg_beta_rating.
 
-IMPORTANT: Do NOT use "data_type" in the YAML — it is not a valid
+IMPORTANT: Do NOT use "data_type" in the YAML - it is not a valid
 semantic view field and will cause parsing errors. Continue autonomously.
 ```
 
@@ -485,7 +485,7 @@ using model 'claude-haiku-4-5' with tools for
 PAWCORE_ANALYTICS.SEMANTIC.SUPPORT_OPS semantic view and the Cortex Search
 service PAWCORE_ANALYTICS.SEMANTIC.PAWCORE_DOCUMENT_SEARCH. Run
 SHOW CORTEX SEARCH SERVICES IN SCHEMA PAWCORE_ANALYTICS.SEMANTIC to confirm
-it exists. If the search service doesn't exist, STOP and tell me — the
+it exists. If the search service doesn't exist, STOP and tell me - the
 setup script should have created it. Do NOT create it yourself. Add
 orchestration and response instructions so the agent knows its role, uses
 the right tool for each question type, and responds concisely with bullet
@@ -507,7 +507,7 @@ Is there a correlation between low battery events and critical support tickets?
 
 ---
 
-### Validation Checklist — Exercise 5
+### Validation Checklist - Exercise 5
 
 - [ ] Semantic View created with support ops metrics
 - [ ] Cortex Agent created and granted to PUBLIC
@@ -577,8 +577,8 @@ DROP API INTEGRATION IF EXISTS github_api;
 ---
 
 ### Tips for Success
-1. **Describe the problem** — Tell CoCo what went wrong. Paste error messages, describe unexpected results, or ask it to fix specific cells.
-2. **Build the pipeline** — Notebook → Dynamic Table → App creates a compelling end-to-end story.
-3. **Iterate conversationally** — Ask CoCo to modify the Streamlit app, add cells to the notebook, or refine the semantic view.
-4. **Context matters** — The Cortex Code panel knows where you are in Snowsight. Work in the right database/schema.
-5. **Show the SQL** — Builds trust with technical stakeholders who want to verify AI-generated answers.
+1. **Describe the problem** - Tell CoCo what went wrong. Paste error messages, describe unexpected results, or ask it to fix specific cells.
+2. **Build the pipeline** - Notebook → Dynamic Table → App creates a compelling end-to-end story.
+3. **Iterate conversationally** - Ask CoCo to modify the Streamlit app, add cells to the notebook, or refine the semantic view.
+4. **Context matters** - The Cortex Code panel knows where you are in Snowsight. Work in the right database/schema.
+5. **Show the SQL** - Builds trust with technical stakeholders who want to verify AI-generated answers.

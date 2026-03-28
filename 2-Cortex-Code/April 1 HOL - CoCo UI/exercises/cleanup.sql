@@ -1,5 +1,5 @@
 -- ========================================================================
--- Cleanup — Remove objects created during the lab
+-- Cleanup: Remove objects created during the lab
 -- ========================================================================
 -- Run this to remove only the objects YOU created during the exercises.
 -- The shared PawCore data and setup objects are preserved.

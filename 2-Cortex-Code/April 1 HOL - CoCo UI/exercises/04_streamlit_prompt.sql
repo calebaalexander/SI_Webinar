@@ -1,5 +1,5 @@
 -- ========================================================================
--- Exercise 4: Streamlit Application — Support Ops Dashboard
+-- Exercise 4: Streamlit Application: Support Ops Dashboard
 -- ========================================================================
 -- This exercise uses a SHELL APP. You'll create the Streamlit app with
 -- the shell code, then use CoCo to write the actual dashboard.
@@ -25,7 +25,7 @@
 --
 -- Add these sections:
 -- 1. Regional readiness cards with color coding:
---    green for SUPPORT_READY = TRUE, red for SUPPORT_READY = FALSE
+--    green for SUPPORT_READY regions, red for NEEDS_ATTENTION regions
 -- 2. A bar chart comparing total_tickets vs critical_tickets by region
 -- 3. A metrics table with all columns including avg_sentiment,
 --    low_battery_events, and low_rating_count

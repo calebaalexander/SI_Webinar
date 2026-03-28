@@ -1,5 +1,5 @@
 -- ========================================================================
--- Exercise 2: Snowflake Notebook — Support Ops Analysis
+-- Exercise 2: Snowflake Notebook: Support Ops Analysis
 -- ========================================================================
 -- This exercise uses a STARTER NOTEBOOK with partially working cells.
 -- You'll upload it to Snowflake, then use CoCo to fix and upgrade it.
