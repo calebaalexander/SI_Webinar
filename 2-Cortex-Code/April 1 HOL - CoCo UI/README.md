@@ -1,4 +1,4 @@
-# Intro to Cortex Code UI | Hands-On Lab
+# Cortex Code: Your AI Coding Assistant in Snowsight | Hands-On Lab
 
 > **DISCLAIMER:** PawCore is a fictional company. All data, names, metrics, and scenarios in this lab are simulated for demonstration purposes only. Nothing here represents real customer data, real products, or real business outcomes.
 
@@ -8,7 +8,7 @@
 
 To learn about **Cortex Code in Snowsight**, the AI coding assistant built directly into Snowflake's web interface. In this lab, you'll use the Cortex Code side panel to load data, diagnose errors from screenshots, build a Snowflake Notebook, create a Dynamic Table pipeline, deploy a Streamlit application, and launch a Snowflake Intelligence agent — all without leaving your browser.
 
-> **Prerequisites:** This lab assumes Cortex Code is already enabled and running in your Snowflake environment. If the CoCo panel does not appear in Snowsight, refer to the **Setup & Install video** linked in the video description before proceeding.
+> **Prerequisites:** This lab assumes Cortex Code is already enabled and running in your Snowflake environment. If the CoCo panel does not appear in Snowsight, go to **Settings > Cortex Code** and toggle it on, or ask your account admin to enable it.
 
 ### Structure of the Session
 1. **Getting Started** — Log in, open the Cortex Code panel, load data via CoCo
@@ -520,7 +520,7 @@ Is there a correlation between low battery events and critical support tickets?
 
 You've completed the **Intro to Cortex Code UI** Hands-On Lab.
 
-### What You Built in ~33 Minutes
+### What You Built
 
 | Asset | What It Does |
 |-------|-------------|
@@ -545,7 +545,7 @@ Raw Data (7 tables)
 - Add more metrics to the Dynamic Table as new data sources arrive
 - Extend the Streamlit app with additional pages (Engineering view, Finance view)
 - Create additional Cortex Agents for other teams
-- Try the **Intro to CoCo CLI** lab for the terminal-based experience with skills and automation
+- Try the **Cortex Code CLI** lab for the terminal-based experience with skills and automation (linked in the repo)
 
 ### Cleanup
 

@@ -1,0 +1,27 @@
+-- ========================================================================
+-- Exercise 3: Dynamic Table Pipeline
+-- ========================================================================
+-- Copy the prompt below and paste it into the CoCo panel.
+-- CoCo will create an auto-refreshing Dynamic Table.
+-- ========================================================================
+
+-- COCO PROMPT:
+-- -----------------------------------------------------------------------
+-- Create a Dynamic Table called PAWCORE_ANALYTICS.SUPPORT.SUPPORT_OPS_DASHBOARD
+-- that keeps a live view of our support operations health by region.
+--
+-- Aggregate ticket counts and critical ticket counts from SUPPORT_TICKETS,
+-- customer ratings and low-rating counts from CUSTOMER_REVIEWS, low battery
+-- events from TELEMETRY, and AI-powered sentiment scores on review text
+-- using SNOWFLAKE.CORTEX.SENTIMENT. Flag each region as SUPPORT_READY
+-- when critical tickets are under 20 and sentiment is positive.
+--
+-- Use PAWCORE_DEMO_WH warehouse and a target lag of 1 minute.
+--
+-- Execute the SQL.
+-- -----------------------------------------------------------------------
+
+-- VERIFY:
+-- After creation, ask CoCo:
+--   "Show me all rows from the SUPPORT_OPS_DASHBOARD dynamic table"
+--   "Show me the refresh history for the SUPPORT_OPS_DASHBOARD dynamic table"

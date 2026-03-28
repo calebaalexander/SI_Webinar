@@ -1,0 +1,30 @@
+-- ========================================================================
+-- Exercise 2: Snowflake Notebook — Support Ops Analysis
+-- ========================================================================
+-- Copy the prompt below and paste it into the CoCo panel.
+-- CoCo will create and run a multi-cell notebook.
+-- ========================================================================
+
+-- COCO PROMPT:
+-- -----------------------------------------------------------------------
+-- Create a Snowflake Notebook called "Support Ops Readiness Analysis" in
+-- PAWCORE_ANALYTICS.SUPPORT.
+--
+-- I want to analyze whether our support team is operationally ready for V2
+-- launch volume. Build cells that examine support ticket severity by region,
+-- customer review patterns that predict future ticket volume, device
+-- telemetry anomalies like low battery events that drive support calls,
+-- and AI-powered sentiment analysis on customer reviews. Finish with a
+-- composite summary that flags each region as SUPPORT_READY or not based
+-- on critical ticket counts and sentiment scores.
+--
+-- Use data from SUPPORT_TICKETS, CUSTOMER_REVIEWS, and TELEMETRY tables.
+-- Use SNOWFLAKE.CORTEX.SENTIMENT for the sentiment analysis cell.
+--
+-- Create and run the notebook. Continue autonomously.
+-- -----------------------------------------------------------------------
+
+-- SCREENSHOT FIX (if a cell returns no results):
+-- 1. Screenshot the cell showing "Query produced no results"
+-- 2. Paste the screenshot into CoCo
+-- 3. Type: "This cell returned no results. Fix the query so it returns data."
