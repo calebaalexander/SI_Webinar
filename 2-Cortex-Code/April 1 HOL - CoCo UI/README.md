@@ -6,13 +6,13 @@
 
 ## Tab 1: Why Are We Here?
 
-To learn about **Cortex Code in Snowsight**, the AI coding assistant built directly into Snowflake's web interface. In this lab, you'll use the Cortex Code side panel to load data, diagnose errors from screenshots, build a Snowflake Notebook, create a Dynamic Table pipeline, deploy a Streamlit application, and launch a Snowflake Intelligence agent — all without leaving your browser.
+To learn about **Cortex Code in Snowsight**, the AI coding assistant built directly into Snowflake's web interface. In this lab, you'll use the Cortex Code side panel to load data, fix broken queries, build a Snowflake Notebook, create a Dynamic Table pipeline, deploy a Streamlit application, and launch a Snowflake Intelligence agent — all without leaving your browser.
 
 > **Prerequisites:** This lab assumes Cortex Code is already enabled and running in your Snowflake environment. If the CoCo panel does not appear in Snowsight, go to **Settings > Cortex Code** and toggle it on, or ask your account admin to enable it.
 
 ### Structure of the Session
 1. **Getting Started** — Log in, open the Cortex Code panel, load data via CoCo
-2. **Exercise 1: Three Ways to Fix Code** — Fix errors using natural language, the Fix button, and screenshot repair
+2. **Exercise 1: Fix Code with CoCo** — Fix errors using natural language and the inline Fix button
 3. **Exercise 2: Snowflake Notebook** — Build a support operations analysis notebook from natural language
 4. **Exercise 3: Dynamic Table Pipeline** — Operationalize support metrics as an auto-refreshing pipeline
 5. **Exercise 4: Streamlit Application** — Build and deploy a live support ops dashboard from a single prompt
@@ -23,7 +23,6 @@ To learn about **Cortex Code in Snowsight**, the AI coding assistant built direc
 | Concept | What It Is |
 |---------|------------|
 | **Cortex Code Panel** | The AI assistant side panel in Snowsight. Ask questions, generate SQL, and build objects using natural language. |
-| **Screenshot Repair** | Paste a screenshot of an error into the CoCo panel. CoCo reads the image, diagnoses the issue, and generates the fix. |
 | **Snowflake Notebooks** | Interactive notebooks that run directly in Snowflake. CoCo can create, edit, and debug notebook cells. |
 | **Dynamic Tables** | Declarative tables that auto-refresh when source data changes. Define the query once, Snowflake handles the pipeline. |
 | **Streamlit in Snowflake** | Build and deploy interactive web applications directly inside Snowflake with no external infrastructure. |
@@ -124,13 +123,13 @@ Show me row counts for all tables in PAWCORE_ANALYTICS
 
 ---
 
-## Tab 3: Exercise 1 — Three Ways to Fix Code
+## Tab 3: Exercise 1 — Fix Code with CoCo
 
-**Objective:** Demonstrate three escalating methods for fixing code with CoCo — natural language, the inline Fix button, and screenshot repair — plus the Explain button for code comprehension.
+**Objective:** Demonstrate how CoCo fixes broken code using natural language and the inline Fix button — plus the Explain button for code comprehension.
 
 **Time: ~8 minutes**
 
-**Background:** PawCore's CX team tries to run SQL queries to understand their support ticket load but keeps hitting errors. This exercise shows three different ways CoCo can help, from simplest to most powerful.
+**Background:** PawCore's CX team tries to run SQL queries to understand their support ticket load but keeps hitting errors. This exercise shows how CoCo can diagnose and resolve errors interactively.
 
 ---
 
@@ -199,40 +198,34 @@ Fix the `SUPORT` error using the inline Fix button:
 
 ---
 
-### Task 5: Method 3 — Screenshot Fix (2 min)
+### Task 5: Method 3 — Natural Language Fix for Unknown Columns (2 min)
 
-Fix the `severity` → `PRIORITY` error using a screenshot:
+Fix the `severity` → `PRIORITY` error using natural language:
 
 1. **Run the query** — you'll get: `invalid identifier 'SEVERITY'`
-2. **Screenshot the entire screen** — query and error together (Cmd+Shift+4 on Mac, Win+Shift+S on Windows)
-3. **Paste the screenshot** into the CoCo panel and type:
+2. A **Fix** button appears below the error — **click Fix**
+3. CoCo checks the actual table columns and finds the table uses `PRIORITY`, not `severity`
+4. **Accept the change.** Run the query — success! 8 rows returned.
 
-```
-Fix this error
-```
-
-4. CoCo reads the image, checks the actual table columns, and finds that the table uses `PRIORITY`, not `severity`
-5. **Accept the change.** Run the query — success! 8 rows returned.
-
-> **Why this method:** When you don't know the right column name, CoCo can introspect the table and figure it out from a screenshot.
+> **Why this method:** Even when you don't know the right column name, CoCo can introspect the table schema and resolve it.
 
 ---
 
-### Task 6: Bonus — Screenshot Catches What Compilers Can't (1 min)
+### Task 6: Bonus — Catching Cosmetic Issues (1 min)
 
 The query works, but notice the column header says `TIKET_COUNT` — a cosmetic typo the compiler ignored.
 
-1. **Screenshot the successful results** showing the `TIKET_COUNT` header
-2. **Paste into CoCo:**
+1. **Select the query** and click **Add to Chat**
+2. In the CoCo panel, type:
 
 ```
-Fix the typo in this query
+Fix the typo in this query — tiket_count should be ticket_count
 ```
 
-3. CoCo reads the image, spots `tiket_count`, corrects it to `ticket_count`
+3. CoCo corrects the alias to `ticket_count`
 4. Accept and re-run — clean column: `TICKET_COUNT`
 
-> **Key Feature:** The screenshot method catches issues no compiler ever will — wrong columns, cosmetic typos, misleading aliases. One gesture: screenshot, paste, fix.
+> **Key Feature:** CoCo catches issues no compiler ever will — wrong aliases, cosmetic typos, misleading column names.
 
 ---
 
@@ -241,15 +234,15 @@ Fix the typo in this query
 - [ ] Used the Explain button to understand the query
 - [ ] Fixed `DES` → `DESC` using natural language (Add to Chat)
 - [ ] Fixed `SUPORT` → `SUPPORT` using the Fix button
-- [ ] Fixed `severity` → `PRIORITY` using a screenshot
-- [ ] Fixed `tiket_count` → `ticket_count` using a screenshot of results
+- [ ] Fixed `severity` → `PRIORITY` using the Fix button
+- [ ] Fixed `tiket_count` → `ticket_count` using natural language
 - [ ] Final query runs successfully with clean column names
 
 ---
 
 ## Tab 4: Exercise 2 — Snowflake Notebook: Support Ops Analysis
 
-**Objective:** Have CoCo create a Snowflake Notebook that analyzes PawCore's support operations readiness, then use the screenshot method to fix a cell that returns no results.
+**Objective:** Upload a starter notebook with partially working cells, then use CoCo to fix broken cells and upgrade incomplete ones.
 
 **Time: ~8 minutes**
 
@@ -283,21 +276,27 @@ Create and run the notebook. Continue autonomously.
 
 ---
 
-### Task 2: Fix the "No Results" Cell with a Screenshot (3 min)
+### Task 2: Fix Broken Cells with CoCo (3 min)
 
-After the notebook runs, check the cells. Cell 4 (the telemetry anomalies cell) may return **"Query produced no results"** — the query ran clean with no error, but zero rows came back. This is the kind of issue a compiler will never catch.
+After running all cells, you'll see issues:
 
-1. **Screenshot Cell 4** — capture both the query and the "Query produced no results" output
-2. **Paste the screenshot** into the CoCo panel:
+**Cell 2 (schema/column error):** Click the error, then in the CoCo panel type:
 
 ```
-This cell returned no results. Fix the query so it returns data.
+Fix this error
 ```
 
-3. CoCo reads the image, checks the actual column values in the table, and finds that the WHERE filter doesn't match the data
-4. **Accept the corrected query.** Re-run Cell 4 — results appear.
+CoCo checks the actual schema/column names and corrects `REVIEWS` → `SUPPORT` and `stars` → `rating`.
 
-> **Key Feature:** Same pattern from Exercise 1 — screenshot, paste, fix. The screenshot method works on notebooks too, and catches issues that produce no error message at all.
+**Cell 3 (no results):** The query ran but returned zero rows. In the CoCo panel:
+
+```
+Cell 3 returned no results. The filters are too restrictive. Fix the query so it returns data.
+```
+
+CoCo checks the actual data ranges and relaxes the WHERE clause.
+
+> **Key Feature:** CoCo catches issues that produce no error message at all — like overly restrictive filters that return empty results.
 
 ---
 
@@ -307,7 +306,8 @@ This cell returned no results. Fix the query so it returns data.
 - [ ] All cells execute successfully with meaningful results
 - [ ] Sentiment analysis shows regional patterns
 - [ ] Support ops summary shows SUPPORT_READY flags
-- [ ] Screenshot fix resolved the Cell 4 "no results" issue
+- [ ] CoCo fixed the broken cells (schema error, no-results filter)
+- [ ] CoCo upgraded incomplete cells (sentiment, readiness score)
 
 ---
 
@@ -524,7 +524,7 @@ You've completed the **Intro to Cortex Code UI** Hands-On Lab.
 
 | Asset | What It Does |
 |-------|-------------|
-| **Three Fix Methods** | Fixed errors using natural language, Fix button, and screenshot repair |
+| **Code Fixing** | Fixed errors using natural language and the inline Fix button |
 | **Snowflake Notebook** | Interactive support ops analysis with AI sentiment scoring |
 | **Dynamic Table** | Auto-refreshing pipeline aggregating regional support metrics |
 | **Streamlit Dashboard** | Live Support Ops Dashboard deployed in Snowflake |
@@ -577,7 +577,7 @@ DROP API INTEGRATION IF EXISTS github_api;
 ---
 
 ### Tips for Success
-1. **Screenshot everything** — CoCo reads images. Error dialogs, broken charts, failed cells — paste them in.
+1. **Describe the problem** — Tell CoCo what went wrong. Paste error messages, describe unexpected results, or ask it to fix specific cells.
 2. **Build the pipeline** — Notebook → Dynamic Table → App creates a compelling end-to-end story.
 3. **Iterate conversationally** — Ask CoCo to modify the Streamlit app, add cells to the notebook, or refine the semantic view.
 4. **Context matters** — The Cortex Code panel knows where you are in Snowsight. Work in the right database/schema.

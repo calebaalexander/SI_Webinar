@@ -1,8 +1,8 @@
 -- ========================================================================
--- Exercise 1: Three Ways to Fix Code
+-- Exercise 1: Fix Code with CoCo
 -- ========================================================================
 -- Paste this broken query into your SQL worksheet.
--- It contains 4 errors. You'll fix them using three different methods.
+-- It contains 4 errors. You'll fix them using CoCo's natural language and Fix button.
 -- ========================================================================
 
 SELECT region, severity, COUNT(*) as tiket_count
@@ -17,7 +17,7 @@ ORDER BY tiket_count DES;
 --   → Fix with: the inline Fix button (run the query, click Fix on the error)
 --
 -- ERROR 3: severity should be PRIORITY (actual column name)
---   → Fix with: screenshot (screenshot the error, paste into CoCo, type "Fix this error")
+--   → Fix with: Fix button (run the query, click Fix on the error — CoCo introspects the table schema)
 --
 -- ERROR 4: tiket_count should be ticket_count (cosmetic typo)
---   → Fix with: screenshot (screenshot the results, paste into CoCo, type "Fix the typo in this query")
+--   → Fix with: natural language (select the query, Add to Chat, type "Fix the typo — tiket_count should be ticket_count")

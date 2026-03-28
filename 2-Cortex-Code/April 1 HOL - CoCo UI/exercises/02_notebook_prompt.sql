@@ -26,12 +26,12 @@
 -- STEP 3: Use CoCo to fix the broken cells
 -- -----------------------------------------------------------------------
 -- For Cell 2 (schema/column error):
---   Screenshot the error, paste into CoCo, type:
+--   In the CoCo panel, type:
 --   "Fix this error"
 --
 -- For Cell 3 (no results):
---   Screenshot the empty result, paste into CoCo, type:
---   "This cell returned no results. Fix the query so it returns data."
+--   In the CoCo panel, type:
+--   "Cell 3 returned no results. The filters are too restrictive. Fix the query so it returns data."
 
 -- STEP 4: Use CoCo to upgrade the incomplete cells
 -- -----------------------------------------------------------------------
