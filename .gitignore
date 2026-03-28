@@ -1,4 +1,35 @@
+# macOS
 .DS_Store
+**/.DS_Store
+
+# Internal presenter docs (not for public)
 **/GAMEPLAN.md
 **/WEBINAR_GAMEPLAN.md
 **/demo_runbook.md
+
+# Credentials and secrets
+*.pem
+*.key
+*.env
+.env.*
+credentials.*
+connections.toml
+*.toml
+secrets.*
+
+# IDE and editor files
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+
+# Logs
+*.log
