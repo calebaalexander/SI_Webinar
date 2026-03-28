@@ -1,37 +1,43 @@
 -- ========================================================================
 -- Exercise 4: Streamlit Application — Support Ops Dashboard
 -- ========================================================================
--- Copy the prompt below and paste it into the CoCo panel.
--- CoCo will build and deploy a Streamlit app in Snowflake.
+-- This exercise uses a SHELL APP. You'll create the Streamlit app with
+-- the shell code, then use CoCo to write the actual dashboard.
 -- ========================================================================
 
--- COCO PROMPT:
+-- STEP 1: Create the Streamlit app shell
 -- -----------------------------------------------------------------------
--- Build a Streamlit in Snowflake app called "Support Ops Dashboard"
--- in PAWCORE_ANALYTICS.SUPPORT.
+-- 1. In Snowsight, go to Projects > Streamlit
+-- 2. Click "+ Streamlit App"
+-- 3. Name it "Support Ops Dashboard"
+-- 4. Set location to PAWCORE_ANALYTICS.SUPPORT
+-- 5. Set warehouse to PAWCORE_DEMO_WH
+-- 6. Click "Create"
+-- 7. Replace the default code with the contents of streamlit_shell.py
+--    from this exercises/ folder
+
+-- STEP 2: Ask CoCo to build the dashboard
+-- -----------------------------------------------------------------------
+-- In the CoCo panel (while viewing the Streamlit editor), paste this:
+
+-- Build out this Streamlit dashboard. Read from the
+-- SUPPORT_OPS_DASHBOARD dynamic table in PAWCORE_ANALYTICS.SUPPORT.
 --
--- The app should:
--- 1. Read from the SUPPORT_OPS_DASHBOARD dynamic table
--- 2. Show a header: "SmartCollar — Support Operations Dashboard"
--- 3. Display regional readiness cards with color coding:
---    - Green for SUPPORT_READY = TRUE
---    - Red for SUPPORT_READY = FALSE
--- 4. Show a bar chart comparing total_tickets vs critical_tickets
---    by region
--- 5. Show a metrics table with all columns including avg_sentiment,
+-- Add these sections:
+-- 1. Regional readiness cards with color coding:
+--    green for SUPPORT_READY = TRUE, red for SUPPORT_READY = FALSE
+-- 2. A bar chart comparing total_tickets vs critical_tickets by region
+-- 3. A metrics table with all columns including avg_sentiment,
 --    low_battery_events, and low_rating_count
--- 6. Add a "Risk Assessment" section that flags regions where
+-- 4. A Risk Assessment section that flags regions where
 --    critical_tickets are high or avg_sentiment is negative
 --
--- Use the Snowpark session for data access. Deploy the app.
--- -----------------------------------------------------------------------
+-- Use the Snowpark session (already set up in the code) for data access.
 
--- ITERATE (optional):
+-- STEP 3: Iterate with CoCo (optional)
 -- -----------------------------------------------------------------------
--- Add a section to the Streamlit app that shows the top 5 most critical
--- support tickets from PAWCORE_ANALYTICS.SUPPORT.SUPPORT_TICKETS,
--- filtered by the region selected in a sidebar dropdown.
--- -----------------------------------------------------------------------
+-- Once the dashboard is running, ask CoCo to enhance it:
 
--- FIND YOUR APP:
--- Navigate to Projects > Streamlit in Snowsight
+-- Add a sidebar dropdown to filter by region. When a region is selected,
+-- show the top 5 most critical support tickets from
+-- PAWCORE_ANALYTICS.SUPPORT.SUPPORT_TICKETS for that region.
