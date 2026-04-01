@@ -31,11 +31,12 @@
 -- Copy this prompt into CoCo:
 -- -----------------------------------------------------------------------
 -- Create a Cortex Agent called PAWCORE_SUPPORT_OPS_AGENT in
--- PAWCORE_ANALYTICS.SEMANTIC. Use the SUPPORT_OPS semantic view.
--- Give it these instructions: respond concisely with bullet points,
+-- PAWCORE_ANALYTICS.SEMANTIC. Attach the
+-- PAWCORE_ANALYTICS.SEMANTIC.SUPPORT_OPS semantic view as a Cortex Analyst
+-- tool. Use these response instructions: respond concisely with bullet points,
 -- always include a regional breakdown when relevant, and highlight EMEA
 -- specifically when ticket volume or sentiment is a concern.
--- Grant usage to PUBLIC role.
+-- Grant USAGE on the agent to the PUBLIC role.
 -- -----------------------------------------------------------------------
 
 
