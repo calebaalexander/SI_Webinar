@@ -1,43 +1,22 @@
 -- ========================================================================
 -- Exercise 4: Streamlit Application: Support Ops Dashboard
 -- ========================================================================
--- This exercise uses a SHELL APP. You'll create the Streamlit app with
--- the shell code, then use CoCo to write the actual dashboard.
--- ========================================================================
 
--- STEP 1: Create the Streamlit app shell
+-- STEP 1: Create the app shell first
 -- -----------------------------------------------------------------------
--- 1. In Snowsight, go to Projects > Streamlit
--- 2. Click "+ Streamlit App"
--- 3. Name it "Support Ops Dashboard"
--- 4. Set location to PAWCORE_ANALYTICS.SUPPORT
--- 5. Set warehouse to PAWCORE_DEMO_WH
--- 6. Click "Create"
--- 7. Replace the default code with the contents of streamlit_shell.py
---    from this exercises/ folder
+-- In Snowsight: Projects > Streamlit > + Streamlit App
+-- Name: Support_Ops_Dashboard
+-- Database: PAWCORE_ANALYTICS  |  Schema: SUPPORT  |  Warehouse: PAWCORE_DEMO_WH
+-- Click Create. The editor opens with default placeholder code.
 
--- STEP 2: Ask CoCo to build the dashboard
+-- STEP 2: CoCo PROMPT (paste into CoCo while the editor is open)
 -- -----------------------------------------------------------------------
--- In the CoCo panel (while viewing the Streamlit editor), paste this:
 
--- Build out this Streamlit dashboard. Read from the
--- SUPPORT_OPS_DASHBOARD dynamic table in PAWCORE_ANALYTICS.SUPPORT.
---
--- Add these sections:
--- 1. Regional readiness cards with color coding:
---    green for SUPPORT_READY regions, red for NEEDS_ATTENTION regions
--- 2. A bar chart comparing total_tickets vs critical_tickets by region
--- 3. A metrics table with all columns including avg_sentiment,
---    low_battery_events, and low_rating_count
--- 4. A Risk Assessment section that flags regions where
---    critical_tickets are high or avg_sentiment is negative
---
--- Use the Snowpark session (already set up in the code) for data access.
+-- Build a Streamlit dashboard that reads from PAWCORE_ANALYTICS.SUPPORT.SUPPORT_OPS_DASHBOARD. Use get_active_session() to query the table. Include a header with the title "PawCore Support Ops Dashboard", regional readiness cards with green background for SUPPORT_READY and red for AT_RISK, a bar chart comparing TOTAL_TICKET_COUNT vs CRITICAL_TICKET_COUNT by region, and a risk section that calls out any AT_RISK region with a summary of what's driving it.
+
+-- Replace the default placeholder code with CoCo's output and click Run.
 
 -- STEP 3: Iterate with CoCo (optional)
 -- -----------------------------------------------------------------------
--- Once the dashboard is running, ask CoCo to enhance it:
 
--- Add a sidebar dropdown to filter by region. When a region is selected,
--- show the top 5 most critical support tickets from
--- PAWCORE_ANALYTICS.SUPPORT.SUPPORT_TICKETS for that region.
+-- Add a sidebar dropdown to filter by region. When a region is selected, query PAWCORE_ANALYTICS.SUPPORT.SUPPORT_TICKETS and show the top 5 most critical open tickets for that region in a table below the chart.
