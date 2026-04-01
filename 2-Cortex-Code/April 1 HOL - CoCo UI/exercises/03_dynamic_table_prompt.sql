@@ -12,15 +12,79 @@ Create a Dynamic Table called SUPPORT_OPS_DASHBOARD in PAWCORE_ANALYTICS.SUPPORT
 
 
 -- ========================================================================
--- SHOWCASE: After the table is created, run these steps
+-- VERIFY: After CoCo creates the table, run this first
 -- ========================================================================
-
--- Step 1: Query the live dashboard
 SELECT * FROM PAWCORE_ANALYTICS.SUPPORT.SUPPORT_OPS_DASHBOARD ORDER BY REGION;
 
+-- Expected: APAC SUPPORT_READY, Americas varies, EMEA AT_RISK
+-- If all three regions show identical sentiment scores (~-0.78) and AT_RISK,
+-- the join created row duplication. Run the corrected version below.
 
--- Step 2: Live flip — insert 25 critical tickets for APAC into the source table
--- (breaches the 20 critical ticket threshold, flipping APAC from SUPPORT_READY to AT_RISK)
+
+-- ========================================================================
+-- CORRECTED VERSION (run if CoCo's output shows bad sentiment scores)
+-- Uses CTEs to pre-aggregate each source before joining — no row duplication
+-- ========================================================================
+CREATE OR REPLACE DYNAMIC TABLE PAWCORE_ANALYTICS.SUPPORT.SUPPORT_OPS_DASHBOARD
+  TARGET_LAG = '1 minute'
+  WAREHOUSE = PAWCORE_DEMO_WH
+  REFRESH_MODE = AUTO
+  INITIALIZE = ON_CREATE
+AS
+WITH device_region AS (
+    SELECT DISTINCT DEVICE_ID, REGION
+    FROM PAWCORE_ANALYTICS.DEVICE_DATA.TELEMETRY
+),
+ticket_agg AS (
+    SELECT
+        REGION,
+        COUNT(DISTINCT TICKET_ID)                                                AS TOTAL_TICKET_COUNT,
+        COUNT(DISTINCT CASE WHEN PRIORITY = 'Critical' THEN TICKET_ID END)       AS CRITICAL_TICKET_COUNT
+    FROM PAWCORE_ANALYTICS.SUPPORT.SUPPORT_TICKETS
+    GROUP BY REGION
+),
+review_agg AS (
+    SELECT
+        d.REGION,
+        AVG(r.RATING)                                           AS AVG_CUSTOMER_RATING,
+        AVG(SNOWFLAKE.CORTEX.SENTIMENT(r.REVIEW_TEXT))         AS AVG_SENTIMENT_SCORE
+    FROM PAWCORE_ANALYTICS.SUPPORT.CUSTOMER_REVIEWS r
+    JOIN device_region d ON r.DEVICE_ID = d.DEVICE_ID
+    GROUP BY d.REGION
+),
+telemetry_agg AS (
+    SELECT
+        REGION,
+        COUNT(DISTINCT CASE WHEN BATTERY_LEVEL < 0.20 THEN DEVICE_ID END)  AS LOW_BATTERY_EVENT_COUNT
+    FROM PAWCORE_ANALYTICS.DEVICE_DATA.TELEMETRY
+    GROUP BY REGION
+)
+SELECT
+    t.REGION,
+    t.TOTAL_TICKET_COUNT,
+    t.CRITICAL_TICKET_COUNT,
+    r.AVG_CUSTOMER_RATING,
+    tel.LOW_BATTERY_EVENT_COUNT,
+    r.AVG_SENTIMENT_SCORE,
+    CASE
+        WHEN t.CRITICAL_TICKET_COUNT < 20
+         AND r.AVG_SENTIMENT_SCORE > 0
+        THEN 'SUPPORT_READY'
+        ELSE 'AT_RISK'
+    END AS READINESS_STATUS
+FROM ticket_agg t
+JOIN review_agg r      ON t.REGION = r.REGION
+JOIN telemetry_agg tel ON t.REGION = tel.REGION;
+
+
+-- ========================================================================
+-- SHOWCASE: Live flip demo — run after table shows correct results
+-- ========================================================================
+
+-- Step 1: Confirm baseline (APAC should be SUPPORT_READY)
+SELECT * FROM PAWCORE_ANALYTICS.SUPPORT.SUPPORT_OPS_DASHBOARD ORDER BY REGION;
+
+-- Step 2: Insert 25 critical tickets for APAC to breach the threshold
 INSERT INTO PAWCORE_ANALYTICS.SUPPORT.SUPPORT_TICKETS
     (TICKET_ID, DEVICE_ID, REGION, PRIORITY, STATUS, CREATED_AT, RESOLVED_AT)
 SELECT
@@ -35,7 +99,7 @@ FROM PAWCORE_ANALYTICS.DEVICE_DATA.TELEMETRY d
 WHERE d.REGION = 'APAC'
 LIMIT 25;
 
--- Wait ~60 seconds, then re-query — APAC will flip to AT_RISK
+-- Wait ~60 seconds, then re-query — APAC flips to AT_RISK
 SELECT * FROM PAWCORE_ANALYTICS.SUPPORT.SUPPORT_OPS_DASHBOARD ORDER BY REGION;
 
 
