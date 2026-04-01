@@ -7,7 +7,7 @@
 
 -- COCO PROMPT:
 -- -----------------------------------------------------------------------
-Create a Dynamic Table called SUPPORT_OPS_DASHBOARD in PAWCORE_ANALYTICS.SUPPORT using warehouse PAWCORE_DEMO_WH with a target lag of 1 minute. Aggregate by region: total ticket count, critical ticket count, average customer rating, count of low battery events where battery_level < 0.20, and average SNOWFLAKE.CORTEX.SENTIMENT score from customer review text. Add a READINESS_STATUS column: flag as 'SUPPORT_READY' when critical tickets are under 20 and average sentiment is above 0, otherwise 'AT_RISK'. Join SUPPORT.SUPPORT_TICKETS, SUPPORT.CUSTOMER_REVIEWS, and DEVICE_DATA.TELEMETRY.
+Create a Dynamic Table called SUPPORT_OPS_DASHBOARD in PAWCORE_ANALYTICS.SUPPORT using warehouse PAWCORE_DEMO_WH with a target lag of 1 minute. Aggregate by region: total ticket count, critical ticket count, average customer rating, count of low battery events where battery_level < 0.20, and average SNOWFLAKE.CORTEX.SENTIMENT score from customer review text. Add a READINESS_STATUS column: flag as 'SUPPORT_READY' when critical tickets are under 25 and average sentiment is above -0.5, otherwise 'AT_RISK'. Join SUPPORT.SUPPORT_TICKETS, SUPPORT.CUSTOMER_REVIEWS, and DEVICE_DATA.TELEMETRY.
 -- -----------------------------------------------------------------------
 
 
@@ -16,7 +16,7 @@ Create a Dynamic Table called SUPPORT_OPS_DASHBOARD in PAWCORE_ANALYTICS.SUPPORT
 -- ========================================================================
 SELECT * FROM PAWCORE_ANALYTICS.SUPPORT.SUPPORT_OPS_DASHBOARD ORDER BY REGION;
 
--- Expected: APAC SUPPORT_READY, Americas varies, EMEA AT_RISK
+-- Expected: APAC SUPPORT_READY, Americas AT_RISK, EMEA AT_RISK
 -- If all three regions show identical sentiment scores (~-0.78) and AT_RISK,
 -- the join created row duplication. Run the corrected version below.
 
@@ -67,8 +67,8 @@ SELECT
     tel.LOW_BATTERY_EVENT_COUNT,
     r.AVG_SENTIMENT_SCORE,
     CASE
-        WHEN t.CRITICAL_TICKET_COUNT < 20
-         AND r.AVG_SENTIMENT_SCORE > 0
+        WHEN t.CRITICAL_TICKET_COUNT < 25
+         AND r.AVG_SENTIMENT_SCORE > -0.5
         THEN 'SUPPORT_READY'
         ELSE 'AT_RISK'
     END AS READINESS_STATUS
@@ -82,6 +82,4 @@ JOIN telemetry_agg tel ON t.REGION = tel.REGION;
 -- ========================================================================
 SELECT * FROM PAWCORE_ANALYTICS.SUPPORT.SUPPORT_OPS_DASHBOARD ORDER BY REGION;
 
--- Expected: APAC SUPPORT_READY, EMEA AT_RISK
--- If all three regions show identical sentiment scores (~-0.78) and AT_RISK,
--- the join created row duplication. Run the corrected version below.
+-- Expected: APAC SUPPORT_READY, Americas AT_RISK, EMEA AT_RISK
