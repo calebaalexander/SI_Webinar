@@ -288,7 +288,17 @@ The difference from everything else we built today: the Dynamic Table and the St
 > Create a Cortex Agent called PAWCORE_SUPPORT_OPS_AGENT in PAWCORE_ANALYTICS.SEMANTIC. Attach the PAWCORE_ANALYTICS.SEMANTIC.SUPPORT_OPS semantic view as a Cortex Analyst tool. Use these response instructions: respond concisely with bullet points, always include a regional breakdown when relevant, and highlight EMEA specifically when ticket volume or sentiment is a concern. Grant USAGE on the agent to the PUBLIC role.
 > ```
 
-*'Which region has the highest support ticket load and what's driving it?'* — it answers.
+*[Type: "Which region has the highest support ticket load and what's driving it?" — hit send and talk while it runs.]*
+
+"Watch what's happening under the hood here. The agent isn't doing a keyword search. It's reading the question in plain English, mapping 'support ticket load' to the total_tickets metric we defined in the Semantic View, identifying that 'what's driving it' implies a breakdown by region and priority, writing the SQL, running it, and then synthesizing the result into a natural language answer — all in one pass.
+
+The Semantic View is what makes this work without hallucinating. When the agent sees 'highest ticket load', it doesn't guess which table that comes from. It looks at the definition we just built: total_tickets is COUNT(TICKET_ID) from SUPPORT_TICKETS, broken out by region. No ambiguity. No wrong table. No invented column name.
+
+What you're about to see is EMEA at the top. 120 tickets, negative sentiment, 500 low-battery device events. The agent will call that out because we told it to highlight EMEA specifically when volume or sentiment is a concern — that instruction is baked into the agent's response config. It's not just answering the question, it's answering it the way a support ops analyst would."
+
+*[Answer arrives — read it, then:]*
+
+"That's the answer. The whole pipeline just closed. We started this session with a broken query and ended with a conversational AI that understands PawCore's support operations. CoCo built every layer."
 
 *'Is there a correlation between low battery events and critical tickets?'* — it joins the tables and tells me.
 
