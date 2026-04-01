@@ -439,6 +439,65 @@ GRANT USAGE ON ALL SCHEMAS IN DATABASE PAWCORE_ANALYTICS TO ROLE PUBLIC;
 GRANT SELECT ON ALL TABLES IN DATABASE PAWCORE_ANALYTICS TO ROLE PUBLIC;
 
 -- ========================================================================
+-- PRE-BUILD: SUPPORT_OPS_DASHBOARD DYNAMIC TABLE
+-- Creates the Exercise 3 Dynamic Table with correct CTE-based joins.
+-- Attendees rebuild this during Exercise 3 using CoCo.
+-- ========================================================================
+
+CREATE OR REPLACE DYNAMIC TABLE PAWCORE_ANALYTICS.SUPPORT.SUPPORT_OPS_DASHBOARD
+  TARGET_LAG = '1 minute'
+  WAREHOUSE = PAWCORE_DEMO_WH
+  REFRESH_MODE = AUTO
+  INITIALIZE = ON_CREATE
+AS
+WITH device_region AS (
+    SELECT DISTINCT DEVICE_ID, REGION
+    FROM PAWCORE_ANALYTICS.DEVICE_DATA.TELEMETRY
+),
+ticket_agg AS (
+    SELECT
+        REGION,
+        COUNT(DISTINCT TICKET_ID)                                           AS TOTAL_TICKET_COUNT,
+        COUNT(DISTINCT CASE WHEN PRIORITY = 'Critical' THEN TICKET_ID END)  AS CRITICAL_TICKET_COUNT
+    FROM PAWCORE_ANALYTICS.SUPPORT.SUPPORT_TICKETS
+    GROUP BY REGION
+),
+review_agg AS (
+    SELECT
+        d.REGION,
+        AVG(r.RATING)                                    AS AVG_CUSTOMER_RATING,
+        AVG(SNOWFLAKE.CORTEX.SENTIMENT(r.REVIEW_TEXT))  AS AVG_SENTIMENT_SCORE
+    FROM PAWCORE_ANALYTICS.SUPPORT.CUSTOMER_REVIEWS r
+    JOIN device_region d ON r.DEVICE_ID = d.DEVICE_ID
+    GROUP BY d.REGION
+),
+telemetry_agg AS (
+    SELECT
+        REGION,
+        COUNT(DISTINCT CASE WHEN BATTERY_LEVEL < 0.20 THEN DEVICE_ID END) AS LOW_BATTERY_EVENT_COUNT
+    FROM PAWCORE_ANALYTICS.DEVICE_DATA.TELEMETRY
+    GROUP BY REGION
+)
+SELECT
+    t.REGION,
+    t.TOTAL_TICKET_COUNT,
+    t.CRITICAL_TICKET_COUNT,
+    r.AVG_CUSTOMER_RATING,
+    tel.LOW_BATTERY_EVENT_COUNT,
+    r.AVG_SENTIMENT_SCORE,
+    CASE
+        WHEN t.CRITICAL_TICKET_COUNT <= 25
+         AND r.AVG_SENTIMENT_SCORE > 0.5
+        THEN 'SUPPORT_READY'
+        ELSE 'AT_RISK'
+    END AS READINESS_STATUS
+FROM ticket_agg t
+JOIN review_agg r      ON t.REGION = r.REGION
+JOIN telemetry_agg tel ON t.REGION = tel.REGION;
+
+GRANT SELECT ON DYNAMIC TABLE PAWCORE_ANALYTICS.SUPPORT.SUPPORT_OPS_DASHBOARD TO ROLE PUBLIC;
+
+-- ========================================================================
 -- VERIFY
 -- ========================================================================
 

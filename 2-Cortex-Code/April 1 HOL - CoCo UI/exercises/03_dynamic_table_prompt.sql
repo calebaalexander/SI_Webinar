@@ -1,8 +1,11 @@
 -- ========================================================================
 -- Exercise 3: Dynamic Table Pipeline
 -- ========================================================================
--- Paste the prompt below into the CoCo panel.
--- CoCo will generate and execute the Dynamic Table definition.
+-- The setup script (00_setup.sql) pre-builds this Dynamic Table so the
+-- showcase query works even if CoCo's output needs adjustment.
+--
+-- Paste the prompt below into the CoCo panel to rebuild it with CoCo,
+-- then verify with the query at the bottom.
 -- ========================================================================
 
 -- COCO PROMPT:
