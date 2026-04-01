@@ -239,7 +239,22 @@ That's not a toy. PawCore's CX lead can hand this URL to every manager on the te
 
 > **Copy-paste prompt:**
 > ```
-> Create a semantic view called SUPPORT_OPS in PAWCORE_ANALYTICS.SEMANTIC over these tables: SUPPORT.SUPPORT_TICKETS, SUPPORT.CUSTOMER_REVIEWS, DEVICE_DATA.TELEMETRY, and SUPPORT.SLACK_MESSAGES. Define these metrics: total_tickets, critical_ticket_count, average_customer_rating, low_battery_event_count (battery_level < 0.20), and average_sentiment_score using SNOWFLAKE.CORTEX.SENTIMENT on review text. Set up joins between tables on device_id and region. Do not include a data_type field.
+> Create a semantic view PAWCORE_ANALYTICS.SEMANTIC.SUPPORT_OPS over these tables:
+> PAWCORE_ANALYTICS.SUPPORT.SUPPORT_TICKETS
+> PAWCORE_ANALYTICS.SUPPORT.CUSTOMER_REVIEWS
+> PAWCORE_ANALYTICS.DEVICE_DATA.TELEMETRY
+> PAWCORE_ANALYTICS.SUPPORT.SLACK_MESSAGES
+>
+> Metrics:
+> total_tickets — count of tickets
+> critical_ticket_count — count where priority = 'Critical'
+> average_customer_rating — average of the rating column
+> low_battery_event_count — count of telemetry rows where battery_level < 0.20
+> average_sentiment_score — average of SNOWFLAKE.CORTEX.SENTIMENT(review_text)
+>
+> Relationships: Join tickets and reviews to telemetry on (device_id, region). slack_messages has no shared join key — include it as a standalone table.
+>
+> Exclude data_type from dimensions.
 > ```
 
 ### While the Semantic View Builds
