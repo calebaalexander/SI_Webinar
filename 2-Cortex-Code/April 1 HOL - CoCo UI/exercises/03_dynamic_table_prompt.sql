@@ -78,32 +78,10 @@ JOIN telemetry_agg tel ON t.REGION = tel.REGION;
 
 
 -- ========================================================================
--- SHOWCASE: Live flip demo — run after table shows correct results
+-- SHOWCASE: After the table is created, query the live dashboard
 -- ========================================================================
-
--- Step 1: Confirm baseline (APAC should be SUPPORT_READY)
 SELECT * FROM PAWCORE_ANALYTICS.SUPPORT.SUPPORT_OPS_DASHBOARD ORDER BY REGION;
 
--- Step 2: Insert 25 critical tickets for APAC to breach the threshold
-INSERT INTO PAWCORE_ANALYTICS.SUPPORT.SUPPORT_TICKETS
-    (TICKET_ID, DEVICE_ID, REGION, PRIORITY, STATUS, CREATED_AT, RESOLVED_AT)
-SELECT
-    'SIM-' || SEQ4(),
-    d.DEVICE_ID,
-    'APAC',
-    'Critical',
-    'Open',
-    CURRENT_TIMESTAMP(),
-    NULL
-FROM PAWCORE_ANALYTICS.DEVICE_DATA.TELEMETRY d
-WHERE d.REGION = 'APAC'
-LIMIT 25;
-
--- Wait ~60 seconds, then re-query — APAC flips to AT_RISK
-SELECT * FROM PAWCORE_ANALYTICS.SUPPORT.SUPPORT_OPS_DASHBOARD ORDER BY REGION;
-
-
--- ========================================================================
--- CLEANUP: Reset before next demo run
--- ========================================================================
-DELETE FROM PAWCORE_ANALYTICS.SUPPORT.SUPPORT_TICKETS WHERE TICKET_ID LIKE 'SIM-%';
+-- Expected: APAC SUPPORT_READY, EMEA AT_RISK
+-- If all three regions show identical sentiment scores (~-0.78) and AT_RISK,
+-- the join created row duplication. Run the corrected version below.
