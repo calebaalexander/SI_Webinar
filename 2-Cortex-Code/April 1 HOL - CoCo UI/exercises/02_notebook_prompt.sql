@@ -14,5 +14,5 @@
 
 -- COCO PROMPT:
 -- -----------------------------------------------------------------------
-Improve this notebook. Pull in ticket counts, critical ticket counts, and average resolution time from PAWCORE_ANALYTICS.SUPPORT.SUPPORT_TICKETS. Add SNOWFLAKE.CORTEX.SENTIMENT on review text as a feature. Replace the model with a RandomForestClassifier. Add a before/after accuracy comparison and a final cell flagging each region as SUPPORT_READY or AT_RISK.
+Improve this notebook. Pull in ticket counts, critical ticket counts, and average resolution time from PAWCORE_ANALYTICS.SUPPORT.SUPPORT_TICKETS. Add SNOWFLAKE.CORTEX.SENTIMENT on review text as a feature. Replace the model with a RandomForestRegressor. Add a before/after R² score comparison and a final cell flagging each region as SUPPORT_READY or AT_RISK.
 -- -----------------------------------------------------------------------
