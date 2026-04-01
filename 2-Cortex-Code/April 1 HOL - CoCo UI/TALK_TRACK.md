@@ -4,6 +4,28 @@
 
 ---
 
+## Pre-Demo Reset
+
+*[Run this before every dry run or live session to wipe lab objects and start clean.]*
+
+**Paste this into CoCo in a SQL worksheet on the demo account:**
+
+```
+Drop these objects if they exist and confirm each one was dropped:
+DYNAMIC TABLE PAWCORE_ANALYTICS.SUPPORT.SUPPORT_OPS_DASHBOARD
+SEMANTIC VIEW PAWCORE_ANALYTICS.SEMANTIC.SUPPORT_OPS
+CORTEX AGENT PAWCORE_ANALYTICS.SEMANTIC.PAWCORE_SUPPORT_OPS_AGENT
+STREAMLIT PAWCORE_ANALYTICS.SUPPORT.Support_Ops_Dashboard
+NOTEBOOK PAWCORE_ANALYTICS.SUPPORT."Support Ops Readiness Analysis"
+Use DROP IF EXISTS for each so it doesn't fail if any object doesn't exist yet.
+```
+
+*CoCo will generate and run the DROP statements. Verify all five confirm as dropped before starting.*
+
+> **Manual fallback:** `exercises/cleanup.sql` has the same statements if you prefer to run them directly.
+
+---
+
 ## Transition to Snowsight — CoCo Orientation
 
 *[Switch from slides to Snowsight]*
