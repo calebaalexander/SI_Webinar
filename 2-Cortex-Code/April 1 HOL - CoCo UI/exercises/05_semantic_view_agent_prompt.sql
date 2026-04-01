@@ -7,37 +7,26 @@
 -- STEP 1: SEMANTIC VIEW
 -- Copy this prompt into CoCo:
 -- -----------------------------------------------------------------------
--- Create a Cortex Analyst semantic view called
--- PAWCORE_ANALYTICS.SEMANTIC.SUPPORT_OPS for support operations analysis.
---
--- Include these tables:
--- 1. SUPPORT.SUPPORT_TICKETS: ticket volume, severity, and status by region
--- 2. SUPPORT.CUSTOMER_REVIEWS: customer ratings and review text
--- 3. DEVICE_DATA.TELEMETRY: device sensor readings and battery levels
--- 4. SUPPORT.V2_BETA_FEEDBACK: beta tester feedback on V2
---
--- Define metrics: total_tickets, critical_ticket_count, avg_rating,
--- avg_battery_level, low_battery_event_count, avg_beta_rating.
---
--- IMPORTANT: Do NOT use "data_type" in the YAML. It is not a valid
--- semantic view field and will cause parsing errors. Continue autonomously.
+-- Create a semantic view called SUPPORT_OPS in PAWCORE_ANALYTICS.SEMANTIC
+-- over these tables: SUPPORT.SUPPORT_TICKETS, SUPPORT.CUSTOMER_REVIEWS,
+-- DEVICE_DATA.TELEMETRY, and SUPPORT.SLACK_MESSAGES.
+-- Define these metrics: total_tickets, critical_ticket_count,
+-- average_customer_rating, low_battery_event_count (battery_level < 0.20),
+-- and average_sentiment_score using SNOWFLAKE.CORTEX.SENTIMENT on review text.
+-- Set up joins between tables on device_id and region.
+-- Do not include a data_type field.
 -- -----------------------------------------------------------------------
 
 
 -- STEP 2: CORTEX AGENT
 -- Copy this prompt into CoCo:
 -- -----------------------------------------------------------------------
--- Create a Cortex Agent PAWCORE_ANALYTICS.SEMANTIC.PAWCORE_SUPPORT_OPS_AGENT
--- using model 'claude-haiku-4-5' with tools for
--- PAWCORE_ANALYTICS.SEMANTIC.SUPPORT_OPS semantic view and the Cortex Search
--- service PAWCORE_ANALYTICS.SEMANTIC.PAWCORE_DOCUMENT_SEARCH. Run
--- SHOW CORTEX SEARCH SERVICES IN SCHEMA PAWCORE_ANALYTICS.SEMANTIC to confirm
--- it exists. If the search service doesn't exist, STOP and tell me. The
--- setup script should have created it. Do NOT create it yourself. Add
--- orchestration and response instructions so the agent knows its role, uses
--- the right tool for each question type, and responds concisely with bullet
--- points and regional breakdowns. Grant USAGE on the agent to PUBLIC.
--- Continue autonomously.
+-- Create a Cortex Agent called PAWCORE_SUPPORT_OPS_AGENT in
+-- PAWCORE_ANALYTICS.SEMANTIC. Use the SUPPORT_OPS semantic view.
+-- Give it these instructions: respond concisely with bullet points,
+-- always include a regional breakdown when relevant, and highlight EMEA
+-- specifically when ticket volume or sentiment is a concern.
+-- Grant usage to PUBLIC role.
 -- -----------------------------------------------------------------------
 
 
@@ -49,4 +38,4 @@
 
 -- "Which region has the highest support ticket load and what's driving it?"
 -- "Is there a correlation between low battery events and critical support tickets?"
--- "What are beta testers saying about V2?"
+-- "What is EMEA's average sentiment score compared to APAC?"
