@@ -53,7 +53,7 @@ Raw Data (7 tables)
 
 Cortex Code in the UI cannot fetch files from external URLs, so you will copy the setup script into a worksheet.
 
-1. Open the setup script from the GitHub repo: [CoCo_PawCore_Setup.sql](https://raw.githubusercontent.com/calebaalexander/HandsOnLabs/main/2-Cortex-Code/setup/CoCo_PawCore_Setup.sql)
+1. Open the setup script from the GitHub repo: [00_setup.sql](https://raw.githubusercontent.com/calebaalexander/HandsOnLabs/main/2-Cortex-Code/April%201%20HOL%20-%20CoCo%20UI/exercises/00_setup.sql)
 2. **Copy the full script** and **paste it into your SQL worksheet**
 3. In the Cortex Code panel, type:
 
@@ -72,6 +72,8 @@ Execute this setup script in the worksheet. Proceed autonomously - allow all sta
 > The script is non-destructive. If you already have a PAWCORE_ANALYTICS database, existing objects are preserved.
 
 **Alternative:** Paste the script and click **"Run All"** in the worksheet manually.
+
+> **Note:** The setup script requires the **ACCOUNTADMIN** role. No external integrations or Git connections are needed — all data is generated inline.
 
 ### Verify Data Loaded
 
