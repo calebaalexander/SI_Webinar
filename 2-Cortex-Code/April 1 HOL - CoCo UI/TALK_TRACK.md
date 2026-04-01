@@ -244,21 +244,25 @@ That's not a toy. PawCore's CX lead can hand this URL to every manager on the te
 
 ### While the Semantic View Builds
 
-*[CoCo is generating the YAML and running the CREATE SEMANTIC VIEW — takes 1-2 minutes. Talk through this while it runs.]*
+*[CoCo is generating the YAML and running the CREATE SEMANTIC VIEW — takes 2-3 minutes. It's visibly reasoning through the problem. Narrate what the audience is watching.]*
 
-"While that runs — let me explain what CoCo is actually building here, because it's worth understanding.
+"Look at what's happening in the panel right now — CoCo isn't just generating code, it's working through a real schema problem out loud.
 
-A Semantic View is not a regular database view. It doesn't store rows. What it stores is *meaning* — the business definition of your data. It says: a 'ticket' is a row in SUPPORT_TICKETS. A 'critical ticket' is one where priority equals critical. An 'average sentiment score' is the CORTEX.SENTIMENT function applied to review text, averaged by region. It defines how your tables join, what your metrics mean, and what questions are valid to ask.
+It just hit a constraint: semantic views require that join keys on the referenced table be declared as primary or unique keys. But DEVICE_ID and REGION aren't unique on any of our four tables — they're all many-to-many. A regular code generator would have just written invalid SQL and handed it back broken. CoCo caught that, explained why it won't work, and is now deciding how to fix it.
 
-When the Intelligence Agent gets a question in plain English — 'which region has the most critical tickets?' — it doesn't guess at SQL. It reads the Semantic View, understands that critical_ticket_count is already defined, looks up which table it comes from and how to filter it, and writes the query correctly every time. That's what makes the answers reliable instead of hallucinated.
+Watch what it lands on: it's going to pick TELEMETRY as the hub table, declare UNIQUE on (DEVICE_ID, REGION) there, and have both SUPPORT_TICKETS and CUSTOMER_REVIEWS reference it. That makes TELEMETRY the bridge between tickets and reviews. It's not just fixing a syntax error — it's making a schema design decision.
 
-The reason this is a different kind of asset from the Dynamic Table or the Streamlit app: those two things answer questions you already knew to ask. The Semantic View answers questions you haven't thought of yet. You build it once, and every analyst, manager, and exec in the company can ask their own question directly — without opening a SQL editor, without filing a ticket with the data team, without waiting for a dashboard to be built.
+This is what I want you to notice. When you use CoCo for something genuinely complex — not autocomplete, not a simple query — you're watching it reason. It hits a wall, explains the wall, and routes around it. That's different from a tool that just autocompletes what you started typing."
 
-That's the actual unlock here. Not the agent. The fact that the semantic layer exists. CoCo just made it so you don't have to write the YAML by hand."
+*[Pause — let the audience watch the reasoning scroll.]*
 
-*[Check if it's done — if not, take a question from the audience or ask:]*
+"The output it's building is YAML — not SQL. A Semantic View is a configuration layer, not a table. It doesn't store rows. It stores *meaning*: what a 'critical ticket' is, what 'average sentiment' means, how the tables relate to each other. When the Intelligence Agent gets a question in plain English, it reads this definition and writes the query from it — every time, consistently, correctly. That's what makes the answers reliable instead of hallucinated.
 
-> **Audience prompt:** "What's a question you'd want to ask about your own support data that you currently have to wait for someone else to answer?" *[Let 1-2 people respond, then use EMEA as the example answer.]*
+The difference from everything else we built today: the Dynamic Table and the Streamlit app answer questions you already knew to ask. The Semantic View answers questions you haven't thought of yet. You build it once, the whole company uses it."
+
+*[Check if it's done — if not, take a question from the audience:]*
+
+> **Audience prompt:** "What's a question you'd want to ask about your own support data that you currently have to wait for someone else to answer?" *[Let 1-2 people respond, then use EMEA as the bridge back: "Let's find out right now."]*
 
 ### The Agent
 
