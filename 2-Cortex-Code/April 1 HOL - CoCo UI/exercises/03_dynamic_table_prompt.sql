@@ -10,7 +10,7 @@
 
 -- COCO PROMPT:
 -- -----------------------------------------------------------------------
-Create a Dynamic Table called SUPPORT_OPS_DASHBOARD in PAWCORE_ANALYTICS.SUPPORT using warehouse PAWCORE_DEMO_WH with a target lag of 1 minute. Aggregate by region: total ticket count, critical ticket count, average customer rating, count of low battery events where battery_level < 0.20, and average SNOWFLAKE.CORTEX.SENTIMENT score from customer review text. Add a READINESS_STATUS column: flag as 'SUPPORT_READY' when critical tickets are 25 or fewer and average sentiment is above 0.5, otherwise 'AT_RISK'. Join SUPPORT.SUPPORT_TICKETS, SUPPORT.CUSTOMER_REVIEWS, and DEVICE_DATA.TELEMETRY.
+Create a Dynamic Table called SUPPORT_OPS_DASHBOARD in PAWCORE_ANALYTICS.SUPPORT using warehouse PAWCORE_DEMO_WH with a target lag of 1 minute. Aggregate by region: total ticket count, critical ticket count, average customer rating, count of low battery events where battery_level < 0.20, and average SNOWFLAKE.CORTEX.SENTIMENT score from customer review text. Add a READINESS_STATUS column: flag as 'SUPPORT_READY' when critical tickets are 25 or fewer and average sentiment is above 0.5, otherwise 'AT_RISK'. Join SUPPORT.SUPPORT_TICKETS, SUPPORT.CUSTOMER_REVIEWS, and DEVICE_DATA.TELEMETRY. Use a separate CTE to pre-aggregate each source table by region before joining — do not join the raw tables directly, as this will inflate row counts and produce incorrect sentiment averages.
 -- -----------------------------------------------------------------------
 
 
