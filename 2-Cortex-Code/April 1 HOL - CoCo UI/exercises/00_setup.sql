@@ -5,6 +5,7 @@
 -- No external dependencies. All data is generated inline.
 -- Safe to re-run: uses IF NOT EXISTS + TRUNCATE before each data load.
 -- Run time: ~2 minutes
+-- Requires: ACCOUNTADMIN role, Cortex features enabled
 -- ========================================================================
 
 USE ROLE ACCOUNTADMIN;
@@ -33,9 +34,7 @@ CREATE SCHEMA IF NOT EXISTS SEMANTIC;
 -- TABLES
 -- ========================================================================
 
-USE SCHEMA DEVICE_DATA;
-
-CREATE TABLE IF NOT EXISTS TELEMETRY (
+CREATE TABLE IF NOT EXISTS DEVICE_DATA.TELEMETRY (
     device_id        VARCHAR(50),
     timestamp        TIMESTAMP,
     battery_level    FLOAT,
@@ -46,9 +45,7 @@ CREATE TABLE IF NOT EXISTS TELEMETRY (
     region           VARCHAR(50)
 );
 
-USE SCHEMA MANUFACTURING;
-
-CREATE TABLE IF NOT EXISTS QUALITY_LOGS (
+CREATE TABLE IF NOT EXISTS MANUFACTURING.QUALITY_LOGS (
     lot_number        VARCHAR(50),
     timestamp         TIMESTAMP,
     test_type         VARCHAR(100),
@@ -60,9 +57,7 @@ CREATE TABLE IF NOT EXISTS QUALITY_LOGS (
     notes             TEXT
 );
 
-USE SCHEMA SUPPORT;
-
-CREATE TABLE IF NOT EXISTS CUSTOMER_REVIEWS (
+CREATE TABLE IF NOT EXISTS SUPPORT.CUSTOMER_REVIEWS (
     review_id   VARCHAR(50),
     device_id   VARCHAR(50),
     lot_number  VARCHAR(50),
@@ -72,7 +67,7 @@ CREATE TABLE IF NOT EXISTS CUSTOMER_REVIEWS (
     region      VARCHAR(50)
 );
 
-CREATE TABLE IF NOT EXISTS SLACK_MESSAGES (
+CREATE TABLE IF NOT EXISTS SUPPORT.SLACK_MESSAGES (
     message_id    VARCHAR(50),
     slack_channel VARCHAR(50),
     user_name     VARCHAR(100),
@@ -80,7 +75,7 @@ CREATE TABLE IF NOT EXISTS SLACK_MESSAGES (
     thread_id     VARCHAR(50)
 );
 
-CREATE TABLE IF NOT EXISTS SUPPORT_TICKETS (
+CREATE TABLE IF NOT EXISTS SUPPORT.SUPPORT_TICKETS (
     ticket_id     VARCHAR(50),
     device_id     VARCHAR(50),
     lot_number    VARCHAR(50),
@@ -93,7 +88,7 @@ CREATE TABLE IF NOT EXISTS SUPPORT_TICKETS (
     description   TEXT
 );
 
-CREATE TABLE IF NOT EXISTS V2_BETA_FEEDBACK (
+CREATE TABLE IF NOT EXISTS SUPPORT.V2_BETA_FEEDBACK (
     feedback_id     VARCHAR(50),
     region          VARCHAR(50),
     feature_tested  VARCHAR(100),
@@ -105,9 +100,7 @@ CREATE TABLE IF NOT EXISTS V2_BETA_FEEDBACK (
     lot_number      VARCHAR(50)
 );
 
-USE SCHEMA UNSTRUCTURED;
-
-CREATE TABLE IF NOT EXISTS PARSED_CONTENT (
+CREATE TABLE IF NOT EXISTS UNSTRUCTURED.PARSED_CONTENT (
     relative_path VARCHAR,
     file_name     VARCHAR,
     content       TEXT
@@ -135,34 +128,33 @@ INSERT INTO DEVICE_DATA.TELEMETRY
     (device_id, timestamp, battery_level, humidity_reading, temperature, charging_cycles, lot_number, region)
 SELECT
     'SC-2024-' || LPAD((MOD(n, 500) + 1)::VARCHAR, 3, '0') || '-' ||
-        CASE MOD(n, 3) WHEN 0 THEN '001' WHEN 1 THEN '002' ELSE '003' END          AS device_id,
-    DATEADD('hour', -(n * 1.8)::INT, CURRENT_TIMESTAMP())                          AS timestamp,
+        CASE MOD(n, 3) WHEN 0 THEN '001' WHEN 1 THEN '002' ELSE '003' END  AS device_id,
+    DATEADD('hour', -(n * 1.8)::INT, CURRENT_TIMESTAMP())                  AS timestamp,
     CASE region
         WHEN 'EMEA'     THEN ROUND(UNIFORM(8,  45, RANDOM()) / 100.0, 2)
         WHEN 'Americas' THEN ROUND(UNIFORM(35, 98, RANDOM()) / 100.0, 2)
         ELSE                 ROUND(UNIFORM(50, 100, RANDOM()) / 100.0, 2)
-    END                                                                             AS battery_level,
+    END                                                                     AS battery_level,
     CASE region
         WHEN 'EMEA' THEN ROUND(UNIFORM(60, 90, RANDOM()) / 100.0, 2)
         ELSE             ROUND(UNIFORM(20, 60, RANDOM()) / 100.0, 2)
-    END                                                                             AS humidity_reading,
-    ROUND(UNIFORM(18, 40, RANDOM()) / 1.0, 1)                                      AS temperature,
-    UNIFORM(1, 500, RANDOM())                                                       AS charging_cycles,
+    END                                                                     AS humidity_reading,
+    ROUND(UNIFORM(18, 40, RANDOM()) / 1.0, 1)                              AS temperature,
+    UNIFORM(1, 500, RANDOM())                                               AS charging_cycles,
     CASE region
         WHEN 'EMEA'     THEN 'LOT341'
         WHEN 'Americas' THEN 'LOT340'
         ELSE                 'LOT339'
-    END                                                                             AS lot_number,
+    END                                                                     AS lot_number,
     region
 FROM (
     SELECT
-        ROW_NUMBER() OVER (ORDER BY SEQ4())                                         AS n,
-        CASE MOD(ROW_NUMBER() OVER (ORDER BY SEQ4()), 3)
-            WHEN 0 THEN 'EMEA'
-            WHEN 1 THEN 'Americas'
-            ELSE        'APAC'
-        END                                                                         AS region
-    FROM TABLE(GENERATOR(ROWCOUNT => 21000))
+        n,
+        CASE MOD(n, 3) WHEN 0 THEN 'EMEA' WHEN 1 THEN 'Americas' ELSE 'APAC' END AS region
+    FROM (
+        SELECT ROW_NUMBER() OVER (ORDER BY SEQ4()) AS n
+        FROM TABLE(GENERATOR(ROWCOUNT => 21000))
+    )
 );
 
 -- ========================================================================
@@ -174,11 +166,7 @@ FROM (
 INSERT INTO MANUFACTURING.QUALITY_LOGS
     (lot_number, timestamp, test_type, measurement_value, pass_fail, operator_id, station_id, test_name, notes)
 SELECT
-    CASE MOD(n, 3)
-        WHEN 0 THEN 'LOT341'
-        WHEN 1 THEN 'LOT340'
-        ELSE        'LOT339'
-    END                                                                             AS lot_number,
+    CASE MOD(n, 3) WHEN 0 THEN 'LOT341' WHEN 1 THEN 'LOT340' ELSE 'LOT339' END    AS lot_number,
     DATEADD('day', -UNIFORM(1, 180, RANDOM()), CURRENT_TIMESTAMP())                AS timestamp,
     CASE MOD(n, 4)
         WHEN 0 THEN 'MOISTURE_SENSOR'
@@ -187,17 +175,16 @@ SELECT
         ELSE        'WATER_RESISTANCE'
     END                                                                             AS test_type,
     CASE
-        WHEN MOD(n, 3) = 0 AND MOD(n, 4) = 0
-            THEN ROUND(UNIFORM(60, 70, RANDOM()) / 1.0, 2)
-        ELSE ROUND(UNIFORM(80, 99, RANDOM()) / 1.0, 2)
+        WHEN MOD(n, 3) = 0 AND MOD(n, 4) = 0 THEN ROUND(UNIFORM(60, 70, RANDOM()) / 1.0, 2)
+        ELSE                                       ROUND(UNIFORM(80, 99, RANDOM()) / 1.0, 2)
     END                                                                             AS measurement_value,
     CASE
         WHEN MOD(n, 3) = 0 AND MOD(n, 4) = 0 THEN 'FAIL'
         WHEN UNIFORM(1, 10, RANDOM()) = 1      THEN 'FAIL'
         ELSE                                        'PASS'
     END                                                                             AS pass_fail,
-    'OP-' || LPAD(UNIFORM(1, 20, RANDOM())::VARCHAR, 3, '0')                       AS operator_id,
-    'STN-' || LPAD(UNIFORM(1, 8, RANDOM())::VARCHAR, 2, '0')                       AS station_id,
+    'OP-'  || LPAD(UNIFORM(1, 20, RANDOM())::VARCHAR, 3, '0')                      AS operator_id,
+    'STN-' || LPAD(UNIFORM(1,  8, RANDOM())::VARCHAR, 2, '0')                      AS station_id,
     CASE MOD(n, 4)
         WHEN 0 THEN 'Humidity Threshold Test'
         WHEN 1 THEN 'Battery Health Cycle'
@@ -216,7 +203,7 @@ FROM (
 
 -- ========================================================================
 -- SUPPORT TICKETS (~240 rows)
--- Story: EMEA carries 50% of all tickets. High critical rate.
+-- Story: EMEA carries 50% of tickets at critical/high priority.
 --        Americas recovering. APAC mostly clean.
 -- ========================================================================
 
@@ -225,25 +212,13 @@ INSERT INTO SUPPORT.SUPPORT_TICKETS
 SELECT
     'TKT-' || LPAD(n::VARCHAR, 5, '0')                                             AS ticket_id,
     'SC-2024-' || LPAD(UNIFORM(1, 100, RANDOM())::VARCHAR, 3, '0') || '-001'       AS device_id,
-    CASE region
-        WHEN 'EMEA'     THEN 'LOT341'
-        WHEN 'Americas' THEN 'LOT340'
-        ELSE                 'LOT339'
-    END                                                                             AS lot_number,
+    CASE region WHEN 'EMEA' THEN 'LOT341' WHEN 'Americas' THEN 'LOT340' ELSE 'LOT339' END AS lot_number,
     region,
     CASE
         WHEN region = 'EMEA' THEN
-            CASE MOD(n, 5)
-                WHEN 0 THEN 'Battery'      WHEN 1 THEN 'Battery'
-                WHEN 2 THEN 'Sensor'       WHEN 3 THEN 'Connectivity'
-                ELSE        'Battery'
-            END
+            CASE MOD(n, 5) WHEN 0 THEN 'Battery' WHEN 1 THEN 'Battery' WHEN 2 THEN 'Sensor' WHEN 3 THEN 'Connectivity' ELSE 'Battery' END
         ELSE
-            CASE MOD(n, 5)
-                WHEN 0 THEN 'Battery'      WHEN 1 THEN 'Firmware'
-                WHEN 2 THEN 'Sensor'       WHEN 3 THEN 'App'
-                ELSE        'Hardware'
-            END
+            CASE MOD(n, 5) WHEN 0 THEN 'Battery' WHEN 1 THEN 'Firmware' WHEN 2 THEN 'Sensor' WHEN 3 THEN 'App' ELSE 'Hardware' END
     END                                                                             AS category,
     CASE
         WHEN region = 'EMEA'     AND MOD(n, 3) = 0 THEN 'CRITICAL'
@@ -252,35 +227,26 @@ SELECT
         WHEN region = 'Americas'                    THEN 'MEDIUM'
         ELSE                                             'LOW'
     END                                                                             AS priority,
-    CASE MOD(n, 4)
-        WHEN 0 THEN 'OPEN'
-        WHEN 1 THEN 'IN_PROGRESS'
-        ELSE        'RESOLVED'
-    END                                                                             AS status,
+    CASE MOD(n, 4) WHEN 0 THEN 'OPEN' WHEN 1 THEN 'IN_PROGRESS' ELSE 'RESOLVED' END AS status,
     DATEADD('day', -UNIFORM(1, 120, RANDOM()), CURRENT_DATE())                     AS created_date,
     CASE WHEN MOD(n, 4) = 3
         THEN DATEADD('day', -UNIFORM(0, 30, RANDOM()), CURRENT_DATE())
         ELSE NULL
     END                                                                             AS resolved_date,
     CASE
-        WHEN region = 'EMEA' AND MOD(n, 3) = 0
-            THEN 'Device battery depleting within 4 hours of full charge. Customer unable to use product.'
-        WHEN region = 'EMEA'
-            THEN 'Battery draining faster than expected. Humidity sensor readings inconsistent.'
-        WHEN region = 'Americas'
-            THEN 'Firmware update causing connectivity drops. Intermittent sync failures.'
-        ELSE
-            'Minor calibration issue reported. Device functioning within acceptable range.'
+        WHEN region = 'EMEA' AND MOD(n, 3) = 0 THEN 'Device battery depleting within 4 hours of full charge. Customer unable to use product.'
+        WHEN region = 'EMEA'                    THEN 'Battery draining faster than expected. Humidity sensor readings inconsistent.'
+        WHEN region = 'Americas'                THEN 'Firmware update causing connectivity drops. Intermittent sync failures.'
+        ELSE                                         'Minor calibration issue reported. Device functioning within acceptable range.'
     END                                                                             AS description
 FROM (
     SELECT
-        ROW_NUMBER() OVER (ORDER BY SEQ4())                                         AS n,
-        CASE
-            WHEN ROW_NUMBER() OVER (ORDER BY SEQ4()) <= 120 THEN 'EMEA'
-            WHEN ROW_NUMBER() OVER (ORDER BY SEQ4()) <= 200 THEN 'Americas'
-            ELSE                                                  'APAC'
-        END                                                                         AS region
-    FROM TABLE(GENERATOR(ROWCOUNT => 240))
+        n,
+        CASE WHEN n <= 120 THEN 'EMEA' WHEN n <= 200 THEN 'Americas' ELSE 'APAC' END AS region
+    FROM (
+        SELECT ROW_NUMBER() OVER (ORDER BY SEQ4()) AS n
+        FROM TABLE(GENERATOR(ROWCOUNT => 240))
+    )
 );
 
 -- ========================================================================
@@ -294,29 +260,12 @@ INSERT INTO SUPPORT.CUSTOMER_REVIEWS
 SELECT
     'REV-' || LPAD(n::VARCHAR, 5, '0')                                             AS review_id,
     'SC-2024-' || LPAD(UNIFORM(1, 200, RANDOM())::VARCHAR, 3, '0') || '-' ||
-        CASE region WHEN 'EMEA' THEN '001' WHEN 'Americas' THEN '002' ELSE '003' END
-                                                                                    AS device_id,
+        CASE region WHEN 'EMEA' THEN '001' WHEN 'Americas' THEN '002' ELSE '003' END AS device_id,
+    CASE region WHEN 'EMEA' THEN 'LOT341' WHEN 'Americas' THEN 'LOT340' ELSE 'LOT339' END AS lot_number,
     CASE region
-        WHEN 'EMEA'     THEN 'LOT341'
-        WHEN 'Americas' THEN 'LOT340'
-        ELSE                 'LOT339'
-    END                                                                             AS lot_number,
-    CASE region
-        WHEN 'EMEA'     THEN
-            CASE WHEN UNIFORM(1, 10, RANDOM()) <= 7
-                THEN UNIFORM(1, 2, RANDOM())
-                ELSE UNIFORM(3, 5, RANDOM())
-            END
-        WHEN 'Americas' THEN
-            CASE WHEN UNIFORM(1, 10, RANDOM()) <= 4
-                THEN UNIFORM(1, 3, RANDOM())
-                ELSE UNIFORM(3, 5, RANDOM())
-            END
-        ELSE
-            CASE WHEN UNIFORM(1, 10, RANDOM()) <= 2
-                THEN UNIFORM(1, 3, RANDOM())
-                ELSE UNIFORM(4, 5, RANDOM())
-            END
+        WHEN 'EMEA'     THEN CASE WHEN UNIFORM(1, 10, RANDOM()) <= 7 THEN UNIFORM(1, 2, RANDOM()) ELSE UNIFORM(3, 5, RANDOM()) END
+        WHEN 'Americas' THEN CASE WHEN UNIFORM(1, 10, RANDOM()) <= 4 THEN UNIFORM(1, 3, RANDOM()) ELSE UNIFORM(3, 5, RANDOM()) END
+        ELSE                 CASE WHEN UNIFORM(1, 10, RANDOM()) <= 2 THEN UNIFORM(1, 3, RANDOM()) ELSE UNIFORM(4, 5, RANDOM()) END
     END                                                                             AS rating,
     CASE region
         WHEN 'EMEA' THEN
@@ -348,43 +297,31 @@ SELECT
     region
 FROM (
     SELECT
-        ROW_NUMBER() OVER (ORDER BY SEQ4())                                         AS n,
-        CASE
-            WHEN ROW_NUMBER() OVER (ORDER BY SEQ4()) <= 600  THEN 'EMEA'
-            WHEN ROW_NUMBER() OVER (ORDER BY SEQ4()) <= 1100 THEN 'Americas'
-            ELSE                                                  'APAC'
-        END                                                                         AS region
-    FROM TABLE(GENERATOR(ROWCOUNT => 1500))
+        n,
+        CASE WHEN n <= 600 THEN 'EMEA' WHEN n <= 1100 THEN 'Americas' ELSE 'APAC' END AS region
+    FROM (
+        SELECT ROW_NUMBER() OVER (ORDER BY SEQ4()) AS n
+        FROM TABLE(GENERATOR(ROWCOUNT => 1500))
+    )
 );
 
 -- ========================================================================
 -- V2 BETA FEEDBACK (~120 rows)
--- Story: V2 feedback is strong across all regions. EMEA cautiously positive
---        after V1 issues. Americas and APAC enthusiastic.
+-- Story: V2 signals are strong. EMEA cautiously positive after V1 issues.
 -- ========================================================================
 
 INSERT INTO SUPPORT.V2_BETA_FEEDBACK
     (feedback_id, region, feature_tested, rating, feedback_text, tester_type, submission_date, device_version, lot_number)
 SELECT
     'FB-' || LPAD(n::VARCHAR, 4, '0')                                              AS feedback_id,
-    CASE MOD(n, 3)
-        WHEN 0 THEN 'EMEA'
-        WHEN 1 THEN 'Americas'
-        ELSE        'APAC'
-    END                                                                             AS region,
+    CASE MOD(n, 3) WHEN 0 THEN 'EMEA' WHEN 1 THEN 'Americas' ELSE 'APAC' END      AS region,
     CASE MOD(n, 5)
-        WHEN 0 THEN 'Battery Life'
-        WHEN 1 THEN 'GPS Accuracy'
-        WHEN 2 THEN 'Health Monitoring'
-        WHEN 3 THEN 'App Integration'
+        WHEN 0 THEN 'Battery Life'      WHEN 1 THEN 'GPS Accuracy'
+        WHEN 2 THEN 'Health Monitoring' WHEN 3 THEN 'App Integration'
         ELSE        'Build Quality'
     END                                                                             AS feature_tested,
     CASE MOD(n, 3)
-        WHEN 0 THEN
-            CASE WHEN UNIFORM(1, 10, RANDOM()) <= 4
-                THEN UNIFORM(2, 3, RANDOM())
-                ELSE UNIFORM(4, 5, RANDOM())
-            END
+        WHEN 0 THEN CASE WHEN UNIFORM(1, 10, RANDOM()) <= 4 THEN UNIFORM(2, 3, RANDOM()) ELSE UNIFORM(4, 5, RANDOM()) END
         ELSE UNIFORM(3, 5, RANDOM())
     END                                                                             AS rating,
     CASE MOD(n, 5)
@@ -404,7 +341,7 @@ FROM (
 );
 
 -- ========================================================================
--- SLACK MESSAGES (37 rows - explicit values)
+-- SLACK MESSAGES (37 rows)
 -- Story: Internal team comms tracking the LOT341 crisis and V2 readiness
 -- ========================================================================
 
@@ -493,42 +430,24 @@ V2 SMARTCOLLAR IMPROVEMENTS:
 );
 
 -- ========================================================================
--- CORTEX SEARCH SERVICE
--- ========================================================================
-
-USE SCHEMA SEMANTIC;
-
-CREATE CORTEX SEARCH SERVICE IF NOT EXISTS PAWCORE_DOCUMENT_SEARCH
-    ON content
-    ATTRIBUTES relative_path, file_name
-    WAREHOUSE = PAWCORE_DEMO_WH
-    TARGET_LAG = '1 hour'
-    COMMENT = 'Cortex Search over PawCore QC documentation'
-AS (
-    SELECT content, relative_path, file_name
-    FROM PAWCORE_ANALYTICS.UNSTRUCTURED.PARSED_CONTENT
-);
-
--- ========================================================================
 -- GRANTS
 -- ========================================================================
 
-GRANT USAGE ON WAREHOUSE PAWCORE_DEMO_WH                                              TO ROLE PUBLIC;
-GRANT USAGE ON DATABASE PAWCORE_ANALYTICS                                              TO ROLE PUBLIC;
-GRANT USAGE ON ALL SCHEMAS IN DATABASE PAWCORE_ANALYTICS                               TO ROLE PUBLIC;
-GRANT SELECT ON ALL TABLES IN DATABASE PAWCORE_ANALYTICS                               TO ROLE PUBLIC;
-GRANT USAGE ON CORTEX SEARCH SERVICE PAWCORE_ANALYTICS.SEMANTIC.PAWCORE_DOCUMENT_SEARCH TO ROLE PUBLIC;
+GRANT USAGE ON WAREHOUSE PAWCORE_DEMO_WH             TO ROLE PUBLIC;
+GRANT USAGE ON DATABASE PAWCORE_ANALYTICS             TO ROLE PUBLIC;
+GRANT USAGE ON ALL SCHEMAS IN DATABASE PAWCORE_ANALYTICS TO ROLE PUBLIC;
+GRANT SELECT ON ALL TABLES IN DATABASE PAWCORE_ANALYTICS TO ROLE PUBLIC;
 
 -- ========================================================================
 -- VERIFY
 -- ========================================================================
 
-SELECT 'TELEMETRY'        AS table_name, COUNT(*) AS row_count FROM DEVICE_DATA.TELEMETRY        UNION ALL
-SELECT 'QUALITY_LOGS',                   COUNT(*)             FROM MANUFACTURING.QUALITY_LOGS    UNION ALL
-SELECT 'CUSTOMER_REVIEWS',               COUNT(*)             FROM SUPPORT.CUSTOMER_REVIEWS      UNION ALL
-SELECT 'SLACK_MESSAGES',                 COUNT(*)             FROM SUPPORT.SLACK_MESSAGES         UNION ALL
-SELECT 'SUPPORT_TICKETS',                COUNT(*)             FROM SUPPORT.SUPPORT_TICKETS        UNION ALL
-SELECT 'V2_BETA_FEEDBACK',               COUNT(*)             FROM SUPPORT.V2_BETA_FEEDBACK       UNION ALL
-SELECT 'PARSED_CONTENT',                 COUNT(*)             FROM UNSTRUCTURED.PARSED_CONTENT;
+USE DATABASE PAWCORE_ANALYTICS;
 
-SELECT 'PawCore setup complete. Ready for Cortex Code HOL.' AS status;
+SELECT 'TELEMETRY'        AS table_name, COUNT(*) AS row_count FROM DEVICE_DATA.TELEMETRY      UNION ALL
+SELECT 'QUALITY_LOGS',                   COUNT(*)             FROM MANUFACTURING.QUALITY_LOGS  UNION ALL
+SELECT 'CUSTOMER_REVIEWS',               COUNT(*)             FROM SUPPORT.CUSTOMER_REVIEWS    UNION ALL
+SELECT 'SLACK_MESSAGES',                 COUNT(*)             FROM SUPPORT.SLACK_MESSAGES      UNION ALL
+SELECT 'SUPPORT_TICKETS',                COUNT(*)             FROM SUPPORT.SUPPORT_TICKETS     UNION ALL
+SELECT 'V2_BETA_FEEDBACK',               COUNT(*)             FROM SUPPORT.V2_BETA_FEEDBACK    UNION ALL
+SELECT 'PARSED_CONTENT',                 COUNT(*)             FROM UNSTRUCTURED.PARSED_CONTENT;
