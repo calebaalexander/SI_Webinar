@@ -4,7 +4,7 @@
 
 In this quickstart you will use **Cortex Code**, the AI coding assistant built into Snowflake's web interface, to go from raw data to a fully operational analytics pipeline - without writing a single line of code manually. You will fix broken queries, build a Snowflake Notebook, create a Dynamic Table pipeline, deploy a Streamlit application, and launch a Snowflake Intelligence agent, all through natural language.
 
-**The scenario:** PawCore, a pet health technology company, is preparing to launch SmartCollar V2. Marcus Thompson, the CX lead, needs to know whether his support team is operationally ready for the volume V2 will bring. You will build the analytics infrastructure he needs.
+**The scenario:** PawCore, a pet health technology company, is preparing to launch SmartCollar V2. The CX team needs to know whether support operations are ready for the volume V2 will bring. You will build the analytics infrastructure to answer that question.
 
 ---
 
@@ -157,7 +157,7 @@ Fix `severity` -> `PRIORITY`:
 
 ## Step 3: Build a Snowflake Notebook
 
-Marcus's team has a basic starter model that predicts customer review ratings from device telemetry. It works, but it only uses two features and a simple linear regression. We will upload it to Snowflake and use Cortex Code to turn it into a production-quality analysis.
+PawCore's analytics team has a basic starter model that predicts customer review ratings from device telemetry. It only uses two features and a simple linear regression. We will upload it to Snowflake and use Cortex Code to turn it into a production-quality analysis.
 
 ### Upload the Starter Notebook
 
@@ -205,7 +205,7 @@ CoCo reads the existing notebook, understands the starter model, and builds on t
 
 ## Step 4: Create a Dynamic Table Pipeline
 
-Marcus says: *"Great analysis, but tickets come in every hour. I need this data live."* A Dynamic Table solves this - define a query, attach a refresh interval, and Snowflake handles the rest. No Airflow, no cron jobs, no orchestration layer.
+The first question after a good analysis is always: *"When does this go stale?"* A Dynamic Table solves this - define a query, attach a refresh interval, and Snowflake handles the rest. No Airflow, no cron jobs, no orchestration layer.
 
 ### Build the Dynamic Table
 
@@ -250,7 +250,7 @@ Show me the refresh history for the SUPPORT_OPS_DASHBOARD dynamic table
 
 ## Step 5: Deploy a Streamlit Application
 
-Marcus wants a dashboard his CX team can check every morning before standup - not a spreadsheet, not a notebook, but a real application.
+The CX team needs something they can check every morning before standup - not a spreadsheet, not a notebook, but a real application.
 
 ### Generate the App
 
@@ -299,7 +299,7 @@ filtered by the region selected in a sidebar dropdown.
 
 ## Step 6: Build a Semantic View and Intelligence Agent
 
-The final step: give Marcus self-service analytics through Snowflake Intelligence. He can ask ad-hoc questions in natural language without writing SQL.
+The final step: give the CX team self-service analytics through Snowflake Intelligence - ad-hoc questions in natural language, no SQL required.
 
 ### Create the Semantic View
 
