@@ -2,6 +2,8 @@
 
 > **Note:** PawCore is a fictional company created for Snowflake hands-on labs. All data, personas, company names, financial figures, and scenarios in this repository are entirely synthetic and for educational purposes only.
 
+> **Note:** PawCore is a fictional company created for Snowflake hands-on labs. All data, personas, company names, financial figures, and scenarios in this repository are entirely synthetic and for educational purposes only.
+
 Demo materials for PawCore — a fictional IoT pet technology company building smart devices for pet health monitoring. Used in Snowflake Cortex Code hands-on labs.
 
 ## Repository Structure
